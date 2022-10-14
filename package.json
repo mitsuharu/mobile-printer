@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --appIdSuffix dev",
+    "android": "react-native run-android",
+    "android-dev": "react-native run-android --appIdSuffix dev",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "build": "echo \"build command only checks typescript syntax and built-in lint.\" && yarn typecheck",
