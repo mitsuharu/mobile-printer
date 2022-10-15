@@ -6045,6 +6045,10 @@ react-native-screens@^3.18.2:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+"react-native-sunmi-v2-printer@https://github.com/syumai/react-native-sunmi-v2-printer":
+  version "1.0.2"
+  resolved "https://github.com/syumai/react-native-sunmi-v2-printer#e6f630c641992bfa7a40e523b1b5aef9e85f46d2"
+
 react-native-swag-styles@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/react-native-swag-styles/-/react-native-swag-styles-0.2.2.tgz#8214e098e794e5b04f7fded93a2b79af22869c6e"
