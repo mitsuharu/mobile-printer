@@ -6,6 +6,7 @@ import { rootSaga } from '@/redux/saga'
 import { Persistor } from 'redux-persist/es/types'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { snackbarReducer } from './modules/snackbar/slice'
+import { userSettingReducer } from './modules/userSetting/slice'
 
 let store: Store
 let persistor: Persistor
@@ -16,6 +17,7 @@ export function initializeRedux() {
   if (store == null || persistor == null) {
     const reducer = combineReducers<RootState>({
       snackbar: snackbarReducer,
+      userSetting: userSettingReducer,
     })
 
     const sagaMiddleware = createSagaMiddleware({
