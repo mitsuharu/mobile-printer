@@ -1,3 +1,4 @@
+import { COLOR } from '@/CONSTANTS/COLOR'
 import { DarkTheme, DefaultTheme, Theme } from '@react-navigation/native'
 import { ColorSchemeName } from 'react-native'
 
@@ -8,11 +9,11 @@ const makeColors = (colorScheme: ColorSchemeName): Colors => {
     colorScheme === 'dark' ? DarkTheme.colors : DefaultTheme.colors
   return {
     ...themeColors,
-    // primary: COLOR(colorScheme).TEXT.SECONDARY,
-    // background: COLOR(colorScheme).BACKGROUND.SECONDARY,
-    // card: COLOR(colorScheme).BACKGROUND.SECONDARY,
-    // text: COLOR(colorScheme).TEXT.PRIMARY,
-    // border: COLOR(colorScheme).BACKGROUND.PRIMARY,
+    primary: COLOR(colorScheme).TEXT.SECONDARY,
+    background: COLOR(colorScheme).BACKGROUND.SECONDARY,
+    card: COLOR(colorScheme).BACKGROUND.SECONDARY,
+    text: COLOR(colorScheme).TEXT.PRIMARY,
+    border: COLOR(colorScheme).BACKGROUND.PRIMARY,
     notification: 'red',
   }
 }

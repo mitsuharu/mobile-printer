@@ -1,4 +1,4 @@
-// import { COLOR } from '@/CONSTANTS/COLOR'
+import { COLOR } from '@/CONSTANTS/COLOR'
 import { DefaultTheme, DarkTheme } from 'react-native-paper'
 import { ColorSchemeName } from 'react-native'
 
@@ -10,9 +10,9 @@ const makeColors = (colorScheme: ColorSchemeName): Colors => {
     colorScheme === 'dark' ? DarkTheme.colors : DefaultTheme.colors
   return {
     ...themeColors,
-    // primary: COLOR(colorScheme).TEXT.SECONDARY,
-    // background: COLOR(colorScheme).BACKGROUND.SECONDARY,
-    // text: COLOR(colorScheme).TEXT.PRIMARY,
+    primary: COLOR(colorScheme).TEXT.SECONDARY,
+    background: COLOR(colorScheme).BACKGROUND.SECONDARY,
+    text: COLOR(colorScheme).TEXT.PRIMARY,
     notification: 'red',
   }
 }

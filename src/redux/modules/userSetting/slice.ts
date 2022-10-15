@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { PersistConfig, persistReducer } from 'redux-persist'
 
 export type UserSettingState = {
@@ -22,12 +22,6 @@ const userSettingSlice = createSlice({
   reducers: {
     // assignMainType(state, action: PayloadAction<MainType>) {
     //   state.mainType = action.payload
-    // },
-    // assignCanCopyToClipboardOnLongPress(state, action: PayloadAction<boolean>) {
-    //   state.canCopyToClipboardOnLongPress = action.payload
-    // },
-    // toggleCanCopyToClipboardOnLongPress(state) {
-    //   state.canCopyToClipboardOnLongPress = !state.canCopyToClipboardOnLongPress
     // },
   },
 })

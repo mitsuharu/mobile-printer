@@ -4,8 +4,8 @@ import { MainParams } from './main.params'
 import { RootRoutes } from './root.routes'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { useAppTheme } from './theme/useAppTheme'
-// import { GlobalSnackbar } from '@/components/GlobalSnackbar'
-// import * as NavigationService from '@/utils/NavigationService'
+import { GlobalSnackbar } from '@/components/GlobalSnackbar'
+import * as NavigationService from '@/utils/NavigationService'
 
 /**
  * @see https://reactnavigation.org/docs/auth-flow/
@@ -17,11 +17,11 @@ const Routes: React.FC = () => {
     <PaperProvider theme={paperTheme}>
       <NavigationContainer
         theme={navigationTheme}
-        // ref={NavigationService.navigationRef}
+        ref={NavigationService.navigationRef}
       >
         <RootRoutes />
       </NavigationContainer>
-      {/* <GlobalSnackbar /> */}
+      <GlobalSnackbar />
     </PaperProvider>
   )
 }
