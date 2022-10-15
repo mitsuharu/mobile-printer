@@ -3,6 +3,8 @@ import { print } from './slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 // import SunmiV2Printer from 'react-native-sunmi-v2-printer'
 // import { Profile } from './utils'
+import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
+import { Profile } from './utils'
 
 export function* printerSaga() {
   yield call (printInitSaga)
@@ -32,7 +34,7 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
   try {
     // yield call(printProfile, payload)
 // ReactNativeSunmiV2proPrinter
-    // yield call(SunmiV2Printer.printText, "aaaaa")
+    yield call(printProfile, payload)
 
 
 
@@ -49,19 +51,27 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
 }
 
 
-// async function printProfile(profile: Profile){
-//   console.log('printProfile', profile)
-//   try {
+async function printProfile(profile: Profile){
+  console.log('printProfile', profile)
+  try {
 
-//     // // set aligment: 0-left,1-center,2-right
-//     // await SunmiV2Printer.setAlignment(1);
+    // // set aligment: 0-left,1-center,2-right
+    // await SunmiV2Printer.setAlignment(1);
 
-//     // SunmiPrinter.printerText(profile.name)
+    await SPrinter.connect();
+// await SPrinter.testPrint();
+await SPrinter.printText(`${profile.name}\n`)
+await SPrinter.printText(`${profile.alias}\n`)
+await SPrinter.printText(`${profile.description}\n`)
 
 
-//     console.log('printProfile done')
-//   } catch (e: any) {
-//     console.warn('print', e)
-//     throw e
-//   }
-// }
+await SPrinter.printText("\n\n\n\n");
+await SPrinter.disconnect();
+
+
+    console.log('printProfile done')
+  } catch (e: any) {
+    console.warn('print', e)
+    throw e
+  }
+}
