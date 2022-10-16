@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button';
 import React, { useCallback } from 'react';
 import {
-  Text,
+  TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
@@ -23,13 +23,12 @@ const Component: React.FC<ComponentProps> = ({onPress}) => {
   const styles = useStyles()
 
   return <View style={styles.container}>
-    <Button onPress={onPress}><Text>button</Text></Button>
+    <Button onPress={onPress} text="サンプルを印刷する" textStyle={styles.text}/>
   </View>
 }
 
 const Container: React.FC<Props> = (props) => {
   const dispatch = useDispatch()
-
 
   const onPress = useCallback(() => {
     dispatch(print(sampleProfile))
@@ -47,4 +46,7 @@ const useStyles = makeStyles( () => ({
     alignItems: 'center',
     justifyContent: 'center',
   }),
+  text: styleType<TextStyle>({
+    fontSize: 32
+  })
 }))

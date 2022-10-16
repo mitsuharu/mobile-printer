@@ -1,28 +1,33 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import { print } from './slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-// import SunmiV2Printer from 'react-native-sunmi-v2-printer'
-// import { Profile } from './utils'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
-import { Profile } from './utils'
+import { Profile, SEPARATOR } from './utils'
+import { Platform } from 'react-native'
+import dayjs from 'dayjs'
 
 export function* printerSaga() {
+
+  if (Platform.OS !== "android"){
+    console.log(`printerSaga, It supports only Android.`)
+    // Android のみ対応する
+    return
+  }
+
   yield call (printInitSaga)
-
-
   yield takeEvery(print, printSaga)
 }
 
 function* printInitSaga() {
   console.log(`printInitSaga`)
   try {
-
-    console.log(`printInitSaga done`)
+    yield call(SPrinter.connect)
+    yield call(SPrinter.disconnect)
   } catch (e: any) {
     console.warn('printInitSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `印刷に失敗しました`,
+        message: `プリンターの接続に失敗しました`,
       }),
     )
   }
@@ -30,16 +35,8 @@ function* printInitSaga() {
 
 
 function* printSaga({ payload }: ReturnType<typeof print>) {
-  console.log('printSaga', payload)
   try {
-    // yield call(printProfile, payload)
-// ReactNativeSunmiV2proPrinter
     yield call(printProfile, payload)
-
-
-
-    console.log('printSaga done')
-
   } catch (e: any) {
     console.warn('printSaga', e)
     yield put(
@@ -50,28 +47,93 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
   }
 }
 
-
-async function printProfile(profile: Profile){
-  console.log('printProfile', profile)
+async function printProfile({name, iconBase64, alias, description, sns, qr, title}: Profile){
+  console.log('printProfile')
   try {
 
-    // // set aligment: 0-left,1-center,2-right
-    // await SunmiV2Printer.setAlignment(1);
-
     await SPrinter.connect();
-// await SPrinter.testPrint();
-await SPrinter.printText(`${profile.name}\n`)
-await SPrinter.printText(`${profile.alias}\n`)
-await SPrinter.printText(`${profile.description}\n`)
+    await SPrinter.printEmptyLines(1)
 
+    await SPrinter.setAlign(Constants.Align.CENTER)
+    await SPrinter.printTextCustom(`${name}\n`, 32, true, false, "gh")
 
-await SPrinter.printText("\n\n\n\n");
-await SPrinter.disconnect();
+    if (alias){
+      await SPrinter.printText(`${alias}\n`)
+    }
 
+    if (iconBase64){
+      await SPrinter.printEmptyLines(1)
+      await SPrinter.printBase64Image(iconBase64)
+      await SPrinter.printEmptyLines(1)
+    }
 
-    console.log('printProfile done')
+    if (description){
+      await SPrinter.printEmptyLines(1)
+      await SPrinter.printText(`${description}\n`)
+      await SPrinter.printEmptyLines(1)
+    } 
+
+    if (title){
+      const {position, company} = title
+      await SPrinter.printText(SEPARATOR)
+      if (company){
+        await SPrinter.printText(`${company}\n`)
+      }
+      if (position){
+        await SPrinter.printText(`${position}\n`)
+      }
+    }
+
+    if (sns){
+      await SPrinter.printText(SEPARATOR)
+      await SPrinter.setAlign(Constants.Align.LEFT)
+      const {twitter, facebook, github, website} = sns
+      if (twitter){
+        await SPrinter.printText(`Twitter: ${twitter}\n`)
+      }
+      if (facebook){
+        await SPrinter.printText(`Facebook: ${facebook}\n`)
+      }
+      if (github){
+        await SPrinter.printText(`Github: ${github}\n`)
+      }
+      if (website){
+        await SPrinter.printText(`Website: ${website}\n`)
+      }
+    }
+
+    if (qr){
+      await SPrinter.setAlign(Constants.Align.CENTER)
+      await SPrinter.printText(SEPARATOR)
+      await SPrinter.setAlign(Constants.Align.CENTER)
+      if (qr.description){
+        await SPrinter.printText(`${qr.description}\n`)
+        await SPrinter.printEmptyLines(1)
+      } 
+      await SPrinter.printQRCode(qr.url, 8, 1)
+      await SPrinter.printEmptyLines(3)
+    }
+
+    // 印刷時間
+    await SPrinter.setAlign(Constants.Align.RIGHT)
+    await SPrinter.printText(`${timeStamp()}\n`)
+    await SPrinter.printEmptyLines(3)
+
+    // 終了
+    await SPrinter.reset()
+    await SPrinter.disconnect()
+
   } catch (e: any) {
     console.warn('print', e)
     throw e
   }
+}
+
+
+/**
+ * @returns タイムスタンプを発行する
+ */
+const timeStamp = () => {
+  dayjs.locale("ja")
+  return dayjs().format('YYYY/MM/DD hh:mm')
 }
