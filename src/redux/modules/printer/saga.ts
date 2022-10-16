@@ -73,6 +73,7 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
       await SPrinter.printEmptyLines(1)
     } 
 
+    // 肩書き
     if (title){
       const {position, company} = title
       await SPrinter.printText(SEPARATOR)
@@ -84,6 +85,7 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
       }
     }
 
+    // SNS情報
     if (sns){
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.LEFT)
@@ -102,6 +104,7 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
       }
     }
 
+    // QRコード
     if (qr){
       await SPrinter.setAlign(Constants.Align.CENTER)
       await SPrinter.printText(SEPARATOR)
@@ -111,7 +114,7 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
         await SPrinter.printEmptyLines(1)
       } 
       await SPrinter.printQRCode(qr.url, 8, 1)
-      await SPrinter.printEmptyLines(3)
+      await SPrinter.printEmptyLines(2)
     }
 
     // 印刷時間
