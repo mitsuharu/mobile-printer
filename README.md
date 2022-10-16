@@ -12,22 +12,41 @@
 
 ![印刷結果](README_Images/receipts.png)
 
-## Requirement
+## Develop
+
+### requirements
 
 - GMSが有効な [Sunmi V2 Pro](https://www.sunmi.com/ja/v2-pro/)
+
+### frameworks
+
 - React Native 0.70.3
 
 
-## Build
+### architectures
+
+- Redux Saga
+
+### build
 
 ```shell
 yarn
 yarn android
 ```
 
+### release
+
+```shell
+cd ./android
+./gradlew assembleRelease   
+```
+
 ## TODO
 
 - 入力フォームの追加
+	- React Hook Form? 
+- CI
+- Dependabot
 - ストアでの公開？
 
 ## License
