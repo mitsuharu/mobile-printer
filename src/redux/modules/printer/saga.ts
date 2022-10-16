@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { print } from './slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
@@ -14,7 +14,7 @@ export function* printerSaga() {
     return
   }
 
-  yield call (printInitSaga)
+  yield fork(printInitSaga)
   yield takeEvery(print, printSaga)
 }
 
