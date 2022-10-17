@@ -4,7 +4,7 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
 import { Profile, SEPARATOR } from './utils'
 import { Platform } from 'react-native'
-import dayjs from 'dayjs'
+import { timeStamp } from '@/utils/day'
 
 export function* printerSaga() {
 
@@ -130,13 +130,4 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
     console.warn('print', e)
     throw e
   }
-}
-
-
-/**
- * @returns タイムスタンプを発行する
- */
-const timeStamp = () => {
-  dayjs.locale("ja")
-  return dayjs().format('YYYY/MM/DD hh:mm')
 }
