@@ -76,6 +76,7 @@
     "jest-junit": "^14.0.1",
     "jest-mock-extended": "^3.0.1",
     "metro-react-native-babel-preset": "0.72.3",
+    "mockdate": "^3.0.5",
     "prettier": "^2.7.1",
     "react-test-renderer": "18.1.0",
     "redux-mock-store": "^1.5.4",
