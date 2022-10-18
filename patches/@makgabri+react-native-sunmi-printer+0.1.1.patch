@@ -1,5 +1,5 @@
 diff --git a/node_modules/@makgabri/react-native-sunmi-printer/android/build.gradle b/node_modules/@makgabri/react-native-sunmi-printer/android/build.gradle
-index 874c6ca..d818437 100644
+index 874c6ca..88b114b 100644
 --- a/node_modules/@makgabri/react-native-sunmi-printer/android/build.gradle
 +++ b/node_modules/@makgabri/react-native-sunmi-printer/android/build.gradle
 @@ -14,15 +14,15 @@ buildscript {
@@ -9,7 +9,7 @@ index 874c6ca..d818437 100644
 -def safeExtGet(prop, fallback) {
 -    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 +def getExtOrIntegerDefault(name) {
-+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['SearchWithSpotlight_' + name]).toInteger()
++  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['SunmiPrinter_' + name]).toInteger()
  }
  
  android {
