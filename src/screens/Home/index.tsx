@@ -8,8 +8,8 @@ import { styleType } from '@/utils/styles'
 import { useDispatch } from 'react-redux';
 import { print } from '@/redux/modules/printer/slice';
 import { sampleProfile } from '@/redux/modules/printer/utils';
-import { myProfile } from './utils';
 import { Cell, Section } from '@/components/List';
+import { casualProfile, formalProfile } from '@/CONSTANTS/PROFILE';
 
 type Props = {
 }
@@ -44,11 +44,11 @@ const Container: React.FC<Props> = (props) => {
   }, [dispatch])
 
   const onPressFormals = useCallback(() => {
-    dispatch(print(myProfile))
+    dispatch(print(formalProfile))
   }, [dispatch])
 
   const onPressCasuals= useCallback(() => {
-    dispatch(print({...myProfile, title: undefined}))
+    dispatch(print(casualProfile))
   }, [dispatch])
 
   return <Component {...props} {...{onPressSample, onPressFormals, onPressCasuals}}/>

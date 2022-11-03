@@ -75,13 +75,16 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
 
     // 肩書き
     if (title){
-      const {position, company} = title
+      const {position, company, address} = title
       await SPrinter.printText(SEPARATOR)
       if (company){
         await SPrinter.printText(`${company}\n`)
       }
       if (position){
         await SPrinter.printText(`${position}\n`)
+      }
+      if (address){
+        await SPrinter.printText(`${address}\n`)
       }
     }
 
