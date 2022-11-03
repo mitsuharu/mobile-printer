@@ -117,12 +117,12 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
         await SPrinter.printEmptyLines(1)
       } 
       await SPrinter.printQRCode(qr.url, 8, 1)
-      await SPrinter.printEmptyLines(2)
+      await SPrinter.printEmptyLines(1)
     }
 
     // 印刷時間
     await SPrinter.setAlign(Constants.Align.RIGHT)
-    await SPrinter.printText(`${timeStamp()}\n`)
+    await SPrinter.printText(`\n${timeStamp()}\n`)
     await SPrinter.printEmptyLines(3)
 
     // 終了
