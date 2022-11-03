@@ -25,7 +25,7 @@ export const casualProfile: Profile = {
   name: "江本光晴",
   alias: "Mitsuharu Emoto",
   iconBase64: avator,
-  description: "iOSアプリ開発 (Swift, Flutter, React Native) が好き。",
+  description: "iOSアプリの開発 (Swift, Flutter, React Native) が好き。",
   title: undefined,
   sns: {
     twitter: "@mitsuharu_e",
