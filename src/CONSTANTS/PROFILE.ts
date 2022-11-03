@@ -15,14 +15,17 @@ export const formalProfile: Profile = {
     facebook: "mitsuharu.emoto",
     github: "mitsuharu"
   },
-  qr: undefined
+  qr: {
+    url: "https://twitter.com/mitsuharu_e",
+    description: "follow me"
+  }
 }
 
 export const casualProfile: Profile = {
   name: "江本光晴",
   alias: "Mitsuharu Emoto",
   iconBase64: avator,
-  description: "iOSアプリのネイティブ開発, クロスプラットフォーム開発 (Flutter, React Native) が好き。",
+  description: "iOSアプリ開発 (Swift, Flutter, React Native) が好き。",
   title: undefined,
   sns: {
     twitter: "@mitsuharu_e",
