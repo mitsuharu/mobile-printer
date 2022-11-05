@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Button } from './index'
 

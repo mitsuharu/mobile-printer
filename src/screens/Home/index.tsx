@@ -9,21 +9,23 @@ import { useNavigation } from '@react-navigation/native'
 import { EditToggleButton } from '@/components/Button/EditToggleButton'
 import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
-import { Profile, Submission } from '@/redux/modules/printer/utils'
+import { createSubmission, Submission } from '@/redux/modules/printer/utils'
 
 type Props = {}
 type ComponentProps = Props & {
   isEditable: boolean
   submissions: Submission[]
   onPressSample: () => void
-  onPressPrinter: (obj: Profile) => void
+  onPressSubmission: (obj: Submission) => void
+  onPressNewSubmission: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
   isEditable,
   submissions,
   onPressSample,
-  onPressPrinter,
+  onPressSubmission,
+  onPressNewSubmission,
 }) => {
   const styles = useStyles()
 
@@ -33,18 +35,22 @@ const Component: React.FC<ComponentProps> = ({
         <Cell title="サンプル" onPress={onPressSample} />
       </Section>
       <Section title="プロフィールを印刷する">
-        {submissions.map(({ title, profile, uuid }) => (
+        {submissions.map((submission) => (
           <Cell
-            title={title}
-            onPress={() => onPressPrinter(profile)}
+            title={submission.title}
+            onPress={() => onPressSubmission(submission)}
             accessory={isEditable ? 'disclosure' : undefined}
-            key={uuid}
+            key={submission.uuid}
           />
         ))}
       </Section>
       {isEditable ? (
-        <Section title="編集する">
-          <Cell title="追加する" onPress={() => {}} accessory={'disclosure'} />
+        <Section>
+          <Cell
+            title="追加する"
+            onPress={onPressNewSubmission}
+            accessory={'disclosure'}
+          />
         </Section>
       ) : null}
     </ScrollView>
@@ -77,17 +83,31 @@ const Container: React.FC<Props> = (props) => {
     dispatch(print(sampleProfile))
   }, [dispatch])
 
-  const onPressPrinter = useCallback(
-    (profile: Profile) => {
-      dispatch(print(profile))
+  const onPressSubmission = useCallback(
+    (submission: Submission) => {
+      if (isEditable) {
+        navigation.navigate('Form', { submission: submission })
+      } else {
+        dispatch(print(submission.profile))
+      }
     },
-    [dispatch],
+    [dispatch, isEditable, navigation],
   )
+
+  const onPressNewSubmission = useCallback(() => {
+    navigation.navigate('Form', { submission: createSubmission() })
+  }, [navigation])
 
   return (
     <Component
       {...props}
-      {...{ isEditable, submissions, onPressSample, onPressPrinter }}
+      {...{
+        isEditable,
+        submissions,
+        onPressSample,
+        onPressSubmission,
+        onPressNewSubmission,
+      }}
     />
   )
 }
