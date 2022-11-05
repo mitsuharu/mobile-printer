@@ -2,37 +2,57 @@ import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { ViewStyle, ScrollView } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { print } from '@/redux/modules/printer/slice'
-import { sampleProfile } from '@/redux/modules/printer/utils'
 import { Cell, Section } from '@/components/List'
-import { casualProfile, formalProfile } from '@/CONSTANTS/PROFILE'
 import { useNavigation } from '@react-navigation/native'
 import { EditToggleButton } from '@/components/Button/EditToggleButton'
+import { sampleProfile } from '@/redux/modules/printer/utils/sample'
+import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
+import { createSubmission, Submission } from '@/redux/modules/printer/utils'
 
 type Props = {}
 type ComponentProps = Props & {
+  isEditable: boolean
+  submissions: Submission[]
   onPressSample: () => void
-  onPressFormals: () => void
-  onPressCasuals: () => void
+  onPressSubmission: (obj: Submission) => void
+  onPressNewSubmission: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
+  isEditable,
+  submissions,
   onPressSample,
-  onPressFormals,
-  onPressCasuals,
+  onPressSubmission,
+  onPressNewSubmission,
 }) => {
   const styles = useStyles()
 
   return (
     <ScrollView style={styles.scrollView}>
-      <Section title="サンプル">
+      <Section title="サンプルを印刷する">
         <Cell title="サンプル" onPress={onPressSample} />
       </Section>
-      <Section title="プロフィール">
-        <Cell title="フォーマル" onPress={onPressFormals} />
-        <Cell title="カジュアル" onPress={onPressCasuals} />
+      <Section title="プロフィールを印刷する">
+        {submissions.map((submission) => (
+          <Cell
+            title={submission.title}
+            onPress={() => onPressSubmission(submission)}
+            accessory={isEditable ? 'disclosure' : undefined}
+            key={submission.uuid}
+          />
+        ))}
       </Section>
+      {isEditable ? (
+        <Section>
+          <Cell
+            title="追加する"
+            onPress={onPressNewSubmission}
+            accessory={'disclosure'}
+          />
+        </Section>
+      ) : null}
     </ScrollView>
   )
 }
@@ -40,6 +60,8 @@ const Component: React.FC<ComponentProps> = ({
 const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
+
+  const submissions: Submission[] = useSelector(selectPrinterSubmissions)
 
   const [isEditable, setIsEditable] = useState<boolean>(false)
 
@@ -49,10 +71,11 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'モバイルプリンター',
-      // headerRight: () => (
-      //   <EditToggleButton isEditable={isEditable} toggle={toggle} />
-      // ),
+      title: 'モバイル名刺印刷',
+      // eslint-disable-next-line react/no-unstable-nested-components
+      headerRight: () => (
+        <EditToggleButton isEditable={isEditable} toggle={toggle} />
+      ),
     })
   }, [navigation, isEditable, toggle])
 
@@ -60,18 +83,31 @@ const Container: React.FC<Props> = (props) => {
     dispatch(print(sampleProfile))
   }, [dispatch])
 
-  const onPressFormals = useCallback(() => {
-    dispatch(print(formalProfile))
-  }, [dispatch])
+  const onPressSubmission = useCallback(
+    (submission: Submission) => {
+      if (isEditable) {
+        navigation.navigate('Form', { submission: submission })
+      } else {
+        dispatch(print(submission.profile))
+      }
+    },
+    [dispatch, isEditable, navigation],
+  )
 
-  const onPressCasuals = useCallback(() => {
-    dispatch(print(casualProfile))
-  }, [dispatch])
+  const onPressNewSubmission = useCallback(() => {
+    navigation.navigate('Form', { submission: createSubmission() })
+  }, [navigation])
 
   return (
     <Component
       {...props}
-      {...{ onPressSample, onPressFormals, onPressCasuals }}
+      {...{
+        isEditable,
+        submissions,
+        onPressSample,
+        onPressSubmission,
+        onPressNewSubmission,
+      }}
     />
   )
 }

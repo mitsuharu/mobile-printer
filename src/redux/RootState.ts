@@ -1,7 +1,9 @@
+import { PrinterState } from './modules/printer/slice'
 import { SnackbarState } from './modules/snackbar/slice'
 import { UserSettingState } from './modules/userSetting/slice'
 
 export interface RootState {
+  printer: PrinterState
   snackbar: SnackbarState
   userSetting: UserSettingState
 }
