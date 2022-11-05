@@ -4,7 +4,6 @@ import { MainParams } from './main.params'
 import { MainName } from './main.constraint'
 import { Home } from '@/screens/Home'
 
-
 const Stack = createNativeStackNavigator<MainParams>()
 
 const Routes: React.FC = () => {
