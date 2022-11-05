@@ -13,12 +13,14 @@ import { Profile, Submission } from '@/redux/modules/printer/utils'
 
 type Props = {}
 type ComponentProps = Props & {
+  isEditable: boolean
   submissions: Submission[]
   onPressSample: () => void
   onPressPrinter: (obj: Profile) => void
 }
 
 const Component: React.FC<ComponentProps> = ({
+  isEditable,
   submissions,
   onPressSample,
   onPressPrinter,
@@ -31,16 +33,20 @@ const Component: React.FC<ComponentProps> = ({
         <Cell title="サンプル" onPress={onPressSample} />
       </Section>
       <Section title="プロフィールを印刷する">
-        {submissions.map(({ title, profile, uuid }) => {
-          return (
-            <Cell
-              title={title}
-              onPress={() => onPressPrinter(profile)}
-              key={uuid}
-            />
-          )
-        })}
+        {submissions.map(({ title, profile, uuid }) => (
+          <Cell
+            title={title}
+            onPress={() => onPressPrinter(profile)}
+            accessory={isEditable ? 'disclosure' : undefined}
+            key={uuid}
+          />
+        ))}
       </Section>
+      {isEditable ? (
+        <Section title="編集する">
+          <Cell title="追加する" onPress={() => {}} accessory={'disclosure'} />
+        </Section>
+      ) : null}
     </ScrollView>
   )
 }
@@ -79,7 +85,10 @@ const Container: React.FC<Props> = (props) => {
   )
 
   return (
-    <Component {...props} {...{ submissions, onPressSample, onPressPrinter }} />
+    <Component
+      {...props}
+      {...{ isEditable, submissions, onPressSample, onPressPrinter }}
+    />
   )
 }
 
