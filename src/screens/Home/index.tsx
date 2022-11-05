@@ -50,7 +50,9 @@ const Container: React.FC<Props> = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'モバイルプリンター',
-      headerRight: <EditToggleButton isEditable={isEditable} toggle={toggle} />,
+      // headerRight: () => (
+      //   <EditToggleButton isEditable={isEditable} toggle={toggle} />
+      // ),
     })
   }, [navigation, isEditable, toggle])
 
