@@ -4,11 +4,11 @@ import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch } from 'react-redux'
 import { print } from '@/redux/modules/printer/slice'
-import { sampleProfile } from '@/redux/modules/printer/utils'
 import { Cell, Section } from '@/components/List'
 import { casualProfile, formalProfile } from '@/CONSTANTS/PROFILE'
 import { useNavigation } from '@react-navigation/native'
 import { EditToggleButton } from '@/components/Button/EditToggleButton'
+import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -50,9 +50,10 @@ const Container: React.FC<Props> = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'モバイルプリンター',
-      // headerRight: () => (
-      //   <EditToggleButton isEditable={isEditable} toggle={toggle} />
-      // ),
+      // eslint-disable-next-line react/no-unstable-nested-components
+      headerRight: () => (
+        <EditToggleButton isEditable={isEditable} toggle={toggle} />
+      ),
     })
   }, [navigation, isEditable, toggle])
 

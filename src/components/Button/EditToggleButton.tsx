@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Button } from './index'
 
@@ -6,22 +6,24 @@ type Props = {
   isEditable: boolean
   toggle: () => void
 }
-type ComponentProps = Props & {}
+type ComponentProps = Props & {
+  iconName: string
+}
 
-const Component: React.FC<ComponentProps> = ({ isEditable, toggle }) => {
+const Component: React.FC<ComponentProps> = ({ iconName, toggle }) => {
   return (
     <Button onPress={toggle}>
-      {isEditable ? (
-        <Icon name="edit" size={24} />
-      ) : (
-        <Icon name="edit-off" size={24} />
-      )}
+      <Icon name={iconName} size={24} />
     </Button>
   )
 }
 
 const Container: React.FC<Props> = (props) => {
-  return <Component {...props} />
+  const { isEditable } = props
+
+  const iconName = isEditable ? 'edit-off' : 'edit'
+
+  return <Component {...props} iconName={iconName} />
 }
 
 export { Container as EditToggleButton }

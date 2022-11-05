@@ -2,9 +2,10 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { print } from './slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
-import { Profile, SEPARATOR } from './utils'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
+import { Profile } from './utils/types'
+import { SEPARATOR } from './utils/constants'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
