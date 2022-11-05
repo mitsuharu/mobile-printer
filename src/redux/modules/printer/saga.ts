@@ -2,14 +2,13 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { print } from './slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
-import { Profile, SEPARATOR } from './utils'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
+import { Profile, SEPARATOR } from './utils'
 
 export function* printerSaga() {
-
-  if (Platform.OS !== "android"){
-    console.log(`printerSaga, It supports only Android.`)
+  if (Platform.OS !== 'android') {
+    console.warn(`printerSaga, It supports only Android.`)
     // Android のみ対応する
     return
   }
@@ -33,7 +32,6 @@ function* printInitSaga() {
   }
 }
 
-
 function* printSaga({ payload }: ReturnType<typeof print>) {
   try {
     yield call(printProfile, payload)
@@ -47,75 +45,82 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
   }
 }
 
-async function printProfile({name, iconBase64, alias, description, sns, qr, title}: Profile){
+async function printProfile({
+  name,
+  iconBase64,
+  alias,
+  description,
+  sns,
+  qr,
+  title,
+}: Profile) {
   console.log('printProfile')
   try {
-
-    await SPrinter.connect();
+    await SPrinter.connect()
     await SPrinter.printEmptyLines(1)
 
     await SPrinter.setAlign(Constants.Align.CENTER)
-    await SPrinter.printTextCustom(`${name}\n`, 32, true, false, "gh")
+    await SPrinter.printTextCustom(`${name}\n`, 32, true, false, 'gh')
 
-    if (alias){
+    if (alias) {
       await SPrinter.printText(`${alias}\n`)
     }
 
-    if (iconBase64){
+    if (iconBase64) {
       await SPrinter.printEmptyLines(1)
       await SPrinter.printBase64Image(iconBase64)
       await SPrinter.printEmptyLines(1)
     }
 
-    if (description){
+    if (description) {
       await SPrinter.printEmptyLines(1)
       await SPrinter.printText(`${description}\n`)
       await SPrinter.printEmptyLines(1)
-    } 
+    }
 
     // 肩書き
-    if (title){
-      const {position, company, address} = title
+    if (title) {
+      const { position, company, address } = title
       await SPrinter.printText(SEPARATOR)
-      if (company){
+      if (company) {
         await SPrinter.printText(`${company}\n`)
       }
-      if (position){
+      if (position) {
         await SPrinter.printText(`${position}\n`)
       }
-      if (address){
+      if (address) {
         await SPrinter.printText(`${address}\n`)
       }
     }
 
     // SNS情報
-    if (sns){
+    if (sns) {
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.LEFT)
-      const {twitter, facebook, github, website} = sns
-      if (twitter){
+      const { twitter, facebook, github, website } = sns
+      if (twitter) {
         await SPrinter.printText(`Twitter: ${twitter}\n`)
       }
-      if (facebook){
+      if (facebook) {
         await SPrinter.printText(`Facebook: ${facebook}\n`)
       }
-      if (github){
+      if (github) {
         await SPrinter.printText(`Github: ${github}\n`)
       }
-      if (website){
+      if (website) {
         await SPrinter.printText(`Website: ${website}\n`)
       }
     }
 
     // QRコード
-    if (qr){
+    if (qr) {
       await SPrinter.setAlign(Constants.Align.CENTER)
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.CENTER)
-      if (qr.description){
+      if (qr.description) {
         await SPrinter.printText(`${qr.description}\n`)
         await SPrinter.printEmptyLines(1)
-      } 
+      }
       await SPrinter.printQRCode(qr.url, 8, 1)
       await SPrinter.printEmptyLines(1)
     }
@@ -128,7 +133,6 @@ async function printProfile({name, iconBase64, alias, description, sns, qr, titl
     // 終了
     await SPrinter.reset()
     await SPrinter.disconnect()
-
   } catch (e: any) {
     console.warn('print', e)
     throw e

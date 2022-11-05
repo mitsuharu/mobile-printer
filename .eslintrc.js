@@ -14,8 +14,6 @@ module.exports = {
     "plugin:react-native/all",
 
     "prettier",
-    "prettier/@typescript-eslint",
-    "prettier/react",
   ],
   plugins: [],
   parserOptions: {
