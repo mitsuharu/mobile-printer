@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import {
   ViewStyle,
   ScrollView,
@@ -10,6 +10,8 @@ import { print } from '@/redux/modules/printer/slice';
 import { sampleProfile } from '@/redux/modules/printer/utils';
 import { Cell, Section } from '@/components/List';
 import { casualProfile, formalProfile } from '@/CONSTANTS/PROFILE';
+import { useNavigation } from '@react-navigation/native';
+import { EditToggleButton } from '@/components/Button/EditToggleButton';
 
 type Props = {
 }
@@ -20,8 +22,10 @@ type ComponentProps = Props & {
 }
 
 const Component: React.FC<ComponentProps> = ({onPressSample, onPressFormals, onPressCasuals}) => {
-
   const styles = useStyles()
+
+  
+
 
   return (
   <ScrollView style ={styles.scrollView}>
@@ -37,7 +41,22 @@ const Component: React.FC<ComponentProps> = ({onPressSample, onPressFormals, onP
 }
 
 const Container: React.FC<Props> = (props) => {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
+
+  const [isEditable, setIsEditable] = useState<boolean>(false)
+
+  const toggle = useCallback(()=>{
+    setIsEditable(!isEditable)
+  }, [isEditable, setIsEditable])
+
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'モバイルプリンター',
+      headerRight: () => <EditToggleButton isEditable={isEditable} toggle={toggle} />,
+    })
+  }, [navigation, isEditable])
 
   const onPressSample = useCallback(() => {
     dispatch(print(sampleProfile))
