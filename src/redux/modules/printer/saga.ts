@@ -45,6 +45,8 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
   }
 }
 
+const isEmpty = (obj: any) => !Object.keys(obj).length
+
 async function printProfile({
   name,
   iconBase64,
@@ -54,7 +56,6 @@ async function printProfile({
   qr,
   title,
 }: Profile) {
-  console.log('printProfile')
   try {
     await SPrinter.connect()
     await SPrinter.printEmptyLines(1)
@@ -79,7 +80,7 @@ async function printProfile({
     }
 
     // 肩書き
-    if (title) {
+    if (title && !isEmpty(title)) {
       const { position, company, address } = title
       await SPrinter.printText(SEPARATOR)
       if (company) {
@@ -94,7 +95,7 @@ async function printProfile({
     }
 
     // SNS情報
-    if (sns) {
+    if (sns && !isEmpty(sns)) {
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.LEFT)
       const { twitter, facebook, github, website } = sns
@@ -113,7 +114,7 @@ async function printProfile({
     }
 
     // QRコード
-    if (qr) {
+    if (qr && !isEmpty(qr)) {
       await SPrinter.setAlign(Constants.Align.CENTER)
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.CENTER)
@@ -121,7 +122,9 @@ async function printProfile({
         await SPrinter.printText(`${qr.description}\n`)
         await SPrinter.printEmptyLines(1)
       }
-      await SPrinter.printQRCode(qr.url, 8, 1)
+      if (qr.url) {
+        await SPrinter.printQRCode(qr.url, 8, 1)
+      }
       await SPrinter.printEmptyLines(1)
     }
 
