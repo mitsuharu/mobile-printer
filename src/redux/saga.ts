@@ -4,8 +4,5 @@ import { printerSaga } from './modules/printer/saga'
 
 export function* rootSaga() {
   console.log('rootSaga start')
-  yield all([
-    fork(inAppBrowserSaga),
-    fork(printerSaga)
-  ])
+  yield all([fork(inAppBrowserSaga), fork(printerSaga)])
 }
