@@ -4,12 +4,11 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
-import { Profile } from './utils/types'
-import { SEPARATOR } from './utils/constants'
+import { Profile, SEPARATOR } from './utils'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
-    console.log(`printerSaga, It supports only Android.`)
+    console.warn(`printerSaga, It supports only Android.`)
     // Android のみ対応する
     return
   }

@@ -62,6 +62,3 @@ export type Submission = {
   createdAt: number
   uuid: string
 }
-
-export const isEqualToSubmission = (a: Submission, b: Submission) =>
-  a.uuid === b.uuid
