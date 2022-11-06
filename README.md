@@ -38,7 +38,7 @@ yarn android
 
 ```shell
 cd ./android
-./gradlew assembleRelease   
+./gradlew assembleRelease
 ```
 
 ## Features
