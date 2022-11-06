@@ -5,6 +5,7 @@ import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
 import { Profile, SEPARATOR } from './utils'
+import { hasAnyObject } from '@/utils/object'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -45,8 +46,6 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
   }
 }
 
-const isEmpty = (obj: any) => !Object.keys(obj).length
-
 async function printProfile({
   name,
   iconBase64,
@@ -80,7 +79,7 @@ async function printProfile({
     }
 
     // 肩書き
-    if (title && !isEmpty(title)) {
+    if (hasAnyObject(title)) {
       const { position, company, address } = title
       await SPrinter.printText(SEPARATOR)
       if (company) {
@@ -95,7 +94,7 @@ async function printProfile({
     }
 
     // SNS情報
-    if (sns && !isEmpty(sns)) {
+    if (hasAnyObject(sns)) {
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.LEFT)
       const { twitter, facebook, github, website } = sns
@@ -114,7 +113,7 @@ async function printProfile({
     }
 
     // QRコード
-    if (qr && !isEmpty(qr)) {
+    if (hasAnyObject(qr)) {
       await SPrinter.setAlign(Constants.Align.CENTER)
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.CENTER)
