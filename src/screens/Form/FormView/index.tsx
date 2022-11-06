@@ -16,6 +16,7 @@ import { Spacer, SpacerLine } from '@/components/Spacer'
 import { useDispatch } from 'react-redux'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SubmitView } from './SubmitView'
+import { Base64ImageView } from '@/components/Base64ImageView'
 
 export type OnSubmit = (
   props: Submission,
@@ -202,6 +203,7 @@ export const FormView: React.FC<Props> = ({
           nextTextInputRef={inputRefs.profile.sns.twitter}
           returnKeyType={'next'}
         />
+        <Base64ImageView base64={getValues('profile.iconBase64')} />
         <Spacer height={8} />
 
         <TextInputController
