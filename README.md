@@ -20,7 +20,7 @@
 
 ### frameworks
 
-- React Native 0.70.3
+- React Native 0.70.x
 
 
 ### architectures
@@ -38,7 +38,7 @@ yarn android
 
 ```shell
 cd ./android
-./gradlew assembleRelease   
+./gradlew assembleRelease
 ```
 
 ## Features
