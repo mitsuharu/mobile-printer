@@ -41,10 +41,15 @@ cd ./android
 ./gradlew assembleRelease   
 ```
 
+## Features
+
+- 印刷データはアプリ内で追加・編集できます
+  - UI は鮮麗されていません 
+- 画像は端末内のライブラリから選択可能です
+  - 事前に白黒加工をするのがおすすめです
+
 ## TODO
 
-- 入力フォームの追加
-	- React Hook Form? 
 - CI
 - Dependabot
 - ストアでの公開？
