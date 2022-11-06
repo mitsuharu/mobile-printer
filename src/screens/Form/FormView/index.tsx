@@ -44,6 +44,7 @@ export const FormView: React.FC<Props> = ({
     handleSubmit,
     setError,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<Submission>({
     reValidateMode: 'onSubmit',
@@ -77,6 +78,13 @@ export const FormView: React.FC<Props> = ({
       console.warn(e)
     }
   }, [handleSubmit, innerOnError, innerOnSubmit])
+
+  const onChangeBase64 = useCallback(
+    (base64: string) => {
+      setValue('profile.iconBase64', base64)
+    },
+    [setValue],
+  )
 
   // 次の入力フォームにfocusさせるため
   const inputRefs = {
@@ -188,7 +196,7 @@ export const FormView: React.FC<Props> = ({
           error={errors.profile?.description}
           fieldPath={'profile.description'}
           textInputRef={inputRefs.profile.description}
-          nextTextInputRef={inputRefs.profile.iconBase64}
+          nextTextInputRef={inputRefs.profile.sns.facebook}
           returnKeyType={'next'}
         />
         <Spacer height={8} />
@@ -202,8 +210,13 @@ export const FormView: React.FC<Props> = ({
           textInputRef={inputRefs.profile.iconBase64}
           nextTextInputRef={inputRefs.profile.sns.twitter}
           returnKeyType={'next'}
+          editable={false}
         />
-        <Base64ImageView base64={getValues('profile.iconBase64')} />
+        <Base64ImageView
+          style={styles.base64ImageView}
+          base64={getValues('profile.iconBase64')}
+          onChange={onChangeBase64}
+        />
         <Spacer height={8} />
 
         <TextInputController
@@ -291,5 +304,11 @@ const useStyles = makeStyles(() => ({
   }),
   contentContainer: styleType<ViewStyle>({
     padding: 16,
+  }),
+  base64ImageView: styleType<ViewStyle>({
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 8,
   }),
 }))

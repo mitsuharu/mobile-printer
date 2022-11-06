@@ -33,7 +33,7 @@ const isTextInputRefObject = (arg: any): arg is TextInputRefObject => {
 }
 
 const Component: React.FC<ComponentProps> = (props) => {
-  const { style, forwardedRef, nextRef } = props
+  const { style, forwardedRef, nextRef, editable } = props
   const styles = useStyles()
 
   const focusNext = useCallback(() => {
@@ -43,10 +43,12 @@ const Component: React.FC<ComponentProps> = (props) => {
   }, [nextRef])
 
   return (
-    <View style={[style, styles.container]}>
+    <View
+      style={[style, styles.container, editable === false && styles.disable]}
+    >
       <TextInput
         {...props}
-        style={styles.textInput}
+        style={[styles.textInput, editable === false && styles.disable]}
         clearButtonMode="while-editing"
         secureTextEntry={false}
         autoCapitalize="none"
@@ -69,6 +71,7 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
     flexDirection: 'row',
     borderColor: COLOR(colorScheme).CLEAR,
     borderBottomWidth: 1,
+    opacity: 1.0,
   }),
   textInput: styleType<TextStyle>({
     flex: 1,
@@ -87,5 +90,8 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
   }),
   textPlaceholder: styleType<TextStyle>({
     color: COLOR(colorScheme).TEXT.SECONDARY,
+  }),
+  disable: styleType<ViewStyle>({
+    opacity: 0.7,
   }),
 }))

@@ -15,7 +15,6 @@ type Props = {
   style?: StyleProp<ViewStyle>
   onSubmit: () => void
   onDelete: () => void
-
   isEnableSubmitButton?: boolean
   isEnableDeleteButton?: boolean
 }
