@@ -41,6 +41,8 @@ type Props = {
   nextTextInputRef?: React.RefObject<TextInput>
 
   required?: boolean
+
+  editable?: boolean
 }
 
 export const TextInputController: React.FC<Props> = ({
@@ -58,6 +60,7 @@ export const TextInputController: React.FC<Props> = ({
   nextTextInputRef,
 
   required,
+  editable,
 }) => {
   const styles = useStyles()
 
@@ -79,6 +82,7 @@ export const TextInputController: React.FC<Props> = ({
             returnKeyType={returnKeyType}
             blurOnSubmit={false}
             nextRef={nextTextInputRef}
+            editable={editable !== undefined ? editable : true}
           />
         )}
         name={fieldPath}
