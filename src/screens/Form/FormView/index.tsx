@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, createRef } from 'react'
+import React, { useCallback, useMemo, createRef } from 'react'
 import {
   Keyboard,
   View,
@@ -9,7 +9,7 @@ import {
   useColorScheme,
   ScrollView,
 } from 'react-native'
-import { useForm, ErrorOption, useWatch } from 'react-hook-form'
+import { useForm, ErrorOption } from 'react-hook-form'
 import { Submission } from '@/redux/modules/printer/utils'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
@@ -51,12 +51,9 @@ export const FormView: React.FC<Props> = ({
     defaultValues,
   })
 
-  // 入力内容が変わったら走る
-  const watchedValues = useWatch<Submission>({ control })
-  useEffect(() => {}, [watchedValues])
-
-  // handleSubmitに渡すonSubmit
-  // validationが成功した場合に呼ばれる
+  /**
+   * handleSubmitに渡すonSubmit（validationが成功した場合に呼ばれる）
+   */
   const innerOnSubmit = useCallback(
     (props: Submission) => {
       Keyboard.dismiss()
@@ -65,8 +62,9 @@ export const FormView: React.FC<Props> = ({
     [onSubmit, setError],
   )
 
-  // handleSubmitに渡すonError
-  // validationが失敗した場合に呼ばれる
+  /**
+   * handleSubmitに渡すonError（validationが失敗した場合に呼ばれる）
+   */
   const innerOnError = useCallback(() => {
     Keyboard.dismiss()
     dispatch(enqueueSnackbar({ message: '入力に誤りがあります' }))
@@ -82,33 +80,30 @@ export const FormView: React.FC<Props> = ({
   }, [handleSubmit, innerOnError, innerOnSubmit])
 
   // 次の入力フォームにfocusさせるため
-  const inputRefs = useMemo(
-    () => ({
-      title: createRef<TextInput>(),
-      profile: {
-        name: createRef<TextInput>(),
-        alias: createRef<TextInput>(),
-        title: {
-          position: createRef<TextInput>(),
-          company: createRef<TextInput>(),
-          address: createRef<TextInput>(),
-        },
-        description: createRef<TextInput>(),
-        iconBase64: createRef<TextInput>(),
-        sns: {
-          twitter: createRef<TextInput>(),
-          facebook: createRef<TextInput>(),
-          github: createRef<TextInput>(),
-          website: createRef<TextInput>(),
-        },
-        qr: {
-          url: createRef<TextInput>(),
-          description: createRef<TextInput>(),
-        },
+  const inputRefs = {
+    title: createRef<TextInput>(),
+    profile: {
+      name: createRef<TextInput>(),
+      alias: createRef<TextInput>(),
+      title: {
+        position: createRef<TextInput>(),
+        company: createRef<TextInput>(),
+        address: createRef<TextInput>(),
       },
-    }),
-    [],
-  )
+      description: createRef<TextInput>(),
+      iconBase64: createRef<TextInput>(),
+      sns: {
+        twitter: createRef<TextInput>(),
+        facebook: createRef<TextInput>(),
+        github: createRef<TextInput>(),
+        website: createRef<TextInput>(),
+      },
+      qr: {
+        url: createRef<TextInput>(),
+        description: createRef<TextInput>(),
+      },
+    },
+  }
 
   return (
     <View style={style}>
@@ -309,7 +304,7 @@ export const FormView: React.FC<Props> = ({
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
+const useStyles = makeStyles(useColorScheme, (_colorScheme) => ({
   scrollView: styleType<ViewStyle>({
     flex: 1,
   }),

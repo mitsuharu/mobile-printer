@@ -57,7 +57,7 @@ const Container: React.FC<Props> = (props) => {
 
   const onSubmit = useCallback<OnSubmit>(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (payload, setError) => {
+    (payload, _setError) => {
       try {
         dispatch(saveSubmission(payload))
         navigation.goBack()
