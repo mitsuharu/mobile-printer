@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, createRef } from 'react'
+import React, { useCallback, createRef } from 'react'
 import {
   Keyboard,
   View,
   ViewStyle,
-  TextStyle,
   TextInput,
   StyleProp,
   useColorScheme,
@@ -14,10 +13,10 @@ import { Submission } from '@/redux/modules/printer/utils'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { TextInputController } from './TextInputController'
-import { Button } from '@/components/Button'
 import { Spacer, SpacerLine } from '@/components/Spacer'
 import { useDispatch } from 'react-redux'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import { SubmitView } from './SubmitView'
 
 export type OnSubmit = (
   props: Submission,
@@ -280,25 +279,7 @@ export const FormView: React.FC<Props> = ({
       </ScrollView>
 
       <SpacerLine height={1} />
-      <View style={styles.padding}>
-        <Spacer height={8} />
-        <Button
-          text={'保存する'}
-          onPress={onPress}
-          style={styles.button}
-          textStyle={[styles.buttonText, styles.saveButtonText]}
-          // inactive={!isEnableSubmitButton}
-        />
-        <Spacer height={16} />
-        <Button
-          text={'削除する'}
-          onPress={onDelete}
-          style={[styles.button, styles.deleteButton]}
-          textStyle={[styles.buttonText, styles.deleteButtonText]}
-          // inactive={!isEnableSubmitButton}
-        />
-        <Spacer height={8} />
-      </View>
+      <SubmitView onSubmit={onPress} onDelete={onDelete} />
     </View>
   )
 }
@@ -310,27 +291,5 @@ const useStyles = makeStyles(useColorScheme, (_colorScheme) => ({
   }),
   padding: styleType<ViewStyle>({
     padding: 16,
-  }),
-  button: styleType<ViewStyle>({
-    width: '100%',
-    height: 40,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: 'gray',
-    borderRadius: 8,
-    borderWidth: 1,
-  }),
-  deleteButton: styleType<ViewStyle>({
-    backgroundColor: 'red',
-  }),
-  buttonText: styleType<TextStyle>({
-    fontSize: 20,
-  }),
-  saveButtonText: styleType<TextStyle>({
-    color: 'black',
-  }),
-  deleteButtonText: styleType<TextStyle>({
-    color: 'white',
   }),
 }))
