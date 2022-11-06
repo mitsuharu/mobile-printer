@@ -5,7 +5,6 @@ import {
   ViewStyle,
   TextInput,
   StyleProp,
-  useColorScheme,
   ScrollView,
 } from 'react-native'
 import { useForm, ErrorOption } from 'react-hook-form'
@@ -106,7 +105,7 @@ export const FormView: React.FC<Props> = ({
 
   return (
     <View style={style}>
-      <ScrollView contentContainerStyle={styles.padding}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <TextInputController
           formTitle={'ファイル名'}
           control={control}
@@ -284,12 +283,11 @@ export const FormView: React.FC<Props> = ({
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const useStyles = makeStyles(useColorScheme, (_colorScheme) => ({
+const useStyles = makeStyles(() => ({
   scrollView: styleType<ViewStyle>({
     flex: 1,
   }),
-  padding: styleType<ViewStyle>({
+  contentContainer: styleType<ViewStyle>({
     padding: 16,
   }),
 }))
