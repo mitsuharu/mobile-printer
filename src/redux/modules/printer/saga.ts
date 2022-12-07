@@ -5,7 +5,7 @@ import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
 import { Profile, SEPARATOR } from './utils'
-import { hasAnyObject } from '@/utils/object'
+import { hasAnyKey } from '@/utils/object'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -79,8 +79,9 @@ async function printProfile({
     }
 
     // 肩書き
-    if (hasAnyObject(title)) {
+    if (hasAnyKey(title, ['position', 'company', 'address'])) {
       const { position, company, address } = title
+
       await SPrinter.printText(SEPARATOR)
       if (company) {
         await SPrinter.printText(`${company}\n`)
@@ -94,10 +95,11 @@ async function printProfile({
     }
 
     // SNS情報
-    if (hasAnyObject(sns)) {
+    if (hasAnyKey(sns, ['twitter', 'facebook', 'github', 'website'])) {
+      const { twitter, facebook, github, website } = sns
+
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.LEFT)
-      const { twitter, facebook, github, website } = sns
       if (twitter) {
         await SPrinter.printText(`Twitter: ${twitter}\n`)
       }
@@ -113,16 +115,18 @@ async function printProfile({
     }
 
     // QRコード
-    if (hasAnyObject(qr)) {
+    if (hasAnyKey(qr, ['url'])) {
+      const { description: desc, url } = qr
+
       await SPrinter.setAlign(Constants.Align.CENTER)
       await SPrinter.printText(SEPARATOR)
       await SPrinter.setAlign(Constants.Align.CENTER)
-      if (qr.description) {
-        await SPrinter.printText(`${qr.description}\n`)
+      if (desc) {
+        await SPrinter.printText(`${desc}\n`)
         await SPrinter.printEmptyLines(1)
       }
-      if (qr.url) {
-        await SPrinter.printQRCode(qr.url, 8, 1)
+      if (url) {
+        await SPrinter.printQRCode(url, 8, 1)
       }
       await SPrinter.printEmptyLines(1)
     }
