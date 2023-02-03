@@ -5,7 +5,17 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "master"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "[skip ci] "
     schedule:
       interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule: 
+      interval: "monthly"
+    commit-message:
+      prefix: "[skip ci] "
