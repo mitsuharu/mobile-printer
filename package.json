@@ -21,7 +21,7 @@
     "@makgabri/react-native-sunmi-printer": "^0.1.1",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-navigation/native": "^6.0.13",
-    "@react-navigation/native-stack": "^6.9.1",
+    "@react-navigation/native-stack": "^6.9.9",
     "@reduxjs/toolkit": "^1.8.6",
     "dayjs": "^1.11.5",
     "patch-package": "^6.4.7",
