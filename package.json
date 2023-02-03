@@ -23,7 +23,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "@reduxjs/toolkit": "^1.8.6",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.7",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
     "react": "18.1.0",
