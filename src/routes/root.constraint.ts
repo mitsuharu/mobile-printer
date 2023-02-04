@@ -4,4 +4,4 @@ export const RootName = {
 } as const
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type RootName = typeof RootName[keyof typeof RootName]
+export type RootName = (typeof RootName)[keyof typeof RootName]
