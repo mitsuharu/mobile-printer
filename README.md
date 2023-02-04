@@ -22,7 +22,7 @@
 
 ### frameworks
 
-- React Native 0.70.x
+- React Native 0.71.2
 
 ### architectures
 
