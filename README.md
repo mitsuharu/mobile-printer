@@ -24,7 +24,6 @@
 
 - React Native 0.70.x
 
-
 ### architectures
 
 - Redux Saga
@@ -49,7 +48,6 @@ cd ./android
   - UI は鮮麗されていません
 - 画像は端末内のライブラリから選択可能です
   - 事前に白黒加工をするのがおすすめです
--  PR 歓迎
  
 ## TODO
 
