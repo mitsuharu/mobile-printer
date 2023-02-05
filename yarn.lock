@@ -6818,7 +6818,7 @@ redux-saga-test-plan@^4.0.6:
     lodash.isequal "^4.5.0"
     lodash.ismatch "^4.4.0"
 
-redux-saga@^1.0.0, redux-saga@^1.2.1:
+redux-saga@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.2.2.tgz#4b9b30e022cf94ed1450605e9afd45998c3e8ac1"
   integrity sha512-6xAHWgOqRP75MFuLq88waKK9/+6dCdMQjii2TohDMARVHeQ6HZrZoJ9HZ3dLqMWCZ9kj4iuS6CDsujgnovn11A==
@@ -7694,7 +7694,7 @@ tsconfig-paths@^3.14.1:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^1.7.1, tslib@^1.8.1:
+tslib@^1.8.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
@@ -7753,25 +7753,6 @@ typescript-compare@^0.0.2:
   integrity sha512-8ja4j7pMHkfLJQO2/8tut7ub+J3Lw2S3061eJLFQcvs3tsmJKp8KG5NtpLn7KcY2w08edF74BSVN7qJS0U6oHA==
   dependencies:
     typescript-logic "^0.0.0"
-
-typescript-fsa-reducers@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/typescript-fsa-reducers/-/typescript-fsa-reducers-1.2.2.tgz#1e2c8e8a50ca3e09e0d6fdf2a3b42bdd17de8094"
-  integrity sha512-IQ2VsIqUvmzVgWNDjxkeOxX97itl/rq+2u82jGsRdzCSFi9OtV4qf1Ec1urvj/eDlPHOaihIL7wMZzLYx9GvFg==
-
-typescript-fsa-redux-saga@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/typescript-fsa-redux-saga/-/typescript-fsa-redux-saga-2.0.0.tgz#64f0296958bd55a3a212bb6c683131a006d2a568"
-  integrity sha512-HHvCQNUBPlwawRBfmZ/v4fTm3fPM1Q+rc16Fik84D4QT3tpjsxnFWG4V/s2QGuKDJwjMzaHyySz6cBG9P0A+kw==
-  dependencies:
-    redux-saga "^1.0.0"
-    tslib "^1.7.1"
-    typescript-fsa "^3.0.0"
-
-typescript-fsa@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/typescript-fsa/-/typescript-fsa-3.0.0.tgz#3ad1cb915a67338e013fc21f67c9b3e0e110c912"
-  integrity sha512-xiXAib35i0QHl/+wMobzPibjAH5TJLDj+qGq5jwVLG9qR4FUswZURBw2qihBm0m06tHoyb3FzpnJs1GRhRwVag==
 
 typescript-logic@^0.0.0:
   version "0.0.0"
