@@ -5,7 +5,7 @@ import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
 import { Profile, SEPARATOR } from './utils'
-import { hasAnyKey } from '@/utils/object'
+import { hasAnyKeyValue } from '@/utils/object'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -79,7 +79,7 @@ async function printProfile({
     }
 
     // 肩書き
-    if (hasAnyKey(title, ['position', 'company', 'address'])) {
+    if (hasAnyKeyValue(title, ['position', 'company', 'address'])) {
       const { position, company, address } = title
 
       await SPrinter.printText(SEPARATOR)
@@ -95,7 +95,7 @@ async function printProfile({
     }
 
     // SNS情報
-    if (hasAnyKey(sns, ['twitter', 'facebook', 'github', 'website'])) {
+    if (hasAnyKeyValue(sns, ['twitter', 'facebook', 'github', 'website'])) {
       const { twitter, facebook, github, website } = sns
 
       await SPrinter.printText(SEPARATOR)
@@ -115,7 +115,7 @@ async function printProfile({
     }
 
     // QRコード
-    if (hasAnyKey(qr, ['url'])) {
+    if (hasAnyKeyValue(qr, ['url'])) {
       const { description: desc, url } = qr
 
       await SPrinter.setAlign(Constants.Align.CENTER)

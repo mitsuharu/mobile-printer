@@ -15,15 +15,12 @@ export const hasAnyObject = <T>(
   return false
 }
 
-export const hasAnyKey = <T>(
+export const hasAnyKeyValue = <T>(
   obj: T | null | undefined,
   keys: (keyof T)[],
 ): obj is NonNullable<T> => {
   if (obj && typeof obj === 'object') {
-    const objKeys = Object.keys(obj)
-    return !!keys.find((key) =>
-      typeof key === 'string' ? objKeys.includes(key) : false,
-    )
+    return !!keys.find((key) => (typeof key === 'string' ? !!obj[key] : false))
   }
   return false
 }
