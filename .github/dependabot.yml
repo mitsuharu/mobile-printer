@@ -7,7 +7,7 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
-    target-branch: "master"
+    target-branch: "develop"
     open-pull-requests-limit: 10
     commit-message:
       prefix: "[skip ci] "
@@ -15,6 +15,7 @@ updates:
       interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "develop"
     schedule: 
       interval: "monthly"
     commit-message:
