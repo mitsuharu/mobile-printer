@@ -43,10 +43,7 @@
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.2.1",
     "reselect": "^4.1.7",
-    "ts-pattern": "^4.0.5",
-    "typescript-fsa": "^3.0.0",
-    "typescript-fsa-reducers": "^1.2.2",
-    "typescript-fsa-redux-saga": "^2.0.0"
+    "ts-pattern": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
