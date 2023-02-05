@@ -1,4 +1,4 @@
-import { isEmpty, hasAnyObject, hasAnyKey } from '../object'
+import { isEmpty, hasAnyObject, hasAnyKeyValue } from '../object'
 
 describe('isEmpty', () => {
   beforeEach(async () => {})
@@ -26,11 +26,12 @@ describe('hasAnyObject', () => {
   })
 })
 
-describe('hasAnyKey', () => {
+describe('hasAnyKeyValue', () => {
   beforeEach(async () => {})
 
   it.each<[input: any | null | undefined, expected: boolean]>([
     [{}, false],
+    [{ key0: undefined }, false],
     [{ key99: 1 }, false],
     [null, false],
     [undefined, false],
@@ -39,7 +40,7 @@ describe('hasAnyKey', () => {
     [{ key2: 1 }, true],
     [{ key0: 1, key1: 1 }, true],
     [{ key0: 1, key99: 1 }, true],
-  ])('if input is %s then hasAnyKey returns %s', (input, expected) => {
-    expect(hasAnyKey(input, ['key0', 'key1', 'key2'])).toEqual(expected)
+  ])('if input is %s then hasAnyKeyValue returns %s', (input, expected) => {
+    expect(hasAnyKeyValue(input, ['key0', 'key1', 'key2'])).toEqual(expected)
   })
 })
