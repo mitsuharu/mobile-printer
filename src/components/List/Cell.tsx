@@ -13,7 +13,6 @@ import { contentInset } from '@/components/List/util'
 import { COLOR } from '@/CONSTANTS/COLOR'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Size } from '@/utils/types'
-import { match } from 'ts-pattern'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 
@@ -50,21 +49,26 @@ const AccessoryView: React.FC<AccessoryProps> = ({
   accessoryStyle,
   switchValue,
   onSwitchValueChange,
-}) =>
-  match(accessory)
-    .with('disclosure', () => (
-      <Icon name="right" size={16} style={accessoryStyle} />
-    ))
-    .with('check', () => <Icon name="check" size={16} style={accessoryStyle} />)
-    .with('link', () => <Icon name="link" size={16} style={accessoryStyle} />)
-    .with('switch', () => (
-      <Switch
-        ios_backgroundColor="#3e3e3e"
-        value={switchValue}
-        onValueChange={onSwitchValueChange}
-      />
-    ))
-    .otherwise(() => null)
+}) => {
+  switch (accessory) {
+    case 'disclosure':
+      return <Icon name="right" size={16} style={accessoryStyle} />
+    case 'check':
+      return <Icon name="check" size={16} style={accessoryStyle} />
+    case 'link':
+      return <Icon name="link" size={16} style={accessoryStyle} />
+    case 'switch':
+      return (
+        <Switch
+          ios_backgroundColor="#3e3e3e"
+          value={switchValue}
+          onValueChange={onSwitchValueChange}
+        />
+      )
+    default:
+      return null
+  }
+}
 
 const Component: React.FC<Props> = ({
   title,
