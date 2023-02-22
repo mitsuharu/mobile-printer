@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import {
   StyleProp,
+  StyleSheet,
   Switch,
   Text,
   TextStyle,
@@ -122,49 +123,49 @@ const Component: React.FC<Props> = ({
 
 export { Component as Cell }
 
-const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
-  container: styleType<ViewStyle>({
-    minHeight: Math.max(
-      44,
-      AccessorySize.height + contentInset.top + contentInset.bottom,
-    ),
-    backgroundColor: COLOR(colorScheme).BACKGROUND.PRIMARY,
-    justifyContent: 'center',
-  }),
-  row: styleType<ViewStyle>({
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    paddingTop: contentInset.top,
-    paddingBottom: contentInset.bottom,
-    paddingLeft: contentInset.left,
-    paddingRight: contentInset.right,
-  }),
-  innerColumn: styleType<ViewStyle>({
-    flex: 1,
-    flexDirection: 'column',
-  }),
-  innerRow: styleType<ViewStyle>({
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  }),
-  accessory: styleType<ViewStyle>({
-    right: 0,
-  }),
-  accessoryStyle: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.SECONDARY,
-  }),
-  text: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.PRIMARY,
-    fontSize: 15,
-    lineHeight: 22,
-  }),
-  subtitle: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.SECONDARY,
-    fontSize: 13,
-    lineHeight: 19,
-    paddingRight: 6,
-  }),
-}))
+const useStyles = makeStyles(useColorScheme, (colorScheme) => {
+  const styles = StyleSheet.create({
+    container: styleType<ViewStyle>({
+      minHeight: Math.max(
+        44,
+        AccessorySize.height + contentInset.top + contentInset.bottom,
+      ),
+      backgroundColor: COLOR(colorScheme).BACKGROUND.PRIMARY,
+      justifyContent: 'center',
+    }),
+    row: styleType<ViewStyle>({
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+      paddingTop: contentInset.top,
+      paddingBottom: contentInset.bottom,
+      paddingLeft: contentInset.left,
+      paddingRight: contentInset.right,
+    }),
+    innerColumn: styleType<ViewStyle>({
+      flex: 1,
+      flexDirection: 'column',
+    }),
+    innerRow: styleType<ViewStyle>({
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }),
+    accessoryStyle: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    text: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.PRIMARY,
+      fontSize: 15,
+      lineHeight: 22,
+    }),
+    subtitle: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+      fontSize: 13,
+      lineHeight: 19,
+      paddingRight: 6,
+    }),
+  })
+  return styles
+})

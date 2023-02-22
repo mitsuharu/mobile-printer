@@ -28,22 +28,25 @@ export const SectionSeparator: React.FC<Props> = memo((props) => (
   <Component {...props} hasPaddingLeft={false} />
 ))
 
-const useStyles = makeStyles(() => ({
-  separator: styleType<ViewStyle>({
-    width: '100%',
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: 'transparent',
-  }),
-  hasPaddingLeft: styleType<ViewStyle>({
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: 'rgb(224, 224, 224)',
-    marginLeft: borderInset.left,
-    marginRight: 0,
-  }),
-  hasNoPaddingLeft: styleType<ViewStyle>({
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: 'rgb(224, 224, 224)',
-    marginLeft: 0,
-    marginRight: 0,
-  }),
-}))
+const useStyles = makeStyles(() => {
+  const styles = StyleSheet.create({
+    separator: styleType<ViewStyle>({
+      width: '100%',
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: 'transparent',
+    }),
+    hasPaddingLeft: styleType<ViewStyle>({
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: 'rgb(224, 224, 224)',
+      marginLeft: borderInset.left,
+      marginRight: 0,
+    }),
+    hasNoPaddingLeft: styleType<ViewStyle>({
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: 'rgb(224, 224, 224)',
+      marginLeft: 0,
+      marginRight: 0,
+    }),
+  })
+  return styles
+})
