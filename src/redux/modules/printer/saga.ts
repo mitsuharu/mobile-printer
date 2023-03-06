@@ -4,7 +4,7 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SPrinter, Constants } from '@makgabri/react-native-sunmi-printer'
 import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
-import { Profile, SEPARATOR } from './utils'
+import { FONTSIZE, Profile, SEPARATOR } from './utils'
 import { hasAnyKeyValue } from '@/utils/object'
 
 export function* printerSaga() {
@@ -21,8 +21,16 @@ export function* printerSaga() {
 function* printInitSaga() {
   console.log(`printInitSaga`)
   try {
-    yield call(SPrinter.connect)
-    yield call(SPrinter.disconnect)
+    const { success }: { success: boolean } = yield call(SPrinter.connect)
+    if (success) {
+      yield call(SPrinter.disconnect)
+    } else {
+      yield put(
+        enqueueSnackbar({
+          message: `プリンターの接続に失敗しました`,
+        }),
+      )
+    }
   } catch (e: any) {
     console.warn('printInitSaga', e)
     yield put(
@@ -57,10 +65,17 @@ async function printProfile({
 }: Profile) {
   try {
     await SPrinter.connect()
+    await SPrinter.setFontSize(FONTSIZE.DEFAULT)
+    await SPrinter.setAlign(Constants.Align.CENTER)
+
     await SPrinter.printEmptyLines(1)
 
-    await SPrinter.setAlign(Constants.Align.CENTER)
-    await SPrinter.printTextCustom(`${name}\n`, 32, true, false, 'gh')
+    // name
+    await SPrinter.setFontSize(FONTSIZE.LARGE)
+    await SPrinter.printText(`${name}\n`)
+    await SPrinter.setFontSize(FONTSIZE.DEFAULT)
+    // FIXME: typeface の指定のやり方が分からない（V2sで失敗する）
+    // await SPrinter.printTextCustom(`${name}\n`, 32, true, false, 'serif')
 
     if (alias) {
       await SPrinter.printText(`${alias}\n`)
