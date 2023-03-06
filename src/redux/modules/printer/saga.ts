@@ -7,6 +7,7 @@ import { FONT_SIZE, Profile, SEPARATOR } from './utils'
 import { hasAnyKeyValue } from '@/utils/object'
 import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
 import { BASE64 } from '@/utils/CONSTANTS'
+import { isEmulator } from 'react-native-device-info'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -21,6 +22,16 @@ export function* printerSaga() {
 
 function* printInitSaga() {
   try {
+    const isSimulator: boolean = yield call(isEmulator)
+    if (isSimulator) {
+      yield put(
+        enqueueSnackbar({
+          message: `シミュレーターなので印刷できません`,
+        }),
+      )
+      return
+    }
+
     yield call(SunmiPrinter.printerInit)
   } catch (e: any) {
     console.warn('printInitSaga', e)
