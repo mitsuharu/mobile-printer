@@ -14,16 +14,17 @@ import {
   ImagePickerResponse,
   launchImageLibrary,
 } from 'react-native-image-picker'
+import { BASE64 } from '@/utils/CONSTANTS'
 
 /**
  * 保存される画像の大きさ
  */
-const SAVED_IMAGE_SIZE = 200
+const SAVED_IMAGE_SIZE = BASE64.SIZE
 
 /**
  * 表示される画像の大きさ
  */
-const STYLE_IMAGE_SIZE = 200
+const STYLE_IMAGE_SIZE = BASE64.SIZE
 
 type Props = {
   base64?: string
@@ -38,7 +39,7 @@ type ComponentProps = Props & {
 const makeBase64ImageSource = (
   base64: string | undefined,
 ): ImageSourcePropType | undefined =>
-  base64 ? { uri: `data:image/png;base64,${base64}` } : undefined
+  base64 ? { uri: `${BASE64.PREFIX}${base64}` } : undefined
 
 const Component: React.FC<ComponentProps> = ({ style, source, onPress }) => {
   return (

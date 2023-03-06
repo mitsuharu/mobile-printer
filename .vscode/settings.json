@@ -9,10 +9,11 @@
       "source.fixAll.eslint": true,
     },
     "cSpell.words": [
+      "heasy",
       "persistor",
       "pressable",
       "reduxjs",
-      "sunmi",
+      "sunmi"
     ],
   }
   
