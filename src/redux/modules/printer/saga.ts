@@ -7,7 +7,7 @@ import { FONT_SIZE, Profile, SEPARATOR } from './utils'
 import { hasAnyKeyValue } from '@/utils/object'
 import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
 import { BASE64 } from '@/utils/CONSTANTS'
-import { isEmulator } from 'react-native-device-info'
+import { isEmulator, getBrand } from 'react-native-device-info'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -27,6 +27,16 @@ function* printInitSaga() {
       yield put(
         enqueueSnackbar({
           message: `シミュレーターなので印刷できません`,
+        }),
+      )
+      return
+    }
+
+    const brand: string = yield call(getBrand)
+    if (!brand.toLocaleLowerCase().includes('sunmi')) {
+      yield put(
+        enqueueSnackbar({
+          message: `SUNMI端末を使用してください`,
         }),
       )
       return
