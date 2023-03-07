@@ -9,6 +9,7 @@ import {
   StyleProp,
   useColorScheme,
   ReturnKeyTypeOptions,
+  StyleSheet,
 } from 'react-native'
 import {
   Controller,
@@ -105,26 +106,26 @@ export const TextInputController: React.FC<Props> = ({
   )
 }
 
-const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
-  scrollView: styleType<ViewStyle>({
-    flex: 1,
-  }),
-  formTitle: styleType<TextStyle>({
-    lineHeight: 19,
-    fontSize: 13,
-    color: COLOR(colorScheme).TEXT.SECONDARY,
-  }),
-  inputView: styleType<ViewStyle>({
-    width: '100%',
-    height: 40,
-  }),
-  errorView: styleType<ViewStyle>({
-    backgroundColor: 'transparent',
-    height: 36,
-  }),
-  errorMessage: styleType<TextStyle>({
-    fontSize: 10,
-    lineHeight: 15,
-    color: 'red',
-  }),
-}))
+const useStyles = makeStyles(useColorScheme, (colorScheme) => {
+  const styles = StyleSheet.create({
+    formTitle: styleType<TextStyle>({
+      lineHeight: 19,
+      fontSize: 13,
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    inputView: styleType<ViewStyle>({
+      width: '100%',
+      height: 40,
+    }),
+    errorView: styleType<ViewStyle>({
+      backgroundColor: 'transparent',
+      height: 36,
+    }),
+    errorMessage: styleType<TextStyle>({
+      fontSize: 10,
+      lineHeight: 15,
+      color: 'red',
+    }),
+  })
+  return styles
+})

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator, View, ViewStyle } from 'react-native'
+import { ActivityIndicator, StyleSheet, View, ViewStyle } from 'react-native'
 import { styleType } from '@/utils/styles'
 import { makeStyles } from 'react-native-swag-styles'
 
@@ -24,13 +24,16 @@ const Container: React.FC<Props> = (props) => {
 
 export { Container as LoadingSpinner }
 
-const useStyles = makeStyles(() => ({
-  container: styleType<ViewStyle>({
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }),
-}))
+const useStyles = makeStyles(() => {
+  const styles = StyleSheet.create({
+    container: styleType<ViewStyle>({
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }),
+  })
+  return styles
+})

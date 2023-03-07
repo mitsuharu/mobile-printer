@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  View,
-  ViewStyle,
-  TextStyle,
-  StyleProp,
-  useColorScheme,
-} from 'react-native'
+import { View, ViewStyle, TextStyle, StyleProp, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { Button } from '@/components/Button'
@@ -68,32 +62,34 @@ const Container: React.FC<Props> = (props) => {
 
 export { Container as SubmitView }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const useStyles = makeStyles(useColorScheme, (_colorScheme) => ({
-  container: styleType<ViewStyle>({
-    flexDirection: 'row',
-    padding: 16,
-  }),
-  button: styleType<ViewStyle>({
-    flex: 1,
-    height: 40,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: 'gray',
-    borderRadius: 8,
-    borderWidth: 1,
-  }),
-  deleteButton: styleType<ViewStyle>({
-    backgroundColor: 'red',
-  }),
-  buttonText: styleType<TextStyle>({
-    fontSize: 20,
-  }),
-  saveButtonText: styleType<TextStyle>({
-    color: 'black',
-  }),
-  deleteButtonText: styleType<TextStyle>({
-    color: 'white',
-  }),
-}))
+const useStyles = makeStyles(() => {
+  const styles = StyleSheet.create({
+    container: styleType<ViewStyle>({
+      flexDirection: 'row',
+      padding: 16,
+    }),
+    button: styleType<ViewStyle>({
+      flex: 1,
+      height: 40,
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: 'gray',
+      borderRadius: 8,
+      borderWidth: 1,
+    }),
+    deleteButton: styleType<ViewStyle>({
+      backgroundColor: 'red',
+    }),
+    buttonText: styleType<TextStyle>({
+      fontSize: 20,
+    }),
+    saveButtonText: styleType<TextStyle>({
+      color: 'black',
+    }),
+    deleteButtonText: styleType<TextStyle>({
+      color: 'white',
+    }),
+  })
+  return styles
+})

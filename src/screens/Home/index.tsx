@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react'
-import { ViewStyle, ScrollView } from 'react-native'
+import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -114,8 +114,11 @@ const Container: React.FC<Props> = (props) => {
 
 export { Container as Home }
 
-const useStyles = makeStyles(() => ({
-  scrollView: styleType<ViewStyle>({
-    flex: 1,
-  }),
-}))
+const useStyles = makeStyles(() => {
+  const styles = StyleSheet.create({
+    scrollView: styleType<ViewStyle>({
+      flex: 1,
+    }),
+  })
+  return styles
+})

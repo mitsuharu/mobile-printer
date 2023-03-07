@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import {
   StyleProp,
+  StyleSheet,
   Switch,
   Text,
   TextStyle,
@@ -13,7 +14,6 @@ import { contentInset } from '@/components/List/util'
 import { COLOR } from '@/CONSTANTS/COLOR'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Size } from '@/utils/types'
-import { match } from 'ts-pattern'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 
@@ -50,21 +50,26 @@ const AccessoryView: React.FC<AccessoryProps> = ({
   accessoryStyle,
   switchValue,
   onSwitchValueChange,
-}) =>
-  match(accessory)
-    .with('disclosure', () => (
-      <Icon name="right" size={16} style={accessoryStyle} />
-    ))
-    .with('check', () => <Icon name="check" size={16} style={accessoryStyle} />)
-    .with('link', () => <Icon name="link" size={16} style={accessoryStyle} />)
-    .with('switch', () => (
-      <Switch
-        ios_backgroundColor="#3e3e3e"
-        value={switchValue}
-        onValueChange={onSwitchValueChange}
-      />
-    ))
-    .otherwise(() => null)
+}) => {
+  switch (accessory) {
+    case 'disclosure':
+      return <Icon name="right" size={16} style={accessoryStyle} />
+    case 'check':
+      return <Icon name="check" size={16} style={accessoryStyle} />
+    case 'link':
+      return <Icon name="link" size={16} style={accessoryStyle} />
+    case 'switch':
+      return (
+        <Switch
+          ios_backgroundColor="#3e3e3e"
+          value={switchValue}
+          onValueChange={onSwitchValueChange}
+        />
+      )
+    default:
+      return null
+  }
+}
 
 const Component: React.FC<Props> = ({
   title,
@@ -118,49 +123,49 @@ const Component: React.FC<Props> = ({
 
 export { Component as Cell }
 
-const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
-  container: styleType<ViewStyle>({
-    minHeight: Math.max(
-      44,
-      AccessorySize.height + contentInset.top + contentInset.bottom,
-    ),
-    backgroundColor: COLOR(colorScheme).BACKGROUND.PRIMARY,
-    justifyContent: 'center',
-  }),
-  row: styleType<ViewStyle>({
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    paddingTop: contentInset.top,
-    paddingBottom: contentInset.bottom,
-    paddingLeft: contentInset.left,
-    paddingRight: contentInset.right,
-  }),
-  innerColumn: styleType<ViewStyle>({
-    flex: 1,
-    flexDirection: 'column',
-  }),
-  innerRow: styleType<ViewStyle>({
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  }),
-  accessory: styleType<ViewStyle>({
-    right: 0,
-  }),
-  accessoryStyle: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.SECONDARY,
-  }),
-  text: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.PRIMARY,
-    fontSize: 15,
-    lineHeight: 22,
-  }),
-  subtitle: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.SECONDARY,
-    fontSize: 13,
-    lineHeight: 19,
-    paddingRight: 6,
-  }),
-}))
+const useStyles = makeStyles(useColorScheme, (colorScheme) => {
+  const styles = StyleSheet.create({
+    container: styleType<ViewStyle>({
+      minHeight: Math.max(
+        44,
+        AccessorySize.height + contentInset.top + contentInset.bottom,
+      ),
+      backgroundColor: COLOR(colorScheme).BACKGROUND.PRIMARY,
+      justifyContent: 'center',
+    }),
+    row: styleType<ViewStyle>({
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+      paddingTop: contentInset.top,
+      paddingBottom: contentInset.bottom,
+      paddingLeft: contentInset.left,
+      paddingRight: contentInset.right,
+    }),
+    innerColumn: styleType<ViewStyle>({
+      flex: 1,
+      flexDirection: 'column',
+    }),
+    innerRow: styleType<ViewStyle>({
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }),
+    accessoryStyle: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    text: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.PRIMARY,
+      fontSize: 15,
+      lineHeight: 22,
+    }),
+    subtitle: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+      fontSize: 13,
+      lineHeight: 19,
+      paddingRight: 6,
+    }),
+  })
+  return styles
+})

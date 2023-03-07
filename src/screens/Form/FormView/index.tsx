@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleProp,
   ScrollView,
+  StyleSheet,
 } from 'react-native'
 import { useForm, ErrorOption } from 'react-hook-form'
 import { Submission } from '@/redux/modules/printer/utils'
@@ -298,17 +299,17 @@ export const FormView: React.FC<Props> = ({
   )
 }
 
-const useStyles = makeStyles(() => ({
-  scrollView: styleType<ViewStyle>({
-    flex: 1,
-  }),
-  contentContainer: styleType<ViewStyle>({
-    padding: 16,
-  }),
-  base64ImageView: styleType<ViewStyle>({
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 8,
-  }),
-}))
+const useStyles = makeStyles(() => {
+  const styles = StyleSheet.create({
+    contentContainer: styleType<ViewStyle>({
+      padding: 16,
+    }),
+    base64ImageView: styleType<ViewStyle>({
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical: 8,
+    }),
+  })
+  return styles
+})

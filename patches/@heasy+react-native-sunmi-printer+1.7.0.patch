@@ -1,0 +1,34 @@
+diff --git a/node_modules/@heasy/react-native-sunmi-printer/android/build.gradle b/node_modules/@heasy/react-native-sunmi-printer/android/build.gradle
+index 2dee92e..e9e2193 100644
+--- a/node_modules/@heasy/react-native-sunmi-printer/android/build.gradle
++++ b/node_modules/@heasy/react-native-sunmi-printer/android/build.gradle
+@@ -13,16 +13,16 @@ buildscript {
+ 
+ apply plugin: 'com.android.library'
+ 
+-def safeExtGet(prop, fallback) {
+-  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
++def getExtOrIntegerDefault(name) {
++  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['SunmiPrinter_' + name]).toInteger()
+ }
+ 
+ android {
+-  compileSdkVersion safeExtGet('SunmiPrinter_compileSdkVersion', 29)
+-  buildToolsVersion safeExtGet('SunmiPrinter_buildToolsVersion', '29.0.2')
++  compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
++  buildToolsVersion getExtOrIntegerDefault('buildToolsVersion')
+   defaultConfig {
+-    minSdkVersion safeExtGet('SunmiPrinter_minSdkVersion', 19)
+-    targetSdkVersion safeExtGet('SunmiPrinter_targetSdkVersion', 29)
++    minSdkVersion getExtOrIntegerDefault('minSdkVersion')
++    targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
+     versionCode 1
+     versionName "1.0"
+ 
+@@ -55,5 +55,5 @@ repositories {
+ dependencies {
+   //noinspection GradleDynamicVersion
+   implementation "com.facebook.react:react-native:+"  // From node_modules
+-  implementation "com.sunmi:printerlibrary:1.0.13"
++  implementation "com.sunmi:printerlibrary:1.0.20"
+ }

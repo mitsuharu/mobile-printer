@@ -5,6 +5,7 @@ import {
   TextStyle,
   TextInput,
   useColorScheme,
+  StyleSheet,
 } from 'react-native'
 import { COLOR } from '@/CONSTANTS/COLOR'
 import { makeStyles } from 'react-native-swag-styles'
@@ -66,32 +67,37 @@ export const MyTextInput = forwardRef<TextInput, Props>((props, ref) => (
   <Component {...props} forwardedRef={ref} />
 ))
 
-const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
-  container: styleType<ViewStyle>({
-    flexDirection: 'row',
-    borderColor: COLOR(colorScheme).CLEAR,
-    borderBottomWidth: 1,
-    opacity: 1.0,
-  }),
-  textInput: styleType<TextStyle>({
-    flex: 1,
-    color: COLOR(colorScheme).TEXT.PRIMARY,
-    backgroundColor: COLOR(colorScheme).BACKGROUND.PRIMARY,
-    fontSize: 13,
-    lineHeight: 19,
-    height: 40,
-    justifyContent: 'center',
-    borderColor: COLOR(colorScheme).TEXT.SECONDARY,
-    borderWidth: 1,
-    borderRadius: 8,
-  }),
-  textSelection: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.PRIMARY,
-  }),
-  textPlaceholder: styleType<TextStyle>({
-    color: COLOR(colorScheme).TEXT.SECONDARY,
-  }),
-  disable: styleType<ViewStyle>({
-    opacity: 0.7,
-  }),
-}))
+const useStyles = makeStyles(useColorScheme, (colorScheme) => {
+  const styles = StyleSheet.create({
+    container: styleType<ViewStyle>({
+      flexDirection: 'row',
+      borderColor: COLOR(colorScheme).CLEAR,
+      borderBottomWidth: 1,
+      opacity: 1.0,
+    }),
+    textInput: styleType<TextStyle>({
+      flex: 1,
+      color: COLOR(colorScheme).TEXT.PRIMARY,
+      backgroundColor: COLOR(colorScheme).BACKGROUND.PRIMARY,
+      fontSize: 13,
+      lineHeight: 19,
+      height: 40,
+      justifyContent: 'center',
+      borderColor: COLOR(colorScheme).TEXT.SECONDARY,
+      borderWidth: 1,
+      borderRadius: 8,
+    }),
+    // eslint-disable-next-line react-native/no-unused-styles
+    textSelection: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.PRIMARY,
+    }),
+    // eslint-disable-next-line react-native/no-unused-styles
+    textPlaceholder: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    disable: styleType<ViewStyle>({
+      opacity: 0.7,
+    }),
+  })
+  return styles
+})

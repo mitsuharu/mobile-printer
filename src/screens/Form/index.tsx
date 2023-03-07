@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect } from 'react'
-import { ViewStyle, useColorScheme } from 'react-native'
+import { ViewStyle, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch } from 'react-redux'
@@ -7,7 +7,6 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { Submission } from '@/redux/modules/printer/utils'
 import { MainParams } from '@/routes/main.params'
 import { FormView, OnSubmit } from './FormView'
-import { COLOR } from '@/CONSTANTS/COLOR'
 import { deleteSubmission, saveSubmission } from '@/redux/modules/printer/slice'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AlertAsync from 'react-native-alert-async'
@@ -88,15 +87,14 @@ const Container: React.FC<Props> = (props) => {
 
 export { Container as Form }
 
-const useStyles = makeStyles(useColorScheme, (colorScheme) => ({
-  safeAreaView: styleType<ViewStyle>({
-    flex: 1,
-  }),
-  scrollView: styleType<ViewStyle>({
-    flex: 1,
-    borderColor: COLOR(colorScheme).BACKGROUND.SECONDARY,
-  }),
-  formView: styleType<ViewStyle>({
-    flex: 1,
-  }),
-}))
+const useStyles = makeStyles(() => {
+  const styles = StyleSheet.create({
+    safeAreaView: styleType<ViewStyle>({
+      flex: 1,
+    }),
+    formView: styleType<ViewStyle>({
+      flex: 1,
+    }),
+  })
+  return styles
+})
