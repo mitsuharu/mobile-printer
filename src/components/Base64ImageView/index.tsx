@@ -10,21 +10,12 @@ import {
   Pressable,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import {
-  ImagePickerResponse,
-  launchImageLibrary,
-} from 'react-native-image-picker'
 import { BASE64 } from '@/utils/CONSTANTS'
-
-/**
- * 保存される画像の大きさ
- */
-const SAVED_IMAGE_SIZE = BASE64.SIZE
-
-/**
- * 表示される画像の大きさ
- */
-const STYLE_IMAGE_SIZE = BASE64.SIZE
+import MultipleImagePicker, {
+  MediaType,
+} from '@baronha/react-native-multiple-image-picker'
+import ImageResizer from '@bam.tech/react-native-image-resizer'
+import { readFile } from 'react-native-fs'
 
 type Props = {
   base64?: string
@@ -54,7 +45,7 @@ const Component: React.FC<ComponentProps> = ({ style, source, onPress }) => {
       {source ? (
         <Image source={source} resizeMode={'contain'} style={styles.image} />
       ) : (
-        <Icon name={'image-off-outline'} size={STYLE_IMAGE_SIZE} />
+        <Icon name={'image-off-outline'} size={BASE64.SIZE} />
       )}
     </Pressable>
   )
@@ -69,20 +60,26 @@ const Container: React.FC<Props> = (props) => {
 
   const onPress = useCallback(async () => {
     try {
-      const { assets }: ImagePickerResponse = await launchImageLibrary({
-        mediaType: 'photo',
-        includeBase64: true,
-        maxWidth: SAVED_IMAGE_SIZE,
-        maxHeight: SAVED_IMAGE_SIZE,
-        quality: 0.8,
+      const { path, width, height } = await MultipleImagePicker.openPicker({
+        mediaType: 'image' as MediaType,
+        usedCameraButton: false,
+        isPreview: false,
+        singleSelectedMode: true,
       })
-      if (assets && assets.length > 0) {
-        const [first] = assets
-        if (first.base64) {
-          onChange?.(first.base64)
-          setSource(makeBase64ImageSource(first.base64))
-        }
-      }
+
+      const { uri } = await ImageResizer.createResizedImage(
+        path,
+        BASE64.SIZE,
+        (BASE64.SIZE * height) / width,
+        'PNG',
+        80,
+        0,
+      )
+
+      const base64Data = await readFile(uri, { encoding: 'base64' })
+
+      onChange?.(base64Data)
+      setSource(makeBase64ImageSource(base64Data))
     } catch (e: any) {
       console.warn(e)
     }
@@ -95,13 +92,13 @@ export { Container as Base64ImageView }
 
 const styles = StyleSheet.create({
   container: styleType<ViewStyle>({
-    width: STYLE_IMAGE_SIZE,
-    height: STYLE_IMAGE_SIZE,
+    width: BASE64.SIZE,
+    height: BASE64.SIZE,
     opacity: 1.0,
   }),
   image: styleType<ImageStyle>({
-    width: STYLE_IMAGE_SIZE,
-    height: STYLE_IMAGE_SIZE,
+    width: BASE64.SIZE,
+    height: BASE64.SIZE,
   }),
   pressed: styleType<ViewStyle>({
     opacity: 0.7,
