@@ -81,7 +81,7 @@
     "jest-mock-extended": "^3.0.1",
     "metro-react-native-babel-preset": "0.75.0",
     "mockdate": "^3.0.5",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
     "react-test-renderer": "18.2.0",
     "redux-mock-store": "^1.5.4",
     "redux-saga-test-plan": "^4.0.6",
