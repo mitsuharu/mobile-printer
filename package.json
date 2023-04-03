@@ -78,7 +78,7 @@
     "jest-date-mock": "^1.0.8",
     "jest-fetch-mock": "^3.0.3",
     "jest-junit": "^15.0.0",
-    "jest-mock-extended": "^3.0.1",
+    "jest-mock-extended": "^3.0.4",
     "metro-react-native-babel-preset": "0.75.0",
     "mockdate": "^3.0.5",
     "prettier": "^2.8.3",
