@@ -130,13 +130,13 @@ async function printProfile({
       SunmiPrinter.printerText(SEPARATOR)
       SunmiPrinter.setAlignment(AlignValue.LEFT)
       if (twitter) {
-        SunmiPrinter.printerText(`Twitter: ${twitter}\n`)
+        SunmiPrinter.printerText(`X: ${twitter}\n`)
       }
       if (facebook) {
         SunmiPrinter.printerText(`Facebook: ${facebook}\n`)
       }
       if (github) {
-        SunmiPrinter.printerText(`Github: ${github}\n`)
+        SunmiPrinter.printerText(`GitHub: ${github}\n`)
       }
       if (website) {
         SunmiPrinter.printerText(`Website: ${website}\n`)
