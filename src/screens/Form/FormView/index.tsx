@@ -221,7 +221,7 @@ export const FormView: React.FC<Props> = ({
         <Spacer height={8} />
 
         <TextInputController
-          formTitle={'Twitterのアカウント'}
+          formTitle={'X(Twitter)のアカウント'}
           control={control}
           getValues={getValues}
           error={errors.profile?.sns?.twitter}
@@ -245,7 +245,7 @@ export const FormView: React.FC<Props> = ({
         <Spacer height={8} />
 
         <TextInputController
-          formTitle={'Githubのアカウント'}
+          formTitle={'GitHubのアカウント'}
           control={control}
           getValues={getValues}
           error={errors.profile?.sns?.github}
