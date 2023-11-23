@@ -39,7 +39,14 @@ yarn android
 
 ```shell
 cd ./android
+
+# apk
+# android/app/build/outputs/apk/release/app-release.apk
 ./gradlew assembleRelease
+
+# aab
+# android/app/build/outputs/bundle/release/app-release.aab
+./gradlew bundleRelease
 ```
 
 ## Features
