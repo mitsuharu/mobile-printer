@@ -44,7 +44,7 @@
     "react-redux": "^8.0.4",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "redux-saga": "^1.2.1",
+    "redux-saga": "^1.2.3",
     "reselect": "^4.1.7"
   },
   "devDependencies": {
