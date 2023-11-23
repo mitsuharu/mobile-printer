@@ -1,18 +1,14 @@
 module.exports = {
   root: true,
   extends: [
-    // see: https://github.com/facebook/react-native/tree/master/packages/eslint-config-react-native-community
-    '@react-native-community',
-
+    '@react-native',
     'airbnb-typescript',
     "plugin:@typescript-eslint/recommended",
-
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:import/react-native",
     "plugin:react-native/all",
-
     "prettier",
   ],
   plugins: [],
