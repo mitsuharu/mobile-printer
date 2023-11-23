@@ -1,7 +1,7 @@
-名刺レシート印刷アプリ for SUNMI V2 PRO
+名刺レシート印刷アプリ for SUNMI V2 PRO / V2s
 ==
 
-業務用端末 SUNMI V2 PRO を使用したレシート型名刺を印刷するアプリです。
+業務用端末 SUNMI V2 PRO / V2s を使用したレシート型名刺を印刷するアプリです。
 
 ## Demo
 
@@ -16,9 +16,9 @@
 
 ### requirements
 
-- GMSが有効な [SUNMI V2 PRO](https://www.sunmi.com/ja/v2-pro/) [^requirements-others]
+- GMSが有効な SUNMI V2 PRO または SUNMI V2s [^requirements-others]
 
-[^requirements-others]: V2 や V1s でも動作するようです
+[^requirements-others]: 作者未確認ですが V2 や V1s でも動作するようです
 
 ### frameworks
 
@@ -39,7 +39,14 @@ yarn android
 
 ```shell
 cd ./android
+
+# apk
+# android/app/build/outputs/apk/release/app-release.apk
 ./gradlew assembleRelease
+
+# aab
+# android/app/build/outputs/bundle/release/app-release.aab
+./gradlew bundleRelease
 ```
 
 ## Features
