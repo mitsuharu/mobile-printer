@@ -55,6 +55,16 @@ function* printInitSaga() {
 
 function* printSaga({ payload }: ReturnType<typeof print>) {
   try {
+    const hasPrinter: boolean = yield call(SunmiPrinter.hasPrinter)
+    if (!hasPrinter) {
+      yield put(
+        enqueueSnackbar({
+          message: `ご利用の端末にプリンターがありません。`,
+        }),
+      )
+      return
+    }
+
     yield call(printProfile, payload)
   } catch (e: any) {
     console.warn('printSaga', e)
