@@ -24,7 +24,7 @@
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
-    "@reduxjs/toolkit": "^1.8.6",
+    "@reduxjs/toolkit": "^1.9.7",
     "dayjs": "^1.11.5",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
@@ -45,7 +45,7 @@
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.2.3",
-    "reselect": "^4.1.7"
+    "reselect": "^4.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
