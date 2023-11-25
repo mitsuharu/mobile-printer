@@ -2597,7 +2597,7 @@
     semver "^7.5.4"
     ts-api-utils "^1.0.1"
 
-"@typescript-eslint/utils@6.12.0":
+"@typescript-eslint/utils@6.12.0", "@typescript-eslint/utils@^6.2.0":
   version "6.12.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-6.12.0.tgz#c6ce8c06fe9b0212620e5674a2036f6f8f611754"
   integrity sha512-LywPm8h3tGEbgfyjYnu3dauZ0U7R60m+miXgKcZS8c7QALO9uWJdvNoP+duKTk2XMWc7/Q3d/QiCuLN9X6SWyQ==
@@ -4073,6 +4073,14 @@ eslint-plugin-ft-flow@^2.0.1:
   dependencies:
     lodash "^4.17.21"
     string-natural-compare "^3.0.1"
+
+eslint-plugin-import-access@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import-access/-/eslint-plugin-import-access-2.1.2.tgz#24ddd61963ea42591f365981bc675b1a590341a7"
+  integrity sha512-pSkOemuqFUdn/AfPx2WpeVQmErRqXOH8utfbzfjk69F+F1Ax7seFXJP9u3T9D/Jk/a2s0Q0RRjgplKFq+4ybfg==
+  dependencies:
+    "@typescript-eslint/utils" "^6.2.0"
+    tsutils "^3.21.0"
 
 eslint-plugin-import@^2.29.0:
   version "2.29.0"

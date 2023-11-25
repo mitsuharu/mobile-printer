@@ -3,7 +3,7 @@ import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { print } from '@/redux/modules/printer/slice'
+import { printProfile } from '@/redux/modules/printer/slice'
 import { Cell, Section } from '@/components/List'
 import { useNavigation } from '@react-navigation/native'
 import { EditToggleButton } from '@/components/Button/EditToggleButton'
@@ -80,7 +80,7 @@ const Container: React.FC<Props> = (props) => {
   }, [navigation, isEditable, toggle])
 
   const onPressSample = useCallback(() => {
-    dispatch(print(sampleProfile))
+    dispatch(printProfile(sampleProfile))
   }, [dispatch])
 
   const onPressSubmission = useCallback(
@@ -88,7 +88,7 @@ const Container: React.FC<Props> = (props) => {
       if (isEditable) {
         navigation.navigate('Form', { submission: submission })
       } else {
-        dispatch(print(submission.profile))
+        dispatch(printProfile(submission.profile))
       }
     },
     [dispatch, isEditable, navigation],

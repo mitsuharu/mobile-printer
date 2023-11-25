@@ -1,59 +1,18 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects'
-import { print } from './slice'
+import { call, put } from 'redux-saga/effects'
+import { printProfile } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { Platform } from 'react-native'
 import { timeStamp } from '@/utils/day'
-import { FONT_SIZE, Profile, SEPARATOR } from './utils'
+import { FONT_SIZE, Profile, SEPARATOR } from '../utils'
 import { hasAnyKeyValue } from '@/utils/object'
 import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
 import { BASE64 } from '@/utils/CONSTANTS'
-import { isEmulator, getBrand } from 'react-native-device-info'
 
-export function* printerSaga() {
-  if (Platform.OS !== 'android') {
-    console.warn(`printerSaga, It supports only Android.`)
-    // Android のみ対応する
-    return
-  }
-
-  yield fork(printInitSaga)
-  yield takeEvery(print, printSaga)
-}
-
-function* printInitSaga() {
-  try {
-    const isSimulator: boolean = yield call(isEmulator)
-    if (isSimulator) {
-      yield put(
-        enqueueSnackbar({
-          message: `シミュレーターなので印刷できません`,
-        }),
-      )
-      return
-    }
-
-    const brand: string = yield call(getBrand)
-    if (!brand.toLocaleLowerCase().includes('sunmi')) {
-      yield put(
-        enqueueSnackbar({
-          message: `SUNMI端末を使用してください`,
-        }),
-      )
-      return
-    }
-
-    yield call(SunmiPrinter.printerInit)
-  } catch (e: any) {
-    console.warn('printInitSaga', e)
-    yield put(
-      enqueueSnackbar({
-        message: `プリンターの接続に失敗しました`,
-      }),
-    )
-  }
-}
-
-function* printSaga({ payload }: ReturnType<typeof print>) {
+/**
+ * @package
+ */
+export function* printProfileSaga({
+  payload,
+}: ReturnType<typeof printProfile>) {
   try {
     const hasPrinter: boolean = yield call(SunmiPrinter.hasPrinter)
     if (!hasPrinter) {
@@ -65,7 +24,7 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
       return
     }
 
-    yield call(printProfile, payload)
+    yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)
     yield put(
@@ -76,7 +35,7 @@ function* printSaga({ payload }: ReturnType<typeof print>) {
   }
 }
 
-async function printProfile({
+async function print({
   name,
   iconBase64,
   alias,
