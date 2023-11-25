@@ -3,7 +3,10 @@ import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { printProfile } from '@/redux/modules/printer/slice'
+import {
+  printImageFromImagePicker,
+  printProfile,
+} from '@/redux/modules/printer/slice'
 import { Cell, Section } from '@/components/List'
 import { useNavigation } from '@react-navigation/native'
 import { EditToggleButton } from '@/components/Button/EditToggleButton'
@@ -16,6 +19,7 @@ type ComponentProps = Props & {
   isEditable: boolean
   submissions: Submission[]
   onPressSample: () => void
+  onPressImageFromImagePicker: () => void
   onPressSubmission: (obj: Submission) => void
   onPressNewSubmission: () => void
 }
@@ -24,6 +28,7 @@ const Component: React.FC<ComponentProps> = ({
   isEditable,
   submissions,
   onPressSample,
+  onPressImageFromImagePicker,
   onPressSubmission,
   onPressNewSubmission,
 }) => {
@@ -31,8 +36,8 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <ScrollView style={styles.scrollView}>
-      <Section title="サンプルを印刷する">
-        <Cell title="サンプル" onPress={onPressSample} />
+      <Section title="汎用印刷">
+        <Cell title="画像を印刷する" onPress={onPressImageFromImagePicker} />
       </Section>
       <Section title="プロフィールを印刷する">
         {submissions.map((submission) => (
@@ -44,15 +49,16 @@ const Component: React.FC<ComponentProps> = ({
           />
         ))}
       </Section>
-      {isEditable ? (
-        <Section>
+      <Section>
+        <Cell title="サンプルプロフィールを印刷する" onPress={onPressSample} />
+        {isEditable ? (
           <Cell
-            title="追加する"
+            title="プロフィールを追加する"
             onPress={onPressNewSubmission}
             accessory={'disclosure'}
           />
-        </Section>
-      ) : null}
+        ) : null}
+      </Section>
     </ScrollView>
   )
 }
@@ -83,6 +89,10 @@ const Container: React.FC<Props> = (props) => {
     dispatch(printProfile(sampleProfile))
   }, [dispatch])
 
+  const onPressImageFromImagePicker = useCallback(() => {
+    dispatch(printImageFromImagePicker())
+  }, [dispatch])
+
   const onPressSubmission = useCallback(
     (submission: Submission) => {
       if (isEditable) {
@@ -105,6 +115,7 @@ const Container: React.FC<Props> = (props) => {
         isEditable,
         submissions,
         onPressSample,
+        onPressImageFromImagePicker,
         onPressSubmission,
         onPressNewSubmission,
       }}
