@@ -7,6 +7,7 @@ import {
   duplicateQRCode,
   printImageFromImagePicker,
   printProfile,
+  printProfileRandomly,
   printQRCode,
   printText,
 } from '@/redux/modules/printer/slice'
@@ -28,6 +29,7 @@ type ComponentProps = Props & {
   onPressQRCode: (text: string) => void
   onPressDuplicateQRCode: () => void
   onPressSubmission: (obj: Submission) => void
+  onPressPrintProfileRandomly: () => void
   onPressNewSubmission: () => void
 }
 
@@ -40,6 +42,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressQRCode,
   onPressDuplicateQRCode,
   onPressSubmission,
+  onPressPrintProfileRandomly,
   onPressNewSubmission,
 }) => {
   const styles = useStyles()
@@ -77,6 +80,10 @@ const Component: React.FC<ComponentProps> = ({
           title="サンプルのプロフィールを印刷する"
           onPress={onPressSample}
         />
+        <Cell
+          title="プロフィールをランダム印刷する"
+          onPress={onPressPrintProfileRandomly}
+        />
         {isEditable ? (
           <Cell
             title="プロフィールを追加する"
@@ -102,7 +109,7 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'モバイル印刷',
+      title: 'モバイル印刷 for SUNMI',
       // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => (
         <EditToggleButton isEditable={isEditable} toggle={toggle} />
@@ -147,6 +154,10 @@ const Container: React.FC<Props> = (props) => {
     [dispatch, isEditable, navigation],
   )
 
+  const onPressPrintProfileRandomly = useCallback(() => {
+    dispatch(printProfileRandomly())
+  }, [dispatch])
+
   const onPressNewSubmission = useCallback(() => {
     navigation.navigate('Form', { submission: createSubmission() })
   }, [navigation])
@@ -163,6 +174,7 @@ const Container: React.FC<Props> = (props) => {
         onPressQRCode,
         onPressDuplicateQRCode,
         onPressSubmission,
+        onPressPrintProfileRandomly,
         onPressNewSubmission,
       }}
     />

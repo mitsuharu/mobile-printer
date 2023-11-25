@@ -1,3 +1,4 @@
+import { MESSAGE } from '@/CONSTANTS/MESSAGE'
 import React, { useCallback, useRef } from 'react'
 import { View } from 'react-native'
 import RnDialog from 'react-native-dialog'
@@ -35,9 +36,9 @@ const Component: React.FC<ComponentProps> = ({
           keyboardType={'url'}
           autoCapitalize={'none'}
         />
-        <RnDialog.Button label="Cancel" onPress={() => onCancel?.()} />
+        <RnDialog.Button label={MESSAGE.NO} onPress={() => onCancel?.()} />
         <RnDialog.Button
-          label="OK"
+          label={MESSAGE.YES}
           onPress={() => onPress?.(textRef.current)}
         />
       </RnDialog.Container>
