@@ -102,7 +102,7 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'モバイル印刷',
+      title: 'モバイル印刷 for SUNMI',
       // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => (
         <EditToggleButton isEditable={isEditable} toggle={toggle} />

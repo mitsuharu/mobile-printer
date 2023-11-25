@@ -42,13 +42,7 @@ async function print({ text }: QRCodeSource) {
 
     SunmiPrinter.lineWrap(1)
     SunmiPrinter.printQRCode(text, 8, 1)
-    SunmiPrinter.lineWrap(1)
-
-    // // 印刷時間
-    // SunmiPrinter.lineWrap(2)
-    // SunmiPrinter.setAlignment(AlignValue.RIGHT)
-    // SunmiPrinter.printerText(`\n${timeStamp()}\n`)
-    SunmiPrinter.lineWrap(3)
+    SunmiPrinter.lineWrap(5)
   } catch (e: any) {
     console.warn('print', e)
     throw e

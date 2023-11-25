@@ -39,13 +39,8 @@ async function print({ text, size }: TextSource) {
     SunmiPrinter.setFontWeight(true)
 
     SunmiPrinter.lineWrap(1)
-    SunmiPrinter.printerText(`${text}\n`)
-
-    // // 印刷時間
-    // SunmiPrinter.lineWrap(2)
-    // SunmiPrinter.setAlignment(AlignValue.RIGHT)
-    // SunmiPrinter.printerText(`\n${timeStamp()}\n`)
-    SunmiPrinter.lineWrap(3)
+    SunmiPrinter.printerText(text)
+    SunmiPrinter.lineWrap(5)
   } catch (e: any) {
     console.warn('print', e)
     throw e

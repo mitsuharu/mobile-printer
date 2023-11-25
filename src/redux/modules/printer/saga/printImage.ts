@@ -94,13 +94,7 @@ async function print({ base64 }: ImageSource) {
 
     SunmiPrinter.lineWrap(1)
     SunmiPrinter.printBitmap(BASE64.PREFIX + base64, BASE64.MAX_SIZE)
-    SunmiPrinter.lineWrap(1)
-
-    // // 印刷時間
-    // SunmiPrinter.lineWrap(2)
-    // SunmiPrinter.setAlignment(AlignValue.RIGHT)
-    // SunmiPrinter.printerText(`\n${timeStamp()}\n`)
-    SunmiPrinter.lineWrap(3)
+    SunmiPrinter.lineWrap(5)
   } catch (e: any) {
     console.warn('print', e)
     throw e
