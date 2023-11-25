@@ -1,5 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import {
+  duplicateQRCode,
   printImage,
   printImageFromImagePicker,
   printProfile,
@@ -13,7 +14,11 @@ import { isEmulator, getBrand } from 'react-native-device-info'
 import { printProfileSaga } from './printProfile'
 import { printTextSaga } from './printText'
 import { printImageFromImagePickerSaga, printImageSaga } from './printImage'
-import { printQRCodeSaga } from './printQRCode'
+import {
+  duplicateQRCodeSaga,
+  monitorScanSuccessSaga,
+  printQRCodeSaga,
+} from './printQRCode'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -23,11 +28,13 @@ export function* printerSaga() {
   }
 
   yield fork(printInitSaga)
+  yield fork(monitorScanSuccessSaga)
   yield takeEvery(printProfile, printProfileSaga)
   yield takeEvery(printText, printTextSaga)
   yield takeEvery(printImage, printImageSaga)
   yield takeEvery(printImageFromImagePicker, printImageFromImagePickerSaga)
   yield takeEvery(printQRCode, printQRCodeSaga)
+  yield takeEvery(duplicateQRCode, duplicateQRCodeSaga)
 }
 
 function* printInitSaga() {

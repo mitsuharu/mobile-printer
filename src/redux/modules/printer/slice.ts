@@ -44,6 +44,9 @@ const printerSlice = createSlice({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printQRCode(_state, _action: PayloadAction<QRCodeSource>) {},
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    duplicateQRCode(_state, _action: PayloadAction<void>) {},
+
     saveSubmission(state, { payload }: PayloadAction<Submission>) {
       const index = state.submissions.findIndex((obj) =>
         isEqualToSubmission(obj, payload),
@@ -71,6 +74,7 @@ export const {
   printImage,
   printImageFromImagePicker,
   printQRCode,
+  duplicateQRCode,
   saveSubmission,
   deleteSubmission,
 } = printerSlice.actions

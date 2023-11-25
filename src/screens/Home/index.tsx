@@ -4,6 +4,7 @@ import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  duplicateQRCode,
   printImageFromImagePicker,
   printProfile,
   printQRCode,
@@ -25,6 +26,7 @@ type ComponentProps = Props & {
   onPressText: (text: string) => void
   onPressImage: () => void
   onPressQRCode: (text: string) => void
+  onPressDuplicateQRCode: () => void
   onPressSubmission: (obj: Submission) => void
   onPressNewSubmission: () => void
 }
@@ -36,6 +38,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressText,
   onPressImage,
   onPressQRCode,
+  onPressDuplicateQRCode,
   onPressSubmission,
   onPressNewSubmission,
 }) => {
@@ -57,6 +60,7 @@ const Component: React.FC<ComponentProps> = ({
           dialogDescription="印刷するQRコードに変換するテキストを入力してください"
           onSelectText={onPressQRCode}
         />
+        <Cell title="QRコードを複製する" onPress={onPressDuplicateQRCode} />
       </Section>
       <Section title="プロフィールを印刷する">
         {submissions.map((submission) => (
@@ -128,6 +132,10 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
+  const onPressDuplicateQRCode = useCallback(() => {
+    dispatch(duplicateQRCode())
+  }, [dispatch])
+
   const onPressSubmission = useCallback(
     (submission: Submission) => {
       if (isEditable) {
@@ -153,6 +161,7 @@ const Container: React.FC<Props> = (props) => {
         onPressText,
         onPressImage,
         onPressQRCode,
+        onPressDuplicateQRCode,
         onPressSubmission,
         onPressNewSubmission,
       }}
