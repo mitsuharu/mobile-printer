@@ -3,20 +3,33 @@ import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { print } from '@/redux/modules/printer/slice'
+import {
+  duplicateQRCode,
+  printImageFromImagePicker,
+  printProfile,
+  printProfileRandomly,
+  printQRCode,
+  printText,
+} from '@/redux/modules/printer/slice'
 import { Cell, Section } from '@/components/List'
 import { useNavigation } from '@react-navigation/native'
 import { EditToggleButton } from '@/components/Button/EditToggleButton'
 import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import { createSubmission, Submission } from '@/redux/modules/printer/utils'
+import { InputDialogCell } from './InputDialogCell'
 
 type Props = {}
 type ComponentProps = Props & {
   isEditable: boolean
   submissions: Submission[]
   onPressSample: () => void
+  onPressText: (text: string) => void
+  onPressImage: () => void
+  onPressQRCode: (text: string) => void
+  onPressDuplicateQRCode: () => void
   onPressSubmission: (obj: Submission) => void
+  onPressPrintProfileRandomly: () => void
   onPressNewSubmission: () => void
 }
 
@@ -24,15 +37,43 @@ const Component: React.FC<ComponentProps> = ({
   isEditable,
   submissions,
   onPressSample,
+  onPressText,
+  onPressImage,
+  onPressQRCode,
+  onPressDuplicateQRCode,
   onPressSubmission,
+  onPressPrintProfileRandomly,
   onPressNewSubmission,
 }) => {
   const styles = useStyles()
 
   return (
     <ScrollView style={styles.scrollView}>
-      <Section title="サンプルを印刷する">
-        <Cell title="サンプル" onPress={onPressSample} />
+      <Section title="汎用印刷">
+        <InputDialogCell
+          title="テキストを印刷する"
+          dialogTitle="テキスト印刷"
+          dialogDescription="印刷するテキストを入力してください"
+          onSelectText={onPressText}
+          inactive={isEditable}
+        />
+        <Cell
+          title="画像を印刷する"
+          onPress={onPressImage}
+          inactive={isEditable}
+        />
+        <InputDialogCell
+          title="QRコードを印刷する"
+          dialogTitle="QRコード印刷"
+          dialogDescription="印刷するQRコードに変換するテキストを入力してください"
+          onSelectText={onPressQRCode}
+          inactive={isEditable}
+        />
+        <Cell
+          title="QRコードを複製する"
+          onPress={onPressDuplicateQRCode}
+          inactive={isEditable}
+        />
       </Section>
       <Section title="プロフィールを印刷する">
         {submissions.map((submission) => (
@@ -44,15 +85,25 @@ const Component: React.FC<ComponentProps> = ({
           />
         ))}
       </Section>
-      {isEditable ? (
-        <Section>
+      <Section>
+        <Cell
+          title="サンプルのプロフィールを印刷する"
+          onPress={onPressSample}
+          inactive={isEditable}
+        />
+        <Cell
+          title="プロフィールをランダム印刷する"
+          onPress={onPressPrintProfileRandomly}
+          inactive={isEditable}
+        />
+        {isEditable ? (
           <Cell
-            title="追加する"
+            title="プロフィールを追加する"
             onPress={onPressNewSubmission}
             accessory={'disclosure'}
           />
-        </Section>
-      ) : null}
+        ) : null}
+      </Section>
     </ScrollView>
   )
 }
@@ -60,7 +111,6 @@ const Component: React.FC<ComponentProps> = ({
 const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-
   const submissions: Submission[] = useSelector(selectPrinterSubmissions)
 
   const [isEditable, setIsEditable] = useState<boolean>(false)
@@ -71,7 +121,7 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'モバイル名刺印刷',
+      title: 'モバイル印刷 for SUNMI',
       // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => (
         <EditToggleButton isEditable={isEditable} toggle={toggle} />
@@ -80,7 +130,29 @@ const Container: React.FC<Props> = (props) => {
   }, [navigation, isEditable, toggle])
 
   const onPressSample = useCallback(() => {
-    dispatch(print(sampleProfile))
+    dispatch(printProfile(sampleProfile))
+  }, [dispatch])
+
+  const onPressText = useCallback(
+    (text: string) => {
+      dispatch(printText({ text: text, size: 'default' }))
+    },
+    [dispatch],
+  )
+
+  const onPressImage = useCallback(() => {
+    dispatch(printImageFromImagePicker())
+  }, [dispatch])
+
+  const onPressQRCode = useCallback(
+    (text: string) => {
+      dispatch(printQRCode({ text }))
+    },
+    [dispatch],
+  )
+
+  const onPressDuplicateQRCode = useCallback(() => {
+    dispatch(duplicateQRCode())
   }, [dispatch])
 
   const onPressSubmission = useCallback(
@@ -88,11 +160,15 @@ const Container: React.FC<Props> = (props) => {
       if (isEditable) {
         navigation.navigate('Form', { submission: submission })
       } else {
-        dispatch(print(submission.profile))
+        dispatch(printProfile(submission.profile))
       }
     },
     [dispatch, isEditable, navigation],
   )
+
+  const onPressPrintProfileRandomly = useCallback(() => {
+    dispatch(printProfileRandomly())
+  }, [dispatch])
 
   const onPressNewSubmission = useCallback(() => {
     navigation.navigate('Form', { submission: createSubmission() })
@@ -105,7 +181,12 @@ const Container: React.FC<Props> = (props) => {
         isEditable,
         submissions,
         onPressSample,
+        onPressText,
+        onPressImage,
+        onPressQRCode,
+        onPressDuplicateQRCode,
         onPressSubmission,
+        onPressPrintProfileRandomly,
         onPressNewSubmission,
       }}
     />
