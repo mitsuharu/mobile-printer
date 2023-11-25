@@ -10,6 +10,7 @@ import { FormView, OnSubmit } from './FormView'
 import { deleteSubmission, saveSubmission } from '@/redux/modules/printer/slice'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AlertAsync from 'react-native-alert-async'
+import { MESSAGE } from '@/CONSTANTS/MESSAGE'
 
 type ParamsProps = RouteProp<MainParams, 'Form'>
 
@@ -70,8 +71,8 @@ const Container: React.FC<Props> = (props) => {
   const onDelete = useCallback(async () => {
     try {
       const result = await AlertAsync('確認', '削除しますか？', [
-        { text: 'いいえ', onPress: () => false, style: 'cancel' },
-        { text: 'はい', onPress: () => true },
+        { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
+        { text: MESSAGE.YES, onPress: () => true },
       ])
       if (result) {
         dispatch(deleteSubmission(submission))

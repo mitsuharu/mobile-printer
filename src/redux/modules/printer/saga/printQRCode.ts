@@ -9,6 +9,7 @@ import SunmiPrinter, {
 import { eventChannel } from 'redux-saga'
 import { DeviceEventEmitter } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
+import { MESSAGE } from '@/CONSTANTS/MESSAGE'
 
 /**
  * @package
@@ -86,8 +87,8 @@ function* scanSuccessSaga(message: string) {
     'QR複製の確認',
     `「${message}」の内容で複製しますか？`,
     [
-      { text: 'Cancel', onPress: () => false },
-      { text: 'OK', onPress: () => true },
+      { text: MESSAGE.NO, onPress: () => false },
+      { text: MESSAGE.YES, onPress: () => true },
     ],
   )
   if (result) {

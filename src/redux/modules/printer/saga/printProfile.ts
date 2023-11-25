@@ -1,11 +1,12 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import { printProfile } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { timeStamp } from '@/utils/day'
-import { FONT_SIZE, Profile, SEPARATOR } from '../utils'
+import { FONT_SIZE, Profile, SEPARATOR, Submission } from '../utils'
 import { hasAnyKeyValue } from '@/utils/object'
 import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
 import { BASE64 } from '@/utils/CONSTANTS'
+import { selectPrinterSubmissions } from '../selectors'
 
 /**
  * @package
@@ -25,6 +26,34 @@ export function* printProfileSaga({
     }
 
     yield call(print, payload)
+  } catch (e: any) {
+    console.warn('printSaga', e)
+    yield put(
+      enqueueSnackbar({
+        message: `印刷に失敗しました`,
+      }),
+    )
+  }
+}
+
+/**
+ * @package
+ */
+export function* printProfileRandomlySaga() {
+  try {
+    const submissions: Submission[] = yield select(selectPrinterSubmissions)
+    if (submissions.length === 0) {
+      yield put(
+        enqueueSnackbar({
+          message: `印刷できるプロフィールデータがありません`,
+        }),
+      )
+      return
+    }
+
+    const index = Math.floor(Math.random() * submissions.length)
+    const { profile } = submissions[index]
+    yield put(printProfile(profile))
   } catch (e: any) {
     console.warn('printSaga', e)
     yield put(

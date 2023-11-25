@@ -33,6 +33,9 @@ const printerSlice = createSlice({
     printProfile(_state, _action: PayloadAction<Profile>) {},
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    printProfileRandomly(_state, _action: PayloadAction<void>) {},
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printText(_state, _action: PayloadAction<TextSource>) {},
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -70,6 +73,7 @@ const printerSlice = createSlice({
 
 export const {
   printProfile,
+  printProfileRandomly,
   printText,
   printImage,
   printImageFromImagePicker,

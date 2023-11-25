@@ -4,6 +4,7 @@ import {
   printImage,
   printImageFromImagePicker,
   printProfile,
+  printProfileRandomly,
   printQRCode,
   printText,
 } from '../slice'
@@ -11,7 +12,7 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { Platform } from 'react-native'
 import SunmiPrinter from '@heasy/react-native-sunmi-printer'
 import { isEmulator, getBrand } from 'react-native-device-info'
-import { printProfileSaga } from './printProfile'
+import { printProfileRandomlySaga, printProfileSaga } from './printProfile'
 import { printTextSaga } from './printText'
 import { printImageFromImagePickerSaga, printImageSaga } from './printImage'
 import {
@@ -30,6 +31,7 @@ export function* printerSaga() {
   yield fork(printInitSaga)
   yield fork(monitorScanSuccessSaga)
   yield takeEvery(printProfile, printProfileSaga)
+  yield takeEvery(printProfileRandomly, printProfileRandomlySaga)
   yield takeEvery(printText, printTextSaga)
   yield takeEvery(printImage, printImageSaga)
   yield takeEvery(printImageFromImagePicker, printImageFromImagePickerSaga)
