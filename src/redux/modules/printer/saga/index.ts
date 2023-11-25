@@ -3,6 +3,7 @@ import {
   printImage,
   printImageFromImagePicker,
   printProfile,
+  printQRCode,
   printText,
 } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
@@ -12,6 +13,7 @@ import { isEmulator, getBrand } from 'react-native-device-info'
 import { printProfileSaga } from './printProfile'
 import { printTextSaga } from './printText'
 import { printImageFromImagePickerSaga, printImageSaga } from './printImage'
+import { printQRCodeSaga } from './printQRCode'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -25,6 +27,7 @@ export function* printerSaga() {
   yield takeEvery(printText, printTextSaga)
   yield takeEvery(printImage, printImageSaga)
   yield takeEvery(printImageFromImagePicker, printImageFromImagePickerSaga)
+  yield takeEvery(printQRCode, printQRCodeSaga)
 }
 
 function* printInitSaga() {

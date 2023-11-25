@@ -77,3 +77,10 @@ export type TextSource = {
 export type ImageSource = {
   base64: string
 }
+
+/**
+ * QRコード印刷のデータ
+ */
+export type QRCodeSource = {
+  text: string
+}

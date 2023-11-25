@@ -2,7 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 import { createPresetSubmissions, isEqualToSubmission } from './utils'
-import { ImageSource, Profile, Submission, TextSource } from './utils/types'
+import {
+  ImageSource,
+  Profile,
+  QRCodeSource,
+  Submission,
+  TextSource,
+} from './utils/types'
 import { PersistConfig, persistReducer } from 'redux-persist'
 
 export type PrinterState = {
@@ -35,6 +41,9 @@ const printerSlice = createSlice({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printImageFromImagePicker(_state, _action: PayloadAction<void>) {},
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    printQRCode(_state, _action: PayloadAction<QRCodeSource>) {},
+
     saveSubmission(state, { payload }: PayloadAction<Submission>) {
       const index = state.submissions.findIndex((obj) =>
         isEqualToSubmission(obj, payload),
@@ -61,6 +70,7 @@ export const {
   printText,
   printImage,
   printImageFromImagePicker,
+  printQRCode,
   saveSubmission,
   deleteSubmission,
 } = printerSlice.actions

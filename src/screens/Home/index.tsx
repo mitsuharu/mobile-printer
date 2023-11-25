@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   printImageFromImagePicker,
   printProfile,
+  printQRCode,
   printText,
 } from '@/redux/modules/printer/slice'
 import { Cell, Section } from '@/components/List'
@@ -14,78 +15,73 @@ import { EditToggleButton } from '@/components/Button/EditToggleButton'
 import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import { createSubmission, Submission } from '@/redux/modules/printer/utils'
-import { InputDialog } from '@/components/Dialog'
+import { InputDialogCell } from './InputDialogCell'
 
 type Props = {}
 type ComponentProps = Props & {
-  isVisibleDialog: boolean
   isEditable: boolean
   submissions: Submission[]
-  onPressDialog: (text: string) => void
-  onCancelDialog: () => void
   onPressSample: () => void
-  onPressTextFromAlertInput: () => void
-  onPressImageFromImagePicker: () => void
+  onPressText: (text: string) => void
+  onPressImage: () => void
+  onPressQRCode: (text: string) => void
   onPressSubmission: (obj: Submission) => void
   onPressNewSubmission: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
-  isVisibleDialog,
   isEditable,
   submissions,
-  onPressDialog,
-  onCancelDialog,
   onPressSample,
-  onPressTextFromAlertInput,
-  onPressImageFromImagePicker,
+  onPressText,
+  onPressImage,
+  onPressQRCode,
   onPressSubmission,
   onPressNewSubmission,
 }) => {
   const styles = useStyles()
 
   return (
-    <>
-      <ScrollView style={styles.scrollView}>
-        <Section title="汎用印刷">
+    <ScrollView style={styles.scrollView}>
+      <Section title="汎用印刷">
+        <InputDialogCell
+          title="テキストを印刷する"
+          dialogTitle="テキスト印刷"
+          dialogDescription="印刷するテキストを入力してください"
+          onSelectText={onPressText}
+        />
+        <Cell title="画像を印刷する" onPress={onPressImage} />
+        <InputDialogCell
+          title="QRコードを印刷する"
+          dialogTitle="QRコード印刷"
+          dialogDescription="印刷するQRコードに変換するテキストを入力してください"
+          onSelectText={onPressQRCode}
+        />
+      </Section>
+      <Section title="プロフィールを印刷する">
+        {submissions.map((submission) => (
           <Cell
-            title="テキストを印刷する"
-            onPress={onPressTextFromAlertInput}
+            title={submission.title}
+            onPress={() => onPressSubmission(submission)}
+            accessory={isEditable ? 'disclosure' : undefined}
+            key={submission.uuid}
           />
-          <Cell title="画像を印刷する" onPress={onPressImageFromImagePicker} />
-        </Section>
-        <Section title="プロフィールを印刷する">
-          {submissions.map((submission) => (
-            <Cell
-              title={submission.title}
-              onPress={() => onPressSubmission(submission)}
-              accessory={isEditable ? 'disclosure' : undefined}
-              key={submission.uuid}
-            />
-          ))}
-        </Section>
-        <Section>
+        ))}
+      </Section>
+      <Section>
+        <Cell
+          title="サンプルのプロフィールを印刷する"
+          onPress={onPressSample}
+        />
+        {isEditable ? (
           <Cell
-            title="サンプルのプロフィールを印刷する"
-            onPress={onPressSample}
+            title="プロフィールを追加する"
+            onPress={onPressNewSubmission}
+            accessory={'disclosure'}
           />
-          {isEditable ? (
-            <Cell
-              title="プロフィールを追加する"
-              onPress={onPressNewSubmission}
-              accessory={'disclosure'}
-            />
-          ) : null}
-        </Section>
-      </ScrollView>
-      <InputDialog
-        isVisible={isVisibleDialog}
-        title="テキスト印刷"
-        description="印刷するテキストを入力してください"
-        onPress={onPressDialog}
-        onCancel={onCancelDialog}
-      />
-    </>
+        ) : null}
+      </Section>
+    </ScrollView>
   )
 }
 
@@ -95,7 +91,6 @@ const Container: React.FC<Props> = (props) => {
   const submissions: Submission[] = useSelector(selectPrinterSubmissions)
 
   const [isEditable, setIsEditable] = useState<boolean>(false)
-  const [isVisibleDialog, setIsVisibleDialog] = useState<boolean>(false)
 
   const toggle = useCallback(() => {
     setIsEditable(!isEditable)
@@ -115,25 +110,23 @@ const Container: React.FC<Props> = (props) => {
     dispatch(printProfile(sampleProfile))
   }, [dispatch])
 
-  const onPressTextFromAlertInput = useCallback(() => {
-    setIsVisibleDialog(true)
-  }, [setIsVisibleDialog])
-
-  const onPressDialog = useCallback(
+  const onPressText = useCallback(
     (text: string) => {
-      setIsVisibleDialog(false)
       dispatch(printText({ text: text, size: 'default' }))
     },
-    [setIsVisibleDialog, dispatch],
+    [dispatch],
   )
 
-  const onCancelDialog = useCallback(() => {
-    setIsVisibleDialog(false)
-  }, [setIsVisibleDialog])
-
-  const onPressImageFromImagePicker = useCallback(() => {
+  const onPressImage = useCallback(() => {
     dispatch(printImageFromImagePicker())
   }, [dispatch])
+
+  const onPressQRCode = useCallback(
+    (text: string) => {
+      dispatch(printQRCode({ text }))
+    },
+    [dispatch],
+  )
 
   const onPressSubmission = useCallback(
     (submission: Submission) => {
@@ -154,14 +147,12 @@ const Container: React.FC<Props> = (props) => {
     <Component
       {...props}
       {...{
-        isVisibleDialog,
         isEditable,
         submissions,
-        onPressDialog,
-        onCancelDialog,
         onPressSample,
-        onPressTextFromAlertInput,
-        onPressImageFromImagePicker,
+        onPressText,
+        onPressImage,
+        onPressQRCode,
         onPressSubmission,
         onPressNewSubmission,
       }}
