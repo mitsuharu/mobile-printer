@@ -55,15 +55,25 @@ const Component: React.FC<ComponentProps> = ({
           dialogTitle="テキスト印刷"
           dialogDescription="印刷するテキストを入力してください"
           onSelectText={onPressText}
+          inactive={isEditable}
         />
-        <Cell title="画像を印刷する" onPress={onPressImage} />
+        <Cell
+          title="画像を印刷する"
+          onPress={onPressImage}
+          inactive={isEditable}
+        />
         <InputDialogCell
           title="QRコードを印刷する"
           dialogTitle="QRコード印刷"
           dialogDescription="印刷するQRコードに変換するテキストを入力してください"
           onSelectText={onPressQRCode}
+          inactive={isEditable}
         />
-        <Cell title="QRコードを複製する" onPress={onPressDuplicateQRCode} />
+        <Cell
+          title="QRコードを複製する"
+          onPress={onPressDuplicateQRCode}
+          inactive={isEditable}
+        />
       </Section>
       <Section title="プロフィールを印刷する">
         {submissions.map((submission) => (
@@ -79,10 +89,12 @@ const Component: React.FC<ComponentProps> = ({
         <Cell
           title="サンプルのプロフィールを印刷する"
           onPress={onPressSample}
+          inactive={isEditable}
         />
         <Cell
           title="プロフィールをランダム印刷する"
           onPress={onPressPrintProfileRandomly}
+          inactive={isEditable}
         />
         {isEditable ? (
           <Cell

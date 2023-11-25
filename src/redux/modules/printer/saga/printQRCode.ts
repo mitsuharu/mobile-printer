@@ -61,7 +61,7 @@ export function* duplicateQRCodeSaga() {
     console.warn('printSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `印刷に失敗しました`,
+        message: `お使いの端末はスキャン機能がご利用できません`,
       }),
     )
   }

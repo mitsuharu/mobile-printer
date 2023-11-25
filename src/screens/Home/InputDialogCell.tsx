@@ -7,6 +7,7 @@ type Props = {
   dialogTitle?: string
   dialogDescription?: string
   onSelectText?: (text: string) => void
+  inactive?: boolean
 }
 
 export const InputDialogCell: React.FC<Props> = ({
@@ -14,6 +15,7 @@ export const InputDialogCell: React.FC<Props> = ({
   dialogTitle,
   dialogDescription,
   onSelectText,
+  inactive,
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
@@ -35,7 +37,7 @@ export const InputDialogCell: React.FC<Props> = ({
 
   return (
     <>
-      <Cell title={title} onPress={() => onPressCell()} />
+      <Cell title={title} onPress={() => onPressCell()} inactive={inactive} />
       <InputDialog
         isVisible={isVisible}
         title={dialogTitle}

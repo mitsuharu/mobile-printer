@@ -43,6 +43,8 @@ export type Props = ContentProps &
     style?: StyleProp<ViewStyle>
     titleStyle?: StyleProp<TextStyle>
     subtitleStyle?: StyleProp<TextStyle>
+
+    inactive?: boolean
   }
 
 const AccessoryView: React.FC<AccessoryProps> = ({
@@ -86,6 +88,7 @@ const Component: React.FC<Props> = ({
   accessoryStyle,
   switchValue,
   onSwitchValueChange,
+  inactive,
 }) => {
   const styles = useStyles()
 
@@ -94,6 +97,7 @@ const Component: React.FC<Props> = ({
       style={[styles.container, style]}
       onPress={onPress}
       onLongPress={onLongPress}
+      inactive={inactive}
     >
       {!!children && children}
       <View style={styles.row}>
