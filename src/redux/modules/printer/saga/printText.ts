@@ -40,7 +40,7 @@ async function print({ text, size }: TextSource) {
 
     SunmiPrinter.lineWrap(1)
     SunmiPrinter.printerText(text)
-    SunmiPrinter.lineWrap(5)
+    SunmiPrinter.lineWrap(4)
   } catch (e: any) {
     console.warn('print', e)
     throw e

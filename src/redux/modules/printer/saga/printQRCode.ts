@@ -8,6 +8,7 @@ import SunmiPrinter, {
 } from '@heasy/react-native-sunmi-printer'
 import { eventChannel } from 'redux-saga'
 import { DeviceEventEmitter } from 'react-native'
+import AlertAsync from 'react-native-alert-async'
 
 /**
  * @package
@@ -42,7 +43,7 @@ async function print({ text }: QRCodeSource) {
 
     SunmiPrinter.lineWrap(1)
     SunmiPrinter.printQRCode(text, 8, 1)
-    SunmiPrinter.lineWrap(5)
+    SunmiPrinter.lineWrap(4)
   } catch (e: any) {
     console.warn('print', e)
     throw e
@@ -80,5 +81,16 @@ export function* monitorScanSuccessSaga() {
 }
 
 function* scanSuccessSaga(message: string) {
-  yield put(printQRCode({ text: message }))
+  const result: boolean = yield call(
+    AlertAsync,
+    'QR複製の確認',
+    `「${message}」の内容で複製しますか？`,
+    [
+      { text: 'Cancel', onPress: () => false },
+      { text: 'OK', onPress: () => true },
+    ],
+  )
+  if (result) {
+    yield put(printQRCode({ text: message }))
+  }
 }
