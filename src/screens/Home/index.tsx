@@ -4,11 +4,8 @@ import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  duplicateQRCode,
-  printImageFromImagePicker,
   printProfile,
   printProfileRandomly,
-  printQRCode,
   printText,
 } from '@/redux/modules/printer/slice'
 import { Cell, Section } from '@/components/List'
@@ -25,14 +22,9 @@ type ComponentProps = Props & {
   submissions: Submission[]
   onPressSample: () => void
   onPressText: (text: string) => void
-  onPressImageMonochrome: () => void
-  onPressImageGrayscale: () => void
-  onPressQRCode: (text: string) => void
-  onPressDuplicateQRCode: () => void
   onPressSubmission: (obj: Submission) => void
   onPressPrintProfileRandomly: () => void
   onPressNewSubmission: () => void
-
   onNavigateToPrinter: () => void
 }
 
@@ -41,10 +33,6 @@ const Component: React.FC<ComponentProps> = ({
   submissions,
   onPressSample,
   onPressText,
-  onPressImageMonochrome,
-  onPressImageGrayscale,
-  onPressQRCode,
-  onPressDuplicateQRCode,
   onPressSubmission,
   onPressPrintProfileRandomly,
   onPressNewSubmission,
@@ -69,7 +57,7 @@ const Component: React.FC<ComponentProps> = ({
           accessory="disclosure"
         />
       </Section>
-      <Section title="プロフィールを印刷する">
+      <Section title="プロフィール印刷">
         {submissions.map((submission) => (
           <Cell
             title={submission.title}
@@ -79,7 +67,7 @@ const Component: React.FC<ComponentProps> = ({
           />
         ))}
       </Section>
-      <Section>
+      <Section title="プロフィール印刷のオプション">
         <Cell
           title="サンプルのプロフィールを印刷する"
           onPress={onPressSample}
@@ -134,25 +122,6 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
-  const onPressImageMonochrome = useCallback(() => {
-    dispatch(printImageFromImagePicker('monochrome'))
-  }, [dispatch])
-
-  const onPressImageGrayscale = useCallback(() => {
-    dispatch(printImageFromImagePicker('grayscale'))
-  }, [dispatch])
-
-  const onPressQRCode = useCallback(
-    (text: string) => {
-      dispatch(printQRCode({ text }))
-    },
-    [dispatch],
-  )
-
-  const onPressDuplicateQRCode = useCallback(() => {
-    dispatch(duplicateQRCode())
-  }, [dispatch])
-
   const onPressSubmission = useCallback(
     (submission: Submission) => {
       if (isEditable) {
@@ -184,10 +153,6 @@ const Container: React.FC<Props> = (props) => {
         submissions,
         onPressSample,
         onPressText,
-        onPressImageMonochrome,
-        onPressImageGrayscale,
-        onPressQRCode,
-        onPressDuplicateQRCode,
         onPressSubmission,
         onPressPrintProfileRandomly,
         onPressNewSubmission,

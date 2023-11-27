@@ -33,18 +33,22 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <ScrollView style={styles.scrollView}>
-      <Section title="汎用印刷">
+      <Section title="テキスト">
         <InputDialogCell
           title="テキストを印刷する"
           dialogTitle="テキスト印刷"
           dialogDescription="印刷するテキストを入力してください"
           onSelectText={onPressText}
         />
+      </Section>
+      <Section title="画像">
         <Cell title="画像を白黒で印刷する" onPress={onPressImageMonochrome} />
         <Cell
           title="画像をグレースケールで印刷する"
           onPress={onPressImageGrayscale}
         />
+      </Section>
+      <Section title="QRコード">
         <InputDialogCell
           title="QRコードを印刷する"
           dialogTitle="QRコード印刷"

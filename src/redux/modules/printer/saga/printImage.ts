@@ -45,19 +45,12 @@ export function* printImageFromImagePickerSaga({
     const base64: string | undefined = yield call(getImageBase64)
     if (base64) {
       yield put(printImage({ base64: base64, type: payload }))
-    } else {
-      yield put(
-        enqueueSnackbar({
-          message: `印刷に失敗しました`,
-        }),
-      )
     }
   } catch (e: any) {
     console.warn('printSaga', e)
-
     yield put(
       enqueueSnackbar({
-        message: `印刷に失敗しました`,
+        message: `印刷データが取得できませんでした`,
       }),
     )
   }
