@@ -44,7 +44,7 @@ async function print({ text }: QRCodeSource) {
 
     SunmiPrinter.lineWrap(1)
     SunmiPrinter.printQRCode(text, 8, 1)
-    SunmiPrinter.lineWrap(4)
+    SunmiPrinter.lineWrap(5)
   } catch (e: any) {
     console.warn('print', e)
     throw e

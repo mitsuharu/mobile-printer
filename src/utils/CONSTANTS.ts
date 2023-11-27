@@ -17,3 +17,5 @@ export const BASE64 = {
    */
   PREFIX: 'data:image/png;base64,',
 }
+
+export const BitmapCustomType = {}

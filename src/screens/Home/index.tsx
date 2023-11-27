@@ -4,11 +4,8 @@ import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  duplicateQRCode,
-  printImageFromImagePicker,
   printProfile,
   printProfileRandomly,
-  printQRCode,
   printText,
 } from '@/redux/modules/printer/slice'
 import { Cell, Section } from '@/components/List'
@@ -25,12 +22,10 @@ type ComponentProps = Props & {
   submissions: Submission[]
   onPressSample: () => void
   onPressText: (text: string) => void
-  onPressImage: () => void
-  onPressQRCode: (text: string) => void
-  onPressDuplicateQRCode: () => void
   onPressSubmission: (obj: Submission) => void
   onPressPrintProfileRandomly: () => void
   onPressNewSubmission: () => void
+  onNavigateToPrinter: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
@@ -38,12 +33,10 @@ const Component: React.FC<ComponentProps> = ({
   submissions,
   onPressSample,
   onPressText,
-  onPressImage,
-  onPressQRCode,
-  onPressDuplicateQRCode,
   onPressSubmission,
   onPressPrintProfileRandomly,
   onPressNewSubmission,
+  onNavigateToPrinter,
 }) => {
   const styles = useStyles()
 
@@ -58,24 +51,13 @@ const Component: React.FC<ComponentProps> = ({
           inactive={isEditable}
         />
         <Cell
-          title="画像を印刷する"
-          onPress={onPressImage}
+          title="その他"
+          onPress={onNavigateToPrinter}
           inactive={isEditable}
-        />
-        <InputDialogCell
-          title="QRコードを印刷する"
-          dialogTitle="QRコード印刷"
-          dialogDescription="印刷するQRコードに変換するテキストを入力してください"
-          onSelectText={onPressQRCode}
-          inactive={isEditable}
-        />
-        <Cell
-          title="QRコードを複製する"
-          onPress={onPressDuplicateQRCode}
-          inactive={isEditable}
+          accessory="disclosure"
         />
       </Section>
-      <Section title="プロフィールを印刷する">
+      <Section title="プロフィール印刷">
         {submissions.map((submission) => (
           <Cell
             title={submission.title}
@@ -85,7 +67,7 @@ const Component: React.FC<ComponentProps> = ({
           />
         ))}
       </Section>
-      <Section>
+      <Section title="プロフィール印刷のオプション">
         <Cell
           title="サンプルのプロフィールを印刷する"
           onPress={onPressSample}
@@ -140,21 +122,6 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
-  const onPressImage = useCallback(() => {
-    dispatch(printImageFromImagePicker())
-  }, [dispatch])
-
-  const onPressQRCode = useCallback(
-    (text: string) => {
-      dispatch(printQRCode({ text }))
-    },
-    [dispatch],
-  )
-
-  const onPressDuplicateQRCode = useCallback(() => {
-    dispatch(duplicateQRCode())
-  }, [dispatch])
-
   const onPressSubmission = useCallback(
     (submission: Submission) => {
       if (isEditable) {
@@ -174,6 +141,10 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('Form', { submission: createSubmission() })
   }, [navigation])
 
+  const onNavigateToPrinter = useCallback(() => {
+    navigation.navigate('Printer')
+  }, [navigation])
+
   return (
     <Component
       {...props}
@@ -182,12 +153,10 @@ const Container: React.FC<Props> = (props) => {
         submissions,
         onPressSample,
         onPressText,
-        onPressImage,
-        onPressQRCode,
-        onPressDuplicateQRCode,
         onPressSubmission,
         onPressPrintProfileRandomly,
         onPressNewSubmission,
+        onNavigateToPrinter,
       }}
     />
   )
