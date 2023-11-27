@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import { createPresetSubmissions, isEqualToSubmission } from './utils'
 import {
   ImageSource,
+  PrintImageType,
   Profile,
   QRCodeSource,
   Submission,
@@ -41,8 +42,12 @@ const printerSlice = createSlice({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printImage(_state, _action: PayloadAction<ImageSource>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    printImageFromImagePicker(_state, _action: PayloadAction<void>) {},
+    printImageFromImagePicker(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _state,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _action: PayloadAction<PrintImageType>,
+    ) {},
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printQRCode(_state, _action: PayloadAction<QRCodeSource>) {},

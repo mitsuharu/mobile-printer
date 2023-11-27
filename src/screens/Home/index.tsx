@@ -25,12 +25,15 @@ type ComponentProps = Props & {
   submissions: Submission[]
   onPressSample: () => void
   onPressText: (text: string) => void
-  onPressImage: () => void
+  onPressImageMonochrome: () => void
+  onPressImageGrayscale: () => void
   onPressQRCode: (text: string) => void
   onPressDuplicateQRCode: () => void
   onPressSubmission: (obj: Submission) => void
   onPressPrintProfileRandomly: () => void
   onPressNewSubmission: () => void
+
+  onNavigateToPrinter: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
@@ -38,12 +41,14 @@ const Component: React.FC<ComponentProps> = ({
   submissions,
   onPressSample,
   onPressText,
-  onPressImage,
+  onPressImageMonochrome,
+  onPressImageGrayscale,
   onPressQRCode,
   onPressDuplicateQRCode,
   onPressSubmission,
   onPressPrintProfileRandomly,
   onPressNewSubmission,
+  onNavigateToPrinter,
 }) => {
   const styles = useStyles()
 
@@ -58,21 +63,10 @@ const Component: React.FC<ComponentProps> = ({
           inactive={isEditable}
         />
         <Cell
-          title="画像を印刷する"
-          onPress={onPressImage}
+          title="その他"
+          onPress={onNavigateToPrinter}
           inactive={isEditable}
-        />
-        <InputDialogCell
-          title="QRコードを印刷する"
-          dialogTitle="QRコード印刷"
-          dialogDescription="印刷するQRコードに変換するテキストを入力してください"
-          onSelectText={onPressQRCode}
-          inactive={isEditable}
-        />
-        <Cell
-          title="QRコードを複製する"
-          onPress={onPressDuplicateQRCode}
-          inactive={isEditable}
+          accessory="disclosure"
         />
       </Section>
       <Section title="プロフィールを印刷する">
@@ -140,8 +134,12 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
-  const onPressImage = useCallback(() => {
-    dispatch(printImageFromImagePicker())
+  const onPressImageMonochrome = useCallback(() => {
+    dispatch(printImageFromImagePicker('monochrome'))
+  }, [dispatch])
+
+  const onPressImageGrayscale = useCallback(() => {
+    dispatch(printImageFromImagePicker('grayscale'))
   }, [dispatch])
 
   const onPressQRCode = useCallback(
@@ -174,6 +172,10 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('Form', { submission: createSubmission() })
   }, [navigation])
 
+  const onNavigateToPrinter = useCallback(() => {
+    navigation.navigate('Printer')
+  }, [navigation])
+
   return (
     <Component
       {...props}
@@ -182,12 +184,14 @@ const Container: React.FC<Props> = (props) => {
         submissions,
         onPressSample,
         onPressText,
-        onPressImage,
+        onPressImageMonochrome,
+        onPressImageGrayscale,
         onPressQRCode,
         onPressDuplicateQRCode,
         onPressSubmission,
         onPressPrintProfileRandomly,
         onPressNewSubmission,
+        onNavigateToPrinter,
       }}
     />
   )

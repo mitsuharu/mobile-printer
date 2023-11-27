@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import { printImage } from '../slice'
+import { printImage, printImageFromImagePicker } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { ImageSource } from '../utils'
 import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
@@ -38,11 +38,13 @@ export function* printImageSaga({ payload }: ReturnType<typeof printImage>) {
 /**
  * @package
  */
-export function* printImageFromImagePickerSaga() {
+export function* printImageFromImagePickerSaga({
+  payload,
+}: ReturnType<typeof printImageFromImagePicker>) {
   try {
     const base64: string | undefined = yield call(getImageBase64)
     if (base64) {
-      yield put(printImage({ base64: base64 }))
+      yield put(printImage({ base64: base64, type: payload }))
     } else {
       yield put(
         enqueueSnackbar({
@@ -88,13 +90,26 @@ async function getImageBase64() {
   }
 }
 
-async function print({ base64 }: ImageSource) {
+async function print({ base64, type }: ImageSource) {
   try {
     SunmiPrinter.setAlignment(AlignValue.CENTER)
 
     SunmiPrinter.lineWrap(1)
-    SunmiPrinter.printBitmap(BASE64.PREFIX + base64, BASE64.MAX_SIZE)
-    SunmiPrinter.lineWrap(5)
+
+    switch (type) {
+      case 'grayscale':
+        SunmiPrinter.printBitmapCustomBase64(
+          BASE64.PREFIX + base64,
+          BASE64.MAX_SIZE,
+          2,
+        )
+        break
+      default:
+        SunmiPrinter.printBitmap(BASE64.PREFIX + base64, BASE64.MAX_SIZE)
+        break
+    }
+
+    SunmiPrinter.lineWrap(6)
   } catch (e: any) {
     console.warn('print', e)
     throw e
