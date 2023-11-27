@@ -4,6 +4,7 @@ import { MainParams } from './main.params'
 import { MainName } from './main.constraint'
 import { Home } from '@/screens/Home'
 import { Form } from '@/screens/Form'
+import { Printer } from '@/screens/Printer'
 
 const Stack = createNativeStackNavigator<MainParams>()
 
@@ -17,6 +18,7 @@ const Routes: React.FC = () => {
     >
       <Stack.Screen name={MainName.Home} component={Home} />
       <Stack.Screen name={MainName.Form} component={Form} />
+      <Stack.Screen name={MainName.Printer} component={Printer} />
     </Stack.Navigator>
   )
 }
