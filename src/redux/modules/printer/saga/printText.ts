@@ -2,23 +2,13 @@ import { call, put } from 'redux-saga/effects'
 import { printText } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { FONT_SIZE, TextSource } from '../utils'
-import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 
 /**
  * @package
  */
 export function* printTextSaga({ payload }: ReturnType<typeof printText>) {
   try {
-    const hasPrinter: boolean = yield call(SunmiPrinter.hasPrinter)
-    if (!hasPrinter) {
-      yield put(
-        enqueueSnackbar({
-          message: `ご利用の端末にプリンターがありません。`,
-        }),
-      )
-      return
-    }
-
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)
@@ -34,13 +24,13 @@ async function print({ text, size }: TextSource) {
   const fontSize = size === 'default' ? FONT_SIZE.DEFAULT : FONT_SIZE.LARGE
 
   try {
-    SunmiPrinter.setAlignment(AlignValue.CENTER)
-    SunmiPrinter.setFontSize(fontSize)
-    SunmiPrinter.setFontWeight(true)
+    SunmiPrinterLibrary.setAlignment('center')
+    SunmiPrinterLibrary.setFontSize(fontSize)
+    SunmiPrinterLibrary.setPrinterStyle('bold', true)
 
-    SunmiPrinter.lineWrap(1)
-    SunmiPrinter.printerText(text)
-    SunmiPrinter.lineWrap(5)
+    SunmiPrinterLibrary.lineWrap(1)
+    SunmiPrinterLibrary.printText(text)
+    SunmiPrinterLibrary.lineWrap(5)
   } catch (e: any) {
     console.warn('print', e)
     throw e

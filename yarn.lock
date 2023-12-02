@@ -1422,11 +1422,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@heasy/react-native-sunmi-printer@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@heasy/react-native-sunmi-printer/-/react-native-sunmi-printer-1.8.1.tgz#681a838906754322adc347ddd331423141958197"
-  integrity sha512-6sdA7tGsQxU1y0gPOG1Bvi3wdyYjUhoT6naspWg1cX7DS0hhSRO5oGCle1tId2TiEV9DdHTFTHE5R5Fbn7R6sQ==
-
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.13"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.13.tgz#075dc9684f40a531d9b26b0822153c1e832ee297"
@@ -1789,6 +1784,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@mitsuharu/react-native-sunmi-printer-library@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-0.1.0.tgz#823aa978b3482a54fac4b3a53bce6b3d3c42bbca"
+  integrity sha512-UUEquF+F+uLFbuCoryDcJBYUaAPKElw3iriVBTdSFlm/bNT/K2INkhyw2XdOVg6EoMN5yChl+4/2nPCNoAZaIA==
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"

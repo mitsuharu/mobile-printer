@@ -10,7 +10,7 @@ import {
 } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { Platform } from 'react-native'
-import SunmiPrinter from '@heasy/react-native-sunmi-printer'
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { isEmulator, getBrand } from 'react-native-device-info'
 import { printProfileRandomlySaga, printProfileSaga } from './printProfile'
 import { printTextSaga } from './printText'
@@ -61,7 +61,7 @@ function* printInitSaga() {
       return
     }
 
-    yield call(SunmiPrinter.printerInit)
+    yield call(SunmiPrinterLibrary.prepare)
   } catch (e: any) {
     console.warn('printInitSaga', e)
     yield put(

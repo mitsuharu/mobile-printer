@@ -4,7 +4,7 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { timeStamp } from '@/utils/day'
 import { FONT_SIZE, Profile, SEPARATOR, Submission } from '../utils'
 import { hasAnyKeyValue } from '@/utils/object'
-import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { BASE64 } from '@/utils/CONSTANTS'
 import { selectPrinterSubmissions } from '../selectors'
 
@@ -15,16 +15,6 @@ export function* printProfileSaga({
   payload,
 }: ReturnType<typeof printProfile>) {
   try {
-    const hasPrinter: boolean = yield call(SunmiPrinter.hasPrinter)
-    if (!hasPrinter) {
-      yield put(
-        enqueueSnackbar({
-          message: `ご利用の端末にプリンターがありません。`,
-        }),
-      )
-      return
-    }
-
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)
@@ -74,50 +64,52 @@ async function print({
   title,
 }: Profile) {
   try {
-    SunmiPrinter.setFontSize(FONT_SIZE.DEFAULT)
-    SunmiPrinter.setAlignment(AlignValue.CENTER)
-    SunmiPrinter.setFontWeight(true)
+    SunmiPrinterLibrary.setFontSize(FONT_SIZE.DEFAULT)
+    SunmiPrinterLibrary.setAlignment('center')
+    SunmiPrinterLibrary.setPrinterStyle('bold', true)
 
-    SunmiPrinter.lineWrap(1)
+    SunmiPrinterLibrary.lineWrap(1)
 
-    SunmiPrinter.setFontSize(FONT_SIZE.LARGE)
-    SunmiPrinter.setFontWeight(true)
-    SunmiPrinter.printerText(`${name}\n`)
-    SunmiPrinter.setFontSize(FONT_SIZE.DEFAULT)
+    SunmiPrinterLibrary.setFontSize(FONT_SIZE.LARGE)
+    SunmiPrinterLibrary.printText(name)
+    SunmiPrinterLibrary.setFontSize(FONT_SIZE.DEFAULT)
 
     if (alias) {
-      SunmiPrinter.printerText(`${alias}\n`)
+      SunmiPrinterLibrary.printText(alias)
     }
 
     if (iconBase64) {
       try {
-        SunmiPrinter.lineWrap(1)
-        SunmiPrinter.printBitmap(BASE64.PREFIX + iconBase64, BASE64.SIZE)
-        SunmiPrinter.lineWrap(1)
+        SunmiPrinterLibrary.lineWrap(1)
+        SunmiPrinterLibrary.printBitmapBase64(
+          BASE64.PREFIX + iconBase64,
+          BASE64.SIZE,
+        )
+        SunmiPrinterLibrary.lineWrap(1)
       } catch (e: any) {
         console.warn('print', e)
       }
     }
 
     if (description) {
-      SunmiPrinter.lineWrap(1)
-      SunmiPrinter.printerText(`${description}\n`)
-      SunmiPrinter.lineWrap(1)
+      SunmiPrinterLibrary.lineWrap(1)
+      SunmiPrinterLibrary.printText(description)
+      SunmiPrinterLibrary.lineWrap(1)
     }
 
     // 肩書き
     if (hasAnyKeyValue(title, ['position', 'company', 'address'])) {
       const { position, company, address } = title
 
-      SunmiPrinter.printerText(SEPARATOR)
+      await SunmiPrinterLibrary.printHR('line')
       if (company) {
-        SunmiPrinter.printerText(`${company}\n`)
+        SunmiPrinterLibrary.printText(company)
       }
       if (position) {
-        SunmiPrinter.printerText(`${position}\n`)
+        SunmiPrinterLibrary.printText(position)
       }
       if (address) {
-        SunmiPrinter.printerText(`${address}\n`)
+        SunmiPrinterLibrary.printText(address)
       }
     }
 
@@ -125,43 +117,43 @@ async function print({
     if (hasAnyKeyValue(sns, ['twitter', 'facebook', 'github', 'website'])) {
       const { twitter, facebook, github, website } = sns
 
-      SunmiPrinter.printerText(SEPARATOR)
-      SunmiPrinter.setAlignment(AlignValue.LEFT)
+      await SunmiPrinterLibrary.printHR('line')
+      SunmiPrinterLibrary.setAlignment('left')
       if (twitter) {
-        SunmiPrinter.printerText(`X: ${twitter}\n`)
+        SunmiPrinterLibrary.printText(`X: ${twitter}`)
       }
       if (facebook) {
-        SunmiPrinter.printerText(`Facebook: ${facebook}\n`)
+        SunmiPrinterLibrary.printText(`Facebook: ${facebook}`)
       }
       if (github) {
-        SunmiPrinter.printerText(`GitHub: ${github}\n`)
+        SunmiPrinterLibrary.printText(`GitHub: ${github}`)
       }
       if (website) {
-        SunmiPrinter.printerText(`Website: ${website}\n`)
+        SunmiPrinterLibrary.printText(`Website: ${website}`)
       }
-      SunmiPrinter.setAlignment(AlignValue.CENTER)
+      SunmiPrinterLibrary.setAlignment('center')
     }
 
     // QRコード
     if (hasAnyKeyValue(qr, ['url'])) {
       const { description: desc, url } = qr
 
-      SunmiPrinter.setAlignment(AlignValue.CENTER)
-      SunmiPrinter.printerText(SEPARATOR)
+      SunmiPrinterLibrary.setAlignment('center')
+      await SunmiPrinterLibrary.printHR('line')
       if (desc) {
-        SunmiPrinter.printerText(`${desc}\n`)
-        SunmiPrinter.lineWrap(1)
+        SunmiPrinterLibrary.printText(`${desc}\n`)
+        SunmiPrinterLibrary.lineWrap(1)
       }
       if (url) {
-        SunmiPrinter.printQRCode(url, 8, 1)
+        SunmiPrinterLibrary.printQRCode(url, 8, 'low')
       }
-      SunmiPrinter.lineWrap(1)
+      SunmiPrinterLibrary.lineWrap(1)
     }
 
     // 印刷時間
-    SunmiPrinter.setAlignment(AlignValue.RIGHT)
-    SunmiPrinter.printerText(`\n${timeStamp()}\n`)
-    SunmiPrinter.lineWrap(3)
+    SunmiPrinterLibrary.setAlignment('right')
+    SunmiPrinterLibrary.printText(`\n${timeStamp()}`)
+    SunmiPrinterLibrary.lineWrap(3)
   } catch (e: any) {
     console.warn('print', e)
     throw e

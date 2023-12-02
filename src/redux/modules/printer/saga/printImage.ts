@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects'
 import { printImage, printImageFromImagePicker } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { ImageSource } from '../utils'
-import SunmiPrinter, { AlignValue } from '@heasy/react-native-sunmi-printer'
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { BASE64 } from '@/utils/CONSTANTS'
 import MultipleImagePicker, {
   MediaType,
@@ -15,15 +15,6 @@ import { readFile } from 'react-native-fs'
  */
 export function* printImageSaga({ payload }: ReturnType<typeof printImage>) {
   try {
-    const hasPrinter: boolean = yield call(SunmiPrinter.hasPrinter)
-    if (!hasPrinter) {
-      yield put(
-        enqueueSnackbar({
-          message: `ご利用の端末にプリンターがありません。`,
-        }),
-      )
-      return
-    }
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)
@@ -85,24 +76,27 @@ async function getImageBase64() {
 
 async function print({ base64, type }: ImageSource) {
   try {
-    SunmiPrinter.setAlignment(AlignValue.CENTER)
+    SunmiPrinterLibrary.setAlignment('center')
 
-    SunmiPrinter.lineWrap(1)
+    SunmiPrinterLibrary.lineWrap(1)
 
     switch (type) {
       case 'grayscale':
-        SunmiPrinter.printBitmapCustomBase64(
+        SunmiPrinterLibrary.printBitmapBase64Custom(
           BASE64.PREFIX + base64,
           BASE64.MAX_SIZE,
-          2,
+          'grayscale',
         )
         break
       default:
-        SunmiPrinter.printBitmap(BASE64.PREFIX + base64, BASE64.MAX_SIZE)
+        SunmiPrinterLibrary.printBitmapBase64(
+          BASE64.PREFIX + base64,
+          BASE64.MAX_SIZE,
+        )
         break
     }
 
-    SunmiPrinter.lineWrap(6)
+    SunmiPrinterLibrary.lineWrap(6)
   } catch (e: any) {
     console.warn('print', e)
     throw e
