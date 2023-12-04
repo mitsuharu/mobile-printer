@@ -49,7 +49,7 @@
     "reselect": "^4.1.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.3",
+    "@babel/core": "^7.23.5",
     "@babel/plugin-proposal-decorators": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
     "@babel/runtime": "^7.23.4",
