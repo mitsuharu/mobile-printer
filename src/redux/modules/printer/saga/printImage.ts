@@ -82,16 +82,17 @@ async function print({ base64, type }: ImageSource) {
 
     switch (type) {
       case 'grayscale':
-        SunmiPrinterLibrary.printBitmapBase64Custom(
+        SunmiPrinterLibrary.printImage(
           BASE64.PREFIX + base64,
           BASE64.MAX_SIZE,
           'grayscale',
         )
         break
       default:
-        SunmiPrinterLibrary.printBitmapBase64(
+        SunmiPrinterLibrary.printImage(
           BASE64.PREFIX + base64,
           BASE64.MAX_SIZE,
+          'binary',
         )
         break
     }

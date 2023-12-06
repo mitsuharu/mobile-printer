@@ -27,7 +27,7 @@ export function* printQRCodeSaga({ payload }: ReturnType<typeof printQRCode>) {
 async function print({ text }: QRCodeSource) {
   try {
     SunmiPrinterLibrary.setAlignment('center')
-    SunmiPrinterLibrary.setPrinterStyle('bold', true)
+    SunmiPrinterLibrary.setTextStyle('bold', true)
 
     SunmiPrinterLibrary.lineWrap(1)
     SunmiPrinterLibrary.printQRCode(text, 8, 'low')
