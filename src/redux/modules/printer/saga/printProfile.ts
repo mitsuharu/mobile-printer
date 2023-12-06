@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects'
 import { printProfile } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { timeStamp } from '@/utils/day'
-import { FONT_SIZE, Profile, SEPARATOR, Submission } from '../utils'
+import { FONT_SIZE, Profile, Submission } from '../utils'
 import { hasAnyKeyValue } from '@/utils/object'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { BASE64 } from '@/utils/CONSTANTS'
@@ -66,7 +66,7 @@ async function print({
   try {
     SunmiPrinterLibrary.setFontSize(FONT_SIZE.DEFAULT)
     SunmiPrinterLibrary.setAlignment('center')
-    SunmiPrinterLibrary.setPrinterStyle('bold', true)
+    SunmiPrinterLibrary.setTextStyle('bold', true)
 
     SunmiPrinterLibrary.lineWrap(1)
 
@@ -81,9 +81,10 @@ async function print({
     if (iconBase64) {
       try {
         SunmiPrinterLibrary.lineWrap(1)
-        SunmiPrinterLibrary.printBitmapBase64(
+        SunmiPrinterLibrary.printImage(
           BASE64.PREFIX + iconBase64,
           BASE64.SIZE,
+          'binary',
         )
         SunmiPrinterLibrary.lineWrap(1)
       } catch (e: any) {
@@ -94,7 +95,6 @@ async function print({
     if (description) {
       SunmiPrinterLibrary.lineWrap(1)
       SunmiPrinterLibrary.printText(description)
-      SunmiPrinterLibrary.lineWrap(1)
     }
 
     // 肩書き
@@ -119,17 +119,35 @@ async function print({
 
       await SunmiPrinterLibrary.printHR('line')
       SunmiPrinterLibrary.setAlignment('left')
+      const widths = [10, 22]
+      const alignments: SunmiPrinterLibrary.Alignment[] = ['left', 'left']
       if (twitter) {
-        SunmiPrinterLibrary.printText(`X: ${twitter}`)
+        SunmiPrinterLibrary.printColumnsString(
+          ['X:', twitter],
+          widths,
+          alignments,
+        )
       }
       if (facebook) {
-        SunmiPrinterLibrary.printText(`Facebook: ${facebook}`)
+        SunmiPrinterLibrary.printColumnsString(
+          ['Facebook:', facebook],
+          widths,
+          alignments,
+        )
       }
       if (github) {
-        SunmiPrinterLibrary.printText(`GitHub: ${github}`)
+        SunmiPrinterLibrary.printColumnsString(
+          ['GitHub:', github],
+          widths,
+          alignments,
+        )
       }
       if (website) {
-        SunmiPrinterLibrary.printText(`Website: ${website}`)
+        SunmiPrinterLibrary.printColumnsString(
+          ['Website:', website],
+          widths,
+          alignments,
+        )
       }
       SunmiPrinterLibrary.setAlignment('center')
     }
@@ -141,7 +159,7 @@ async function print({
       SunmiPrinterLibrary.setAlignment('center')
       await SunmiPrinterLibrary.printHR('line')
       if (desc) {
-        SunmiPrinterLibrary.printText(`${desc}\n`)
+        SunmiPrinterLibrary.printText(desc)
         SunmiPrinterLibrary.lineWrap(1)
       }
       if (url) {

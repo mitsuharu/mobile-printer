@@ -26,7 +26,7 @@ async function print({ text, size }: TextSource) {
   try {
     SunmiPrinterLibrary.setAlignment('center')
     SunmiPrinterLibrary.setFontSize(fontSize)
-    SunmiPrinterLibrary.setPrinterStyle('bold', true)
+    SunmiPrinterLibrary.setTextStyle('bold', true)
 
     SunmiPrinterLibrary.lineWrap(1)
     SunmiPrinterLibrary.printText(text)
