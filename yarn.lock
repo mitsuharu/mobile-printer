@@ -1785,10 +1785,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@mitsuharu/react-native-sunmi-printer-library@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-0.1.1.tgz#eb5c3c0e7eb2d284f12f5feafb2f4c7bbc3516ce"
-  integrity sha512-lpTVBN88MY1PvbwA52YbAsEnMfJEJ0M1cA6ATS8ZLi1pVU5pWfMhQnOe0pnBgzvGN6Fe3VyHW9J0bJTRty9CNQ==
+"@mitsuharu/react-native-sunmi-printer-library@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-1.0.0.tgz#8101ea404a56080c1312713f2f0644f7ee034da6"
+  integrity sha512-wJOvn691zdxzJTzm004FK/37ksvBV8qi9mRrxSXii0pf1EK8+DFHekAKTPjE2zc54ButUIIzgYVNnd6uwMojxQ==
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
