@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react'
-import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
+import { ViewStyle, ScrollView, StyleSheet, Linking } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +15,7 @@ import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import { createSubmission, Submission } from '@/redux/modules/printer/utils'
 import { InputDialogCell } from './InputDialogCell'
+import NfcManager, { NfcTech, Ndef } from 'react-native-nfc-manager'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -112,8 +113,9 @@ const Container: React.FC<Props> = (props) => {
   }, [navigation, isEditable, toggle])
 
   const onPressSample = useCallback(() => {
-    dispatch(printProfile(sampleProfile))
-  }, [dispatch])
+    nfcSample()
+    //     dispatch(printProfile(sampleProfile))
+  }, [nfcSample, dispatch])
 
   const onPressText = useCallback(
     (text: string) => {
@@ -144,6 +146,45 @@ const Container: React.FC<Props> = (props) => {
   const onNavigateToPrinter = useCallback(() => {
     navigation.navigate('Printer')
   }, [navigation])
+
+  const nfcSample = useCallback(async () => {
+    try {
+      const isSupported = await NfcManager.isSupported()
+      console.log(`isSupported: ${isSupported}`)
+
+      const isEnabled = await NfcManager.isEnabled()
+      console.log(`isEnabled: ${isEnabled}`)
+
+      if (!isEnabled) {
+        // 無効なので設定から有効にしてもらう
+        Linking.sendIntent(`android.settings.NFC_SETTINGS`)
+        return
+      }
+
+      console.log(`requestTechnology`)
+      await NfcManager.requestTechnology(NfcTech.Ndef, {
+        alertMessage: 'Please tap NFC tags',
+      })
+
+      console.log(`getTag`)
+      const tag = await NfcManager.getTag()
+      console.log('Tag found', tag)
+
+      if (tag) {
+        const [{ payload }] = tag.ndefMessage
+        console.log(`payload: ${payload}`)
+        const data: Uint8Array = payload as unknown as Uint8Array
+        const result = await Ndef.uri.decodePayload(data)
+        console.log(`result: ${result}`)
+      }
+    } catch (error: any) {
+      console.warn(error)
+    } finally {
+      console.log(`finally, cancelTechnologyRequest`)
+      // stop the nfc scanning
+      NfcManager.cancelTechnologyRequest()
+    }
+  }, [])
 
   return (
     <Component
