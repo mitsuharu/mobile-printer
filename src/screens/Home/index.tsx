@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { ViewStyle, ScrollView, StyleSheet, Linking } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
@@ -15,7 +15,12 @@ import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import { createSubmission, Submission } from '@/redux/modules/printer/utils'
 import { InputDialogCell } from './InputDialogCell'
-import NfcManager, { NfcTech, Ndef } from 'react-native-nfc-manager'
+import NfcManager, {
+  NfcTech,
+  Ndef,
+  NfcEvents,
+  TagEvent,
+} from 'react-native-nfc-manager'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -161,15 +166,13 @@ const Container: React.FC<Props> = (props) => {
         return
       }
 
-      console.log(`requestTechnology`)
-      await NfcManager.requestTechnology(NfcTech.Ndef, {
-        alertMessage: 'Please tap NFC tags',
-      })
+      // requestTechnology か registerTagEvent() のどちらか
 
+      console.log(`requestTechnology`)
+      await NfcManager.requestTechnology(NfcTech.Ndef)
       console.log(`getTag`)
       const tag = await NfcManager.getTag()
       console.log('Tag found', tag)
-
       if (tag) {
         const [{ payload }] = tag.ndefMessage
         console.log(`payload: ${payload}`)
@@ -180,11 +183,20 @@ const Container: React.FC<Props> = (props) => {
     } catch (error: any) {
       console.warn(error)
     } finally {
-      console.log(`finally, cancelTechnologyRequest`)
+      console.log(`finally`)
       // stop the nfc scanning
       NfcManager.cancelTechnologyRequest()
     }
   }, [])
+
+  // useEffect(() => {
+  //   NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag: TagEvent) => {
+  //     const tagFound = tag
+  //     console.log(tagFound)
+  //     // NfcManager.unregisterTagEvent();
+  //   })
+  //   NfcManager.registerTagEvent()
+  // }, [])
 
   return (
     <Component
