@@ -27,7 +27,7 @@ function* requestIsSupportedSaga() {
     yield put(assignNfcIsSupported(isSupported))
     return isSupported
   } catch (error: any) {
-    console.warn(error)
+    console.warn('requestIsSupportedSaga', error.message)
     return false
   }
 }
@@ -39,7 +39,7 @@ function* requestIsEnabledSaga() {
       const result: boolean = yield call(
         AlertAsync,
         '端末の設定から NFC を有効にしてください',
-        `設定画面に移動しますか？`,
+        `設定画面に移動しますか？\n\n[注意] NFCをサポートしていないモデルもあります。ご利用の機種を確認してください。`,
         [
           { text: MESSAGE.NO, onPress: () => false },
           { text: MESSAGE.YES, onPress: () => true },
@@ -51,7 +51,7 @@ function* requestIsEnabledSaga() {
     }
     return isEnabled
   } catch (error: any) {
-    console.warn(error.message)
+    console.warn('requestIsEnabledSaga', error.message)
     return false
   }
 }
@@ -73,7 +73,7 @@ function* startReadingNfcSaga() {
       yield fork(printNfcTextSaga, result)
     }
   } catch (error: any) {
-    console.warn('startReadingNfcSaga' + error)
+    console.warn('startReadingNfcSaga', error.message)
   } finally {
     yield call(stopReadingNfcSaga)
   }
@@ -84,7 +84,7 @@ function* stopReadingNfcSaga() {
     yield put(assignNfcIsReading(false))
     yield call(NfcManager.cancelTechnologyRequest)
   } catch (error: any) {
-    console.warn('stopReadingNfcSaga' + error)
+    console.warn('stopReadingNfcSaga', error.message)
   }
 }
 
@@ -103,6 +103,6 @@ function* printNfcTextSaga(message: string) {
       yield put(printText({ text: message, size: 'default' }))
     }
   } catch (error: any) {
-    console.warn('printNfcTextSaga' + error.message)
+    console.warn('printNfcTextSaga', error.message)
   }
 }

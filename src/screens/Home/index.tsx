@@ -118,9 +118,8 @@ const Container: React.FC<Props> = (props) => {
   }, [navigation, isEditable, toggle])
 
   const onPressSample = useCallback(() => {
-    nfcSample()
-    //     dispatch(printProfile(sampleProfile))
-  }, [nfcSample, dispatch])
+    dispatch(printProfile(sampleProfile))
+  }, [dispatch])
 
   const onPressText = useCallback(
     (text: string) => {
@@ -151,52 +150,6 @@ const Container: React.FC<Props> = (props) => {
   const onNavigateToPrinter = useCallback(() => {
     navigation.navigate('Printer')
   }, [navigation])
-
-  const nfcSample = useCallback(async () => {
-    try {
-      const isSupported = await NfcManager.isSupported()
-      console.log(`isSupported: ${isSupported}`)
-
-      const isEnabled = await NfcManager.isEnabled()
-      console.log(`isEnabled: ${isEnabled}`)
-
-      if (!isEnabled) {
-        // 無効なので設定から有効にしてもらう
-        Linking.sendIntent(`android.settings.NFC_SETTINGS`)
-        return
-      }
-
-      // requestTechnology か registerTagEvent() のどちらか
-
-      console.log(`requestTechnology`)
-      await NfcManager.requestTechnology(NfcTech.Ndef)
-      console.log(`getTag`)
-      const tag = await NfcManager.getTag()
-      console.log('Tag found', tag)
-      if (tag) {
-        const [{ payload }] = tag.ndefMessage
-        console.log(`payload: ${payload}`)
-        const data: Uint8Array = payload as unknown as Uint8Array
-        const result = await Ndef.uri.decodePayload(data)
-        console.log(`result: ${result}`)
-      }
-    } catch (error: any) {
-      console.warn(error)
-    } finally {
-      console.log(`finally`)
-      // stop the nfc scanning
-      NfcManager.cancelTechnologyRequest()
-    }
-  }, [])
-
-  // useEffect(() => {
-  //   NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag: TagEvent) => {
-  //     const tagFound = tag
-  //     console.log(tagFound)
-  //     // NfcManager.unregisterTagEvent();
-  //   })
-  //   NfcManager.registerTagEvent()
-  // }, [])
 
   return (
     <Component
