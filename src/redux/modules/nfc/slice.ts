@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PersistConfig, persistReducer } from 'redux-persist'
 
 export type NfcState = {
+  isSupported: boolean
   isReading: boolean
 }
 
@@ -13,6 +14,7 @@ const config: PersistConfig<NfcState> = {
 }
 
 const initialState: NfcState = {
+  isSupported: false,
   isReading: false,
 }
 
@@ -20,18 +22,27 @@ const userSettingSlice = createSlice({
   name: 'NFC',
   initialState,
   reducers: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    startReadingNfc(state, _action: PayloadAction<void>) {
-      state.isReading = true
+    assignNfcIsSupported(state, { payload }: PayloadAction<boolean>) {
+      state.isSupported = payload
+    },
+
+    assignNfcIsReading(state, { payload }: PayloadAction<boolean>) {
+      state.isReading = payload
     },
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    stopReadingNfc(state, _action: PayloadAction<void>) {
-      state.isReading = false
-    },
+    startReadingNfc(_state, _action: PayloadAction<void>) {},
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    stopReadingNfc(_state, _action: PayloadAction<void>) {},
   },
 })
 
-export const { startReadingNfc, stopReadingNfc } = userSettingSlice.actions
+export const {
+  assignNfcIsSupported,
+  assignNfcIsReading,
+  startReadingNfc,
+  stopReadingNfc,
+} = userSettingSlice.actions
 
 export const NFCReducer = persistReducer(config, userSettingSlice.reducer)
