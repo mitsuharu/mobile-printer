@@ -65,7 +65,6 @@ function* startReadingNfcSaga() {
     yield put(assignNfcIsReading(true))
 
     yield call(NfcManager.requestTechnology, NfcTech.Ndef)
-
     const tag: TagEvent | null = yield call(NfcManager.getTag)
     if (tag) {
       const [{ payload }] = tag.ndefMessage
@@ -81,7 +80,6 @@ function* startReadingNfcSaga() {
 }
 
 function* stopReadingNfcSaga() {
-  console.log('stopReadingNfcSaga')
   try {
     yield put(assignNfcIsReading(false))
     yield call(NfcManager.cancelTechnologyRequest)
