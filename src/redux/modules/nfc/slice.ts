@@ -21,17 +21,17 @@ const userSettingSlice = createSlice({
   initialState,
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    startReading(state, _action: PayloadAction<void>) {
+    startReadingNfc(state, _action: PayloadAction<void>) {
       state.isReading = true
     },
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    stopReading(state, _action: PayloadAction<void>) {
+    stopReadingNfc(state, _action: PayloadAction<void>) {
       state.isReading = false
     },
   },
 })
 
-export const { startReading, stopReading } = userSettingSlice.actions
+export const { startReadingNfc, stopReadingNfc } = userSettingSlice.actions
 
 export const NFCReducer = persistReducer(config, userSettingSlice.reducer)

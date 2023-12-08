@@ -4,6 +4,7 @@ import { PersistGate as PersistProvider } from 'redux-persist/integration/react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { initializeRedux } from '@/redux'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NfcModel } from './components/Modal/NfcModal'
 
 const App: React.FC = () => {
   const { persistor, store } = initializeRedux()
@@ -13,7 +14,7 @@ const App: React.FC = () => {
       <ReduxProvider store={store}>
         <PersistProvider loading={false} persistor={persistor}>
           <Routes />
-          {/* <Home /> */}
+          <NfcModel />
         </PersistProvider>
       </ReduxProvider>
     </SafeAreaProvider>
