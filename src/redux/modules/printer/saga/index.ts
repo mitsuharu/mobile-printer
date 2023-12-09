@@ -1,5 +1,6 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import {
+  assignIsPrintable,
   duplicateQRCode,
   printImage,
   printImageFromImagePicker,
@@ -62,8 +63,10 @@ function* printInitSaga() {
     }
 
     yield call(SunmiPrinterLibrary.prepare)
+    yield put(assignIsPrintable(true))
   } catch (e: any) {
     console.warn('printInitSaga', e)
+    yield put(assignIsPrintable(false))
     yield put(
       enqueueSnackbar({
         message: `プリンターの接続に失敗しました`,

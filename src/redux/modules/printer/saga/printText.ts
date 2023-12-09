@@ -3,12 +3,17 @@ import { printText } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { FONT_SIZE, TextSource } from '../utils'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
+import { validatePrinterSaga } from './printerSagaUtils'
 
 /**
  * @package
  */
 export function* printTextSaga({ payload }: ReturnType<typeof printText>) {
   try {
+    const isPrintable: boolean = yield call(validatePrinterSaga)
+    if (!isPrintable) {
+      return
+    }
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)

@@ -7,12 +7,17 @@ import { DeviceEventEmitter } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
 import { MESSAGE } from '@/CONSTANTS/MESSAGE'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
+import { validatePrinterSaga } from './printerSagaUtils'
 
 /**
  * @package
  */
 export function* printQRCodeSaga({ payload }: ReturnType<typeof printQRCode>) {
   try {
+    const isPrintable: boolean = yield call(validatePrinterSaga)
+    if (!isPrintable) {
+      return
+    }
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)

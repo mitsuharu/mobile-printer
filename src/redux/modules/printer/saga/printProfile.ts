@@ -7,6 +7,7 @@ import { hasAnyKeyValue } from '@/utils/object'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { BASE64 } from '@/utils/CONSTANTS'
 import { selectPrinterSubmissions } from '../selectors'
+import { validatePrinterSaga } from './printerSagaUtils'
 
 /**
  * @package
@@ -15,6 +16,11 @@ export function* printProfileSaga({
   payload,
 }: ReturnType<typeof printProfile>) {
   try {
+    const isPrintable: boolean = yield call(validatePrinterSaga)
+    if (!isPrintable) {
+      return
+    }
+
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)

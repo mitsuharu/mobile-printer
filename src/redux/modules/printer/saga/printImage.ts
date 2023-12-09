@@ -9,12 +9,17 @@ import MultipleImagePicker, {
 } from '@baronha/react-native-multiple-image-picker'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import { readFile } from 'react-native-fs'
+import { validatePrinterSaga } from './printerSagaUtils'
 
 /**
  * @package
  */
 export function* printImageSaga({ payload }: ReturnType<typeof printImage>) {
   try {
+    const isPrintable: boolean = yield call(validatePrinterSaga)
+    if (!isPrintable) {
+      return
+    }
     yield call(print, payload)
   } catch (e: any) {
     console.warn('printSaga', e)

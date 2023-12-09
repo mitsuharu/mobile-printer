@@ -13,6 +13,7 @@ import {
 import { PersistConfig, persistReducer } from 'redux-persist'
 
 export type PrinterState = {
+  isPrintable: boolean
   submissions: Submission[]
 }
 
@@ -23,6 +24,7 @@ const config: PersistConfig<PrinterState> = {
 }
 
 const initialState: Readonly<PrinterState> = {
+  isPrintable: false,
   submissions: createPresetSubmissions(),
 }
 
@@ -30,6 +32,10 @@ const printerSlice = createSlice({
   name: 'PRINTER',
   initialState,
   reducers: {
+    assignIsPrintable(state, { payload }: PayloadAction<boolean>) {
+      state.isPrintable = payload
+    },
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printProfile(_state, _action: PayloadAction<Profile>) {},
 
@@ -77,6 +83,7 @@ const printerSlice = createSlice({
 })
 
 export const {
+  assignIsPrintable,
   printProfile,
   printProfileRandomly,
   printText,
