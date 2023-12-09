@@ -11,9 +11,11 @@ import {
   TextSource,
 } from './utils/types'
 import { PersistConfig, persistReducer } from 'redux-persist'
+import { PrinterInfo } from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type PrinterState = {
   isPrintable: boolean
+  printerInfo?: PrinterInfo
   submissions: Submission[]
 }
 
@@ -25,6 +27,7 @@ const config: PersistConfig<PrinterState> = {
 
 const initialState: Readonly<PrinterState> = {
   isPrintable: false,
+  printerInfo: undefined,
   submissions: createPresetSubmissions(),
 }
 
@@ -34,6 +37,10 @@ const printerSlice = createSlice({
   reducers: {
     assignIsPrintable(state, { payload }: PayloadAction<boolean>) {
       state.isPrintable = payload
+    },
+
+    assignPrinterInfo(state, { payload }: PayloadAction<PrinterInfo>) {
+      state.printerInfo = payload
     },
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -84,6 +91,7 @@ const printerSlice = createSlice({
 
 export const {
   assignIsPrintable,
+  assignPrinterInfo,
   printProfile,
   printProfileRandomly,
   printText,

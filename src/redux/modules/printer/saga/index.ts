@@ -21,6 +21,7 @@ import {
   monitorScanSuccessSaga,
   printQRCodeSaga,
 } from './printQRCode'
+import { getPrinterInfoSaga } from './printerSagaUtils'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {
@@ -64,6 +65,7 @@ function* printInitSaga() {
 
     yield call(SunmiPrinterLibrary.prepare)
     yield put(assignIsPrintable(true))
+    yield fork(getPrinterInfoSaga)
   } catch (e: any) {
     console.warn('printInitSaga', e)
     yield put(assignIsPrintable(false))
