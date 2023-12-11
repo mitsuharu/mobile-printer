@@ -2,10 +2,10 @@ import { call, put, select } from 'redux-saga/effects'
 import { printProfile } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { timeStamp } from '@/utils/day'
-import { FONT_SIZE, Profile, Submission } from '../utils'
+import { Profile, Submission } from '../utils'
 import { hasAnyKeyValue } from '@/utils/object'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
-import { BASE64 } from '@/utils/CONSTANTS'
+import { BASE64, FONT_SIZE } from '@/CONSTANTS'
 import { selectPrinterSubmissions } from '../selectors'
 import { validatePrinterSaga } from './printerSagaUtils'
 
@@ -62,7 +62,7 @@ export function* printProfileRandomlySaga() {
 
 async function print({
   name,
-  iconBase64,
+  icon,
   alias,
   description,
   sns,
@@ -84,14 +84,11 @@ async function print({
       SunmiPrinterLibrary.printText(alias)
     }
 
-    if (iconBase64) {
+    if (icon) {
+      const { base64, width, type } = icon
       try {
         SunmiPrinterLibrary.lineWrap(1)
-        SunmiPrinterLibrary.printImage(
-          BASE64.PREFIX + iconBase64,
-          BASE64.SIZE,
-          'binary',
-        )
+        SunmiPrinterLibrary.printImage(BASE64.PREFIX + base64, width, type)
         SunmiPrinterLibrary.lineWrap(1)
       } catch (e: any) {
         console.warn('print', e)

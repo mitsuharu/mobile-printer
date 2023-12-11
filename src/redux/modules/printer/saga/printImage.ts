@@ -3,7 +3,7 @@ import { printImage, printImageFromImagePicker } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { ImageSource } from '../utils'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
-import { BASE64 } from '@/utils/CONSTANTS'
+import { BASE64 } from '@/CONSTANTS'
 import MultipleImagePicker, {
   MediaType,
 } from '@baronha/react-native-multiple-image-picker'

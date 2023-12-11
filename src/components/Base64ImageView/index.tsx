@@ -10,7 +10,7 @@ import {
   Pressable,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { BASE64 } from '@/utils/CONSTANTS'
+import { BASE64 } from '@/CONSTANTS'
 import MultipleImagePicker, {
   MediaType,
 } from '@baronha/react-native-multiple-image-picker'
@@ -45,7 +45,7 @@ const Component: React.FC<ComponentProps> = ({ style, source, onPress }) => {
       {source ? (
         <Image source={source} resizeMode={'contain'} style={styles.image} />
       ) : (
-        <Icon name={'image-off-outline'} size={BASE64.SIZE} />
+        <Icon name={'image-off-outline'} size={BASE64.PROFILE_ICON_SIZE} />
       )}
     </Pressable>
   )
@@ -69,8 +69,8 @@ const Container: React.FC<Props> = (props) => {
 
       const { uri } = await ImageResizer.createResizedImage(
         path,
-        BASE64.SIZE,
-        (BASE64.SIZE * height) / width,
+        BASE64.PROFILE_ICON_SIZE,
+        (BASE64.PROFILE_ICON_SIZE * height) / width,
         'PNG',
         80,
         0,
@@ -92,13 +92,13 @@ export { Container as Base64ImageView }
 
 const styles = StyleSheet.create({
   container: styleType<ViewStyle>({
-    width: BASE64.SIZE,
-    height: BASE64.SIZE,
+    width: BASE64.PROFILE_ICON_SIZE,
+    height: BASE64.PROFILE_ICON_SIZE,
     opacity: 1.0,
   }),
   image: styleType<ImageStyle>({
-    width: BASE64.SIZE,
-    height: BASE64.SIZE,
+    width: BASE64.PROFILE_ICON_SIZE,
+    height: BASE64.PROFILE_ICON_SIZE,
   }),
   pressed: styleType<ViewStyle>({
     opacity: 0.7,

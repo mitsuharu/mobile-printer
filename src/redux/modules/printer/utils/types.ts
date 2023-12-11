@@ -39,7 +39,7 @@ export type Profile = {
   /**
    * Base 64 でエンコードしたアイコン画像
    */
-  iconBase64?: string
+  icon?: ImageSource
 
   sns?: {
     twitter?: string

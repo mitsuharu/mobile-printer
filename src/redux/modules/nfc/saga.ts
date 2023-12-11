@@ -8,7 +8,7 @@ import {
 } from './slice'
 import { Linking } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
-import { MESSAGE } from '@/CONSTANTS/MESSAGE'
+import { MESSAGE } from '@/CONSTANTS'
 import { printText } from '../printer/slice'
 
 export function* nfcSaga() {

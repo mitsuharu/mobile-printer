@@ -1,3 +1,4 @@
+import { BASE64 } from '@/CONSTANTS'
 import { Profile } from './types'
 
 const sampleAvatorBase64 =
@@ -6,7 +7,11 @@ const sampleAvatorBase64 =
 export const sampleProfile: Profile = {
   name: '織田信長',
   alias: 'Nobunaga Oda',
-  iconBase64: sampleAvatorBase64,
+  icon: {
+    base64: sampleAvatorBase64,
+    type: 'binary',
+    width: BASE64.PROFILE_ICON_SIZE,
+  },
   title: {
     company: '株式会社 織田軍',
     position: '代表取締役大名',

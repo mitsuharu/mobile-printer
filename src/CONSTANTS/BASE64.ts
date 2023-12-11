@@ -5,7 +5,7 @@ export const BASE64 = {
   /**
    * 名刺版のアイコンサイズ
    */
-  SIZE: 200,
+  PROFILE_ICON_SIZE: 200,
 
   /**
    * 印刷可能な最大横幅
@@ -17,5 +17,3 @@ export const BASE64 = {
    */
   PREFIX: 'data:image/png;base64,',
 }
-
-export const BitmapCustomType = {}

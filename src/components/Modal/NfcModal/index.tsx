@@ -12,11 +12,10 @@ import {
 import { styleType } from '@/utils/styles'
 import { makeStyles } from 'react-native-swag-styles'
 import { Button } from '@/components/Button'
-import { MESSAGE } from '@/CONSTANTS/MESSAGE'
+import { MESSAGE, COLOR } from '@/CONSTANTS'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectNfcIsReading } from '@/redux/modules/nfc/selectors'
 import { stopReadingNfc } from '@/redux/modules/nfc/slice'
-import { COLOR } from '@/CONSTANTS/COLOR'
 
 type Props = {}
 type ComponentProps = Props & {
