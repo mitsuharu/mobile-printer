@@ -80,7 +80,7 @@ export type ImageSource = {
   width: number
 }
 
-export type PrintImageType = 'monochrome' | 'grayscale'
+export type PrintImageType = 'binary' | 'grayscale'
 
 /**
  * QRコード印刷のデータ

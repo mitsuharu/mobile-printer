@@ -38,9 +38,9 @@ export function* printImageFromImagePickerSaga({
   payload,
 }: ReturnType<typeof printImageFromImagePicker>) {
   try {
-    const base64: string | undefined = yield call(getImageBase64)
+    const { base64, width }: GetImageBase64Result = yield call(getImageBase64)
     if (base64) {
-      yield put(printImage({ base64: base64, type: payload }))
+      yield put(printImage({ base64: base64, type: payload, width: width }))
     }
   } catch (e: any) {
     console.warn('printSaga', e)
@@ -52,7 +52,8 @@ export function* printImageFromImagePickerSaga({
   }
 }
 
-async function getImageBase64() {
+type GetImageBase64Result = { base64: string | undefined; width: number }
+async function getImageBase64(): Promise<GetImageBase64Result> {
   try {
     const { path, width, height } = await MultipleImagePicker.openPicker({
       mediaType: 'image' as MediaType,
@@ -72,35 +73,19 @@ async function getImageBase64() {
 
     const base64Data = await readFile(uri, { encoding: 'base64' })
 
-    return base64Data
+    return { base64: base64Data, width: BASE64.MAX_SIZE }
   } catch (e: any) {
     console.warn(e)
-    return undefined
+    return { base64: undefined, width: 0 }
   }
 }
 
-async function print({ base64, type }: ImageSource) {
+async function print({ base64, type, width }: ImageSource) {
   try {
     SunmiPrinterLibrary.setAlignment('center')
-
     SunmiPrinterLibrary.lineWrap(1)
 
-    switch (type) {
-      case 'grayscale':
-        SunmiPrinterLibrary.printImage(
-          BASE64.PREFIX + base64,
-          BASE64.MAX_SIZE,
-          'grayscale',
-        )
-        break
-      default:
-        SunmiPrinterLibrary.printImage(
-          BASE64.PREFIX + base64,
-          BASE64.MAX_SIZE,
-          'binary',
-        )
-        break
-    }
+    SunmiPrinterLibrary.printImage(BASE64.PREFIX + base64, width, type)
 
     SunmiPrinterLibrary.lineWrap(6)
   } catch (e: any) {
