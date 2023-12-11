@@ -18,6 +18,7 @@
 	- テキスト
 	- 画像
 	- QRコード
+	- NFC解析
 - プロフィール印刷
 	- 名刺
 
@@ -46,15 +47,21 @@ yarn android
 
 ### release
 
+- apk
+	- `android/app/build/outputs/apk/release/app-release.apk`
+	- 開発版向け
+
 ```shell
 cd ./android
-
-# apk
-# android/app/build/outputs/apk/release/app-release.apk
 ./gradlew assembleRelease
+```
 
-# aab
-# android/app/build/outputs/bundle/release/app-release.aab
+- aab
+	- `android/app/build/outputs/bundle/release/app-release.aab`
+	- ストアリリース向け（予定なし）
+
+```shell
+cd ./android
 ./gradlew bundleRelease
 ```
 
@@ -65,6 +72,11 @@ cd ./android
 - 画像は端末内のライブラリから選択可能です
   - 事前に白黒加工をするのがおすすめです
  
+## その他
+
+- ビルド済みアプリは Releases にて apk を公開しています
+- データ構造はバージョンにより修正・変更されます。開発版のため、データのマイグレーション処理はしていません。アンインストールしてから、インストールしてください。
+
 ## TODO
 
 - CI
