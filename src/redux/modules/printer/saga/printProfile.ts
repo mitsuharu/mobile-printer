@@ -84,7 +84,7 @@ async function print({
       SunmiPrinterLibrary.printText(alias)
     }
 
-    if (icon) {
+    if (hasAnyKeyValue(icon, ['base64', 'width', 'type'])) {
       const { base64, width, type } = icon
       try {
         SunmiPrinterLibrary.lineWrap(1)

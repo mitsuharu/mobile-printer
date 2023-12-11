@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from 'react-native'
 import { useForm, ErrorOption } from 'react-hook-form'
-import { Submission } from '@/redux/modules/printer/utils'
+import { ImageSource, Submission } from '@/redux/modules/printer/utils'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { TextInputController } from './TextInputController'
@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SubmitView } from './SubmitView'
 import { Base64ImageView } from '@/components/Base64ImageView'
+import { BASE64 } from '@/CONSTANTS'
 
 export type OnSubmit = (
   props: Submission,
@@ -82,9 +83,23 @@ export const FormView: React.FC<Props> = ({
 
   const onChangeBase64 = useCallback(
     (base64: string) => {
-      setValue('profile.iconBase64', base64)
+      const imageSource: ImageSource | undefined = getValues('profile.icon')
+      if (imageSource) {
+        const { width, type } = imageSource
+        setValue('profile.icon', {
+          base64: base64,
+          width: width ?? BASE64.PROFILE_ICON_SIZE,
+          type: type ?? 'binary',
+        })
+      } else {
+        setValue('profile.icon', {
+          base64: base64,
+          type: 'binary',
+          width: BASE64.PROFILE_ICON_SIZE,
+        })
+      }
     },
-    [setValue],
+    [getValues, setValue],
   )
 
   // 次の入力フォームにfocusさせるため
@@ -99,7 +114,7 @@ export const FormView: React.FC<Props> = ({
         address: createRef<TextInput>(),
       },
       description: createRef<TextInput>(),
-      iconBase64: createRef<TextInput>(),
+      icon: createRef<TextInput>(),
       sns: {
         twitter: createRef<TextInput>(),
         facebook: createRef<TextInput>(),
@@ -206,16 +221,16 @@ export const FormView: React.FC<Props> = ({
           formTitle={'Base 64 でエンコードしたアイコン画像'}
           control={control}
           getValues={getValues}
-          error={errors.profile?.iconBase64}
-          fieldPath={'profile.iconBase64'}
-          textInputRef={inputRefs.profile.iconBase64}
+          error={errors.profile?.icon?.base64}
+          fieldPath={'profile.icon.base64'}
+          textInputRef={inputRefs.profile.icon}
           nextTextInputRef={inputRefs.profile.sns.twitter}
           returnKeyType={'next'}
           editable={false}
         />
         <Base64ImageView
           style={styles.base64ImageView}
-          base64={getValues('profile.iconBase64')}
+          base64={getValues('profile.icon.base64')}
           onChange={onChangeBase64}
         />
         <Spacer height={8} />
