@@ -4,14 +4,16 @@ import dayjs from 'dayjs'
 import { createPresetSubmissions, isEqualToSubmission } from './utils'
 import {
   ImageSource,
-  PrintImageType,
   Profile,
   QRCodeSource,
   Submission,
   TextSource,
 } from './utils/types'
 import { PersistConfig, persistReducer } from 'redux-persist'
-import { PrinterInfo } from '@mitsuharu/react-native-sunmi-printer-library'
+import {
+  PrinterInfo,
+  PrintImageType,
+} from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type PrinterState = {
   isPrintable: boolean

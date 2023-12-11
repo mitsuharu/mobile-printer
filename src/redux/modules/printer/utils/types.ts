@@ -1,3 +1,5 @@
+import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
+
 export type Profile = {
   /**
    * 名前
@@ -79,8 +81,6 @@ export type ImageSource = {
   type: PrintImageType
   width: number
 }
-
-export type PrintImageType = 'binary' | 'grayscale'
 
 /**
  * QRコード印刷のデータ
