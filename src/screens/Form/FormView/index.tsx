@@ -1,4 +1,4 @@
-import React, { useCallback, createRef } from 'react'
+import React, { useCallback, createRef, useState } from 'react'
 import {
   Keyboard,
   View,
@@ -19,6 +19,8 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SubmitView } from './SubmitView'
 import { Base64ImageView } from '@/components/Base64ImageView'
 import { BASE64 } from '@/CONSTANTS'
+import { PrintImageTypeSegmentedControl } from './ImageTypeSegmentedControl'
+import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type OnSubmit = (
   props: Submission,
@@ -54,6 +56,14 @@ export const FormView: React.FC<Props> = ({
   })
 
   /**
+   * PrintImageType を切り替えるセグメントコントロールの初期値
+   * 画像の BASE64 の有無で判断する
+   */
+  const [enableSegmentedControl, setEnableSegmentedControl] = useState<boolean>(
+    !!getValues('profile.icon.base64'),
+  )
+
+  /**
    * handleSubmitに渡すonSubmit（validationが成功した場合に呼ばれる）
    */
   const innerOnSubmit = useCallback(
@@ -81,21 +91,32 @@ export const FormView: React.FC<Props> = ({
     }
   }, [handleSubmit, innerOnError, innerOnSubmit])
 
+  /**
+   * 画像が選択されたときのイベント
+   */
   const onChangeBase64 = useCallback(
     (base64: string) => {
       const imageSource: ImageSource | undefined = getValues('profile.icon')
+      setValue('profile.icon', {
+        base64: base64,
+        width: imageSource?.width ?? BASE64.PROFILE_ICON_SIZE,
+        type: imageSource?.type ?? 'binary',
+      })
+      setEnableSegmentedControl(true)
+    },
+    [getValues, setValue],
+  )
+
+  /**
+   * セグメントコントロールで選択されたときのイベント
+   */
+  const onChangePrintImageType = useCallback(
+    (printImageTyp: PrintImageType) => {
+      const imageSource: ImageSource | undefined = getValues('profile.icon')
       if (imageSource) {
-        const { width, type } = imageSource
         setValue('profile.icon', {
-          base64: base64,
-          width: width ?? BASE64.PROFILE_ICON_SIZE,
-          type: type ?? 'binary',
-        })
-      } else {
-        setValue('profile.icon', {
-          base64: base64,
-          type: 'binary',
-          width: BASE64.PROFILE_ICON_SIZE,
+          ...imageSource,
+          type: printImageTyp,
         })
       }
     },
@@ -232,6 +253,11 @@ export const FormView: React.FC<Props> = ({
           style={styles.base64ImageView}
           base64={getValues('profile.icon.base64')}
           onChange={onChangeBase64}
+        />
+        <PrintImageTypeSegmentedControl
+          initialPrintImageType={getValues('profile.icon.type')}
+          onChange={onChangePrintImageType}
+          enabled={enableSegmentedControl}
         />
         <Spacer height={8} />
 
