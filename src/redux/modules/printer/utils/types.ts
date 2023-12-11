@@ -1,3 +1,5 @@
+import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
+
 export type Profile = {
   /**
    * 名前
@@ -37,7 +39,7 @@ export type Profile = {
   /**
    * Base 64 でエンコードしたアイコン画像
    */
-  iconBase64?: string
+  icon?: ImageSource
 
   sns?: {
     twitter?: string
@@ -77,9 +79,8 @@ export type TextSource = {
 export type ImageSource = {
   base64: string
   type: PrintImageType
+  width: number
 }
-
-export type PrintImageType = 'monochrome' | 'grayscale'
 
 /**
  * QRコード印刷のデータ

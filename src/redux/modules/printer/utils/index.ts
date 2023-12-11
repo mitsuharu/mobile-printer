@@ -2,7 +2,6 @@ import { createUUID } from '@/utils/uuid'
 import dayjs from 'dayjs'
 import { Submission } from './types'
 export * from './types'
-export * from './constants'
 export * from './sample'
 export * from './preset'
 

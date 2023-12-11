@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import { Button } from '@/components/Button'
 import { contentInset } from '@/components/List/util'
-import { COLOR } from '@/CONSTANTS/COLOR'
+import { COLOR } from '@/CONSTANTS'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Size } from '@/utils/types'
 import { makeStyles } from 'react-native-swag-styles'

@@ -7,7 +7,7 @@ import {
   useColorScheme,
   StyleSheet,
 } from 'react-native'
-import { COLOR } from '@/CONSTANTS/COLOR'
+import { COLOR } from '@/CONSTANTS'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 

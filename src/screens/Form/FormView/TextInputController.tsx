@@ -1,5 +1,5 @@
 import React from 'react'
-import { COLOR } from '@/CONSTANTS/COLOR'
+import { COLOR } from '@/CONSTANTS'
 import {
   View,
   ViewStyle,

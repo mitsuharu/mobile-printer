@@ -18,7 +18,7 @@ import { startReadingNfc } from '@/redux/modules/nfc/slice'
 type Props = {}
 type ComponentProps = Props & {
   onPressText: (text: string) => void
-  onPressImageMonochrome: () => void
+  onPressImageBinary: () => void
   onPressImageGrayscale: () => void
   onPressQRCode: (text: string) => void
   onPressDuplicateQRCode: () => void
@@ -28,7 +28,7 @@ type ComponentProps = Props & {
 
 const Component: React.FC<ComponentProps> = ({
   onPressText,
-  onPressImageMonochrome,
+  onPressImageBinary,
   onPressImageGrayscale,
   onPressQRCode,
   onPressDuplicateQRCode,
@@ -48,7 +48,7 @@ const Component: React.FC<ComponentProps> = ({
         />
       </Section>
       <Section title="画像">
-        <Cell title="画像を白黒で印刷する" onPress={onPressImageMonochrome} />
+        <Cell title="画像を白黒で印刷する" onPress={onPressImageBinary} />
         <Cell
           title="画像をグレースケールで印刷する"
           onPress={onPressImageGrayscale}
@@ -96,8 +96,8 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
-  const onPressImageMonochrome = useCallback(() => {
-    dispatch(printImageFromImagePicker('monochrome'))
+  const onPressImageBinary = useCallback(() => {
+    dispatch(printImageFromImagePicker('binary'))
   }, [dispatch])
 
   const onPressImageGrayscale = useCallback(() => {
@@ -124,7 +124,7 @@ const Container: React.FC<Props> = (props) => {
       {...props}
       {...{
         onPressText,
-        onPressImageMonochrome,
+        onPressImageBinary,
         onPressImageGrayscale,
         onPressQRCode,
         onPressDuplicateQRCode,

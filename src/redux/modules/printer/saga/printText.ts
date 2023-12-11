@@ -1,9 +1,10 @@
 import { call, put } from 'redux-saga/effects'
 import { printText } from '../slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { FONT_SIZE, TextSource } from '../utils'
+import { TextSource } from '../utils'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { validatePrinterSaga } from './printerSagaUtils'
+import { FONT_SIZE } from '@/CONSTANTS'
 
 /**
  * @package

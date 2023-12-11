@@ -5,7 +5,7 @@ import { QRCodeSource } from '../utils'
 import { eventChannel } from 'redux-saga'
 import { DeviceEventEmitter } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
-import { MESSAGE } from '@/CONSTANTS/MESSAGE'
+import { MESSAGE } from '@/CONSTANTS'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { validatePrinterSaga } from './printerSagaUtils'
 

@@ -1841,10 +1841,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@mitsuharu/react-native-sunmi-printer-library@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-1.0.0.tgz#8101ea404a56080c1312713f2f0644f7ee034da6"
-  integrity sha512-wJOvn691zdxzJTzm004FK/37ksvBV8qi9mRrxSXii0pf1EK8+DFHekAKTPjE2zc54ButUIIzgYVNnd6uwMojxQ==
+"@mitsuharu/react-native-sunmi-printer-library@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-1.0.1.tgz#fc14546dfe5b4f0ce091b3d94484c1498aa9ba1f"
+  integrity sha512-7mqJ7tV0OerVsqEg00H+uqVIu3DdqjZsMuu3ULULXX9YsFK1XCYZUzdz81wEmTcA8l+QgzvYi9QCjHz5igFwvQ==
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
@@ -2056,6 +2056,11 @@
     graceful-fs "^4.1.3"
     prompts "^2.4.0"
     semver "^7.5.2"
+
+"@react-native-segmented-control/segmented-control@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@react-native-segmented-control/segmented-control/-/segmented-control-2.4.2.tgz#ff8a8bebd6c6e41fba6b3ffe29a1ef97405fda21"
+  integrity sha512-sWRzXgM4zfQdlAwYb8KzInwRLQDFI1myzzedZxV6pLYo7WxLgVUsbb4gcb8jqVrQGws3ZtuMebXPIHkCZUCZXg==
 
 "@react-native/assets-registry@^0.72.0":
   version "0.72.0"

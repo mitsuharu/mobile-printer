@@ -1,4 +1,4 @@
-import { COLOR } from '@/CONSTANTS/COLOR'
+import { COLOR } from '@/CONSTANTS'
 import { DefaultTheme, MD3DarkTheme } from 'react-native-paper'
 import { ColorSchemeName } from 'react-native'
 
