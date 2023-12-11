@@ -77,6 +77,7 @@ export type TextSource = {
 export type ImageSource = {
   base64: string
   type: PrintImageType
+  width: number
 }
 
 export type PrintImageType = 'monochrome' | 'grayscale'
