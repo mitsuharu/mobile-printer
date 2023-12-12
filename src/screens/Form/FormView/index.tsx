@@ -7,6 +7,7 @@ import {
   StyleProp,
   ScrollView,
   StyleSheet,
+  Text,
 } from 'react-native'
 import { useForm, ErrorOption } from 'react-hook-form'
 import { ImageSource, Submission } from '@/redux/modules/printer/utils'
@@ -92,6 +93,30 @@ export const FormView: React.FC<Props> = ({
   }, [handleSubmit, innerOnError, innerOnSubmit])
 
   /**
+   * フォームで表示する Base64 を成形する
+   */
+  const makeShrunkenText = useCallback((text: string | undefined) => {
+    if (text) {
+      if (text.length > 35) {
+        return '(' + text.slice(0, 10) + '...' + text.slice(-25) + ')'
+      }
+      return '(' + text + ')'
+    }
+    return ''
+  }, [])
+
+  /**
+   * フォームで表示する Base64 のテキスト
+   *
+   * @note
+   * Base64 の表示に TextInputController を利用するとレンダリングが遅くなる。
+   * そのため、単純な Text + State で表示する
+   */
+  const [base64Text, setBase64Text] = useState(
+    makeShrunkenText(getValues('profile.icon.base64')),
+  )
+
+  /**
    * 画像が選択されたときのイベント
    */
   const onChangeBase64 = useCallback(
@@ -103,8 +128,9 @@ export const FormView: React.FC<Props> = ({
         type: imageSource?.type ?? 'binary',
       })
       setEnableSegmentedControl(true)
+      setBase64Text(makeShrunkenText(base64))
     },
-    [getValues, setValue],
+    [getValues, setValue, setBase64Text, makeShrunkenText],
   )
 
   /**
@@ -238,17 +264,8 @@ export const FormView: React.FC<Props> = ({
         />
         <Spacer height={8} />
 
-        <TextInputController
-          formTitle={'Base 64 でエンコードしたアイコン画像'}
-          control={control}
-          getValues={getValues}
-          error={errors.profile?.icon?.base64}
-          fieldPath={'profile.icon.base64'}
-          textInputRef={inputRefs.profile.icon}
-          nextTextInputRef={inputRefs.profile.sns.twitter}
-          returnKeyType={'next'}
-          editable={false}
-        />
+        <Text>Base64 でエンコードしたアイコン画像</Text>
+        <Text>{base64Text}</Text>
         <Base64ImageView
           style={styles.base64ImageView}
           base64={getValues('profile.icon.base64')}
