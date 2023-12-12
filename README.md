@@ -88,5 +88,5 @@ MIT
 
 ## Link
 
-- [名刺を印刷するスマホアプリを作った \- Qiita](https://qiita.com/mitsuharu_e/items/2aeb060c6934e763b6c0)
-- [SUNMI V2 PRO を入手した iOS アプリエンジニアが頑張る話 \- Speaker Deck](https://speakerdeck.com/mitsuharu/kyotolt-20221209)
+- [業務用スマホ SUNMI V2 PRO の開発準備の手引き - Qiita](https://qiita.com/mitsuharu_e/items/3f2add415136005da719)
+
