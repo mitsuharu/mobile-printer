@@ -1,4 +1,4 @@
-import React, { useCallback, createRef } from 'react'
+import React, { useCallback, createRef, useState } from 'react'
 import {
   Keyboard,
   View,
@@ -7,9 +7,10 @@ import {
   StyleProp,
   ScrollView,
   StyleSheet,
+  Text,
 } from 'react-native'
 import { useForm, ErrorOption } from 'react-hook-form'
-import { Submission } from '@/redux/modules/printer/utils'
+import { ImageSource, Submission } from '@/redux/modules/printer/utils'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { TextInputController } from './TextInputController'
@@ -18,6 +19,9 @@ import { useDispatch } from 'react-redux'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { SubmitView } from './SubmitView'
 import { Base64ImageView } from '@/components/Base64ImageView'
+import { BASE64 } from '@/CONSTANTS'
+import { PrintImageTypeSegmentedControl } from './ImageTypeSegmentedControl'
+import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type OnSubmit = (
   props: Submission,
@@ -53,6 +57,14 @@ export const FormView: React.FC<Props> = ({
   })
 
   /**
+   * PrintImageType を切り替えるセグメントコントロールの初期値
+   * 画像の BASE64 の有無で判断する
+   */
+  const [enableSegmentedControl, setEnableSegmentedControl] = useState<boolean>(
+    !!getValues('profile.icon.base64'),
+  )
+
+  /**
    * handleSubmitに渡すonSubmit（validationが成功した場合に呼ばれる）
    */
   const innerOnSubmit = useCallback(
@@ -80,11 +92,61 @@ export const FormView: React.FC<Props> = ({
     }
   }, [handleSubmit, innerOnError, innerOnSubmit])
 
+  /**
+   * フォームで表示する Base64 を成形する
+   */
+  const makeShrunkenText = useCallback((text: string | undefined) => {
+    if (text) {
+      if (text.length > 35) {
+        return '(' + text.slice(0, 10) + '...' + text.slice(-25) + ')'
+      }
+      return '(' + text + ')'
+    }
+    return ''
+  }, [])
+
+  /**
+   * フォームで表示する Base64 のテキスト
+   *
+   * @note
+   * Base64 の表示に TextInputController を利用するとレンダリングが遅くなる。
+   * そのため、単純な Text + State で表示する
+   */
+  const [base64Text, setBase64Text] = useState(
+    makeShrunkenText(getValues('profile.icon.base64')),
+  )
+
+  /**
+   * 画像が選択されたときのイベント
+   */
   const onChangeBase64 = useCallback(
     (base64: string) => {
-      setValue('profile.iconBase64', base64)
+      const imageSource: ImageSource | undefined = getValues('profile.icon')
+      setValue('profile.icon', {
+        base64: base64,
+        width: imageSource?.width ?? BASE64.PROFILE_ICON_SIZE,
+        type: imageSource?.type ?? 'binary',
+      })
+      setEnableSegmentedControl(true)
+      setBase64Text(makeShrunkenText(base64))
     },
-    [setValue],
+    [getValues, setValue, setBase64Text, makeShrunkenText],
+  )
+
+  /**
+   * セグメントコントロールで選択されたときのイベント
+   */
+  const onChangePrintImageType = useCallback(
+    (printImageTyp: PrintImageType) => {
+      const imageSource: ImageSource | undefined = getValues('profile.icon')
+      if (imageSource) {
+        setValue('profile.icon', {
+          ...imageSource,
+          type: printImageTyp,
+        })
+      }
+    },
+    [getValues, setValue],
   )
 
   // 次の入力フォームにfocusさせるため
@@ -99,7 +161,7 @@ export const FormView: React.FC<Props> = ({
         address: createRef<TextInput>(),
       },
       description: createRef<TextInput>(),
-      iconBase64: createRef<TextInput>(),
+      icon: createRef<TextInput>(),
       sns: {
         twitter: createRef<TextInput>(),
         facebook: createRef<TextInput>(),
@@ -202,21 +264,17 @@ export const FormView: React.FC<Props> = ({
         />
         <Spacer height={8} />
 
-        <TextInputController
-          formTitle={'Base 64 でエンコードしたアイコン画像'}
-          control={control}
-          getValues={getValues}
-          error={errors.profile?.iconBase64}
-          fieldPath={'profile.iconBase64'}
-          textInputRef={inputRefs.profile.iconBase64}
-          nextTextInputRef={inputRefs.profile.sns.twitter}
-          returnKeyType={'next'}
-          editable={false}
-        />
+        <Text>Base64 でエンコードしたアイコン画像</Text>
+        <Text>{base64Text}</Text>
         <Base64ImageView
           style={styles.base64ImageView}
-          base64={getValues('profile.iconBase64')}
+          base64={getValues('profile.icon.base64')}
           onChange={onChangeBase64}
+        />
+        <PrintImageTypeSegmentedControl
+          initialPrintImageType={getValues('profile.icon.type')}
+          onChange={onChangePrintImageType}
+          enabled={enableSegmentedControl}
         />
         <Spacer height={8} />
 

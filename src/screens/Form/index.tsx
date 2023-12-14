@@ -10,7 +10,7 @@ import { FormView, OnSubmit } from './FormView'
 import { deleteSubmission, saveSubmission } from '@/redux/modules/printer/slice'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AlertAsync from 'react-native-alert-async'
-import { MESSAGE } from '@/CONSTANTS/MESSAGE'
+import { MESSAGE } from '@/CONSTANTS'
 
 type ParamsProps = RouteProp<MainParams, 'Form'>
 

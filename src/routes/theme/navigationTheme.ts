@@ -1,4 +1,4 @@
-import { COLOR } from '@/CONSTANTS/COLOR'
+import { COLOR } from '@/CONSTANTS'
 import { DarkTheme, DefaultTheme, Theme } from '@react-navigation/native'
 import { ColorSchemeName } from 'react-native'
 

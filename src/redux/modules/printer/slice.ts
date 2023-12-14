@@ -4,15 +4,20 @@ import dayjs from 'dayjs'
 import { createPresetSubmissions, isEqualToSubmission } from './utils'
 import {
   ImageSource,
-  PrintImageType,
   Profile,
   QRCodeSource,
   Submission,
   TextSource,
 } from './utils/types'
 import { PersistConfig, persistReducer } from 'redux-persist'
+import {
+  PrinterInfo,
+  PrintImageType,
+} from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type PrinterState = {
+  isPrintable: boolean
+  printerInfo?: PrinterInfo
   submissions: Submission[]
 }
 
@@ -23,6 +28,8 @@ const config: PersistConfig<PrinterState> = {
 }
 
 const initialState: Readonly<PrinterState> = {
+  isPrintable: false,
+  printerInfo: undefined,
   submissions: createPresetSubmissions(),
 }
 
@@ -30,6 +37,14 @@ const printerSlice = createSlice({
   name: 'PRINTER',
   initialState,
   reducers: {
+    assignIsPrintable(state, { payload }: PayloadAction<boolean>) {
+      state.isPrintable = payload
+    },
+
+    assignPrinterInfo(state, { payload }: PayloadAction<PrinterInfo>) {
+      state.printerInfo = payload
+    },
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printProfile(_state, _action: PayloadAction<Profile>) {},
 
@@ -77,6 +92,8 @@ const printerSlice = createSlice({
 })
 
 export const {
+  assignIsPrintable,
+  assignPrinterInfo,
   printProfile,
   printProfileRandomly,
   printText,

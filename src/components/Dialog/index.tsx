@@ -1,4 +1,4 @@
-import { MESSAGE } from '@/CONSTANTS/MESSAGE'
+import { MESSAGE } from '@/CONSTANTS'
 import React, { useCallback, useRef } from 'react'
 import { View } from 'react-native'
 import RnDialog from 'react-native-dialog'
