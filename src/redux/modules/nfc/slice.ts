@@ -18,7 +18,7 @@ const initialState: NfcState = {
   isReading: false,
 }
 
-const userSettingSlice = createSlice({
+const slice = createSlice({
   name: 'NFC',
   initialState,
   reducers: {
@@ -43,6 +43,6 @@ export const {
   assignNfcIsReading,
   startReadingNfc,
   stopReadingNfc,
-} = userSettingSlice.actions
+} = slice.actions
 
-export const NFCReducer = persistReducer(config, userSettingSlice.reducer)
+export const NFCReducer = persistReducer(config, slice.reducer)
