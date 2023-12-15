@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { ViewStyle, ScrollView, StyleSheet, Linking } from 'react-native'
+import React, { useCallback, useLayoutEffect, useState } from 'react'
+import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,12 +15,6 @@ import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import { createSubmission, Submission } from '@/redux/modules/printer/utils'
 import { InputDialogCell } from './InputDialogCell'
-import NfcManager, {
-  NfcTech,
-  Ndef,
-  NfcEvents,
-  TagEvent,
-} from 'react-native-nfc-manager'
 
 type Props = {}
 type ComponentProps = Props & {
