@@ -28,6 +28,22 @@ async function print0() {
     await SunmiPrinterLibrary.resetPrinterStyle()
     await SunmiPrinterLibrary.setTextStyle('bold', true)
 
+    await SunmiPrinterLibrary.printText('　　　＼メリークリクマース／')
+    await SunmiPrinterLibrary.printText('　　　　　　 　／￣ ＼')
+    await SunmiPrinterLibrary.printText('　　　　＿＿0⌒>　　 ヽ')
+    await SunmiPrinterLibrary.printText('　　 ／　　　∩⊂ﾆﾆﾆ⊃∩')
+    await SunmiPrinterLibrary.printText('　／　　　　 | ノ　　　　　ヽ')
+    await SunmiPrinterLibrary.printText('｜　　　　　/　　●　　　● | ')
+    await SunmiPrinterLibrary.printText('｜　　　　 |　　　( _●_)　 ミ')
+    await SunmiPrinterLibrary.printText('｜　　　　彡､　　　|∪|　 ､｀＼')
+    await SunmiPrinterLibrary.printText('｜　　　/　＿＿　　ヽノ /´>　 )')
+    await SunmiPrinterLibrary.printText('　＼　　(＿＿＿）　　　/　(_／')
+    await SunmiPrinterLibrary.printText('　　 ＼　　　|　　　　/')
+    await SunmiPrinterLibrary.printText('　　　　￣￣|　 ／＼　＼')
+    await SunmiPrinterLibrary.printText('　　　　　　|　/　　)　 )')
+    await SunmiPrinterLibrary.printText('　　　　　　∪　　　（　 ＼')
+    await SunmiPrinterLibrary.printText('　　　　　　　　　　　＼＿)')
+
     await SunmiPrinterLibrary.lineWrap(3)
   } catch (error: any) {
     console.warn(error.message)
