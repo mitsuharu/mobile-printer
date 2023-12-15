@@ -15,6 +15,7 @@ import { sampleProfile } from '@/redux/modules/printer/utils/sample'
 import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import { createSubmission, Submission } from '@/redux/modules/printer/utils'
 import { InputDialogCell } from './InputDialogCell'
+import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -42,6 +43,7 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <ScrollView style={styles.scrollView}>
+      <SeasonalAsciiArtSection />
       <Section title="汎用印刷">
         <InputDialogCell
           title="テキストを印刷する"

@@ -6,13 +6,16 @@ import { call } from 'redux-saga/effects'
  */
 export function* printAsciiSage() {
   try {
-    const random = Math.floor(Math.random() * 2)
+    const random = Math.floor(Math.random() * 3)
     switch (random) {
       case 0:
         yield call(print0)
         break
       case 1:
         yield call(print1)
+        break
+      case 2:
+        yield call(print2)
         break
       default:
         yield call(print0)
@@ -27,14 +30,16 @@ async function print0() {
   try {
     await SunmiPrinterLibrary.resetPrinterStyle()
     await SunmiPrinterLibrary.setTextStyle('bold', true)
+    await SunmiPrinterLibrary.setParagraphStyle('leftSpacing', 60)
+    SunmiPrinterLibrary.lineWrap(2)
 
-    await SunmiPrinterLibrary.printText('みんな幸せになぁれ♬')
-    await SunmiPrinterLibrary.printText('　∧,＿,∧　')
-    await SunmiPrinterLibrary.printText('（`・ω・)つ━☆・*。')
-    await SunmiPrinterLibrary.printText('⊂　　 ノ 　　　・゜+.')
-    await SunmiPrinterLibrary.printText('　し’´Ｊ　　*・ °”')
+    SunmiPrinterLibrary.printText('みんな幸せになぁれ♬')
+    SunmiPrinterLibrary.printText('　∧,＿,∧　')
+    SunmiPrinterLibrary.printText('（`・ω・)つ━☆・*。')
+    SunmiPrinterLibrary.printText('⊂　　 ノ 　　　・゜+.')
+    SunmiPrinterLibrary.printText('　し’´Ｊ　　*・ °”')
 
-    await SunmiPrinterLibrary.lineWrap(3)
+    SunmiPrinterLibrary.lineWrap(5)
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -44,16 +49,35 @@ async function print1() {
   try {
     await SunmiPrinterLibrary.resetPrinterStyle()
     await SunmiPrinterLibrary.setTextStyle('bold', true)
+    await SunmiPrinterLibrary.setParagraphStyle('leftSpacing', 20)
+    SunmiPrinterLibrary.lineWrap(2)
 
-    await SunmiPrinterLibrary.printText('┣””””┣””””┣””””┣””””┣””””')
-    await SunmiPrinterLibrary.printText('┣””””┣””””┣””””┣””””┣””””')
-    await SunmiPrinterLibrary.printText('シャキーン！！')
-    await SunmiPrinterLibrary.printText('　　　　∧_,,∧')
-    await SunmiPrinterLibrary.printText('.　　　(｀・ω・)')
-    await SunmiPrinterLibrary.printText('((;　＼と　　　つ')
-    await SunmiPrinterLibrary.printText('((（;;　ミ三三彡')
+    SunmiPrinterLibrary.printText('┣””””┣””””┣””””┣””””┣””””')
+    SunmiPrinterLibrary.printText('┣””””┣””””┣””””┣””””┣””””')
+    SunmiPrinterLibrary.printText('シャキーン！！')
+    SunmiPrinterLibrary.printText('　　　　∧_,,∧')
+    SunmiPrinterLibrary.printText('.　　　(｀・ω・)')
+    SunmiPrinterLibrary.printText('((;　＼と　　　つ')
+    SunmiPrinterLibrary.printText('((（;;　ミ三三彡')
 
-    await SunmiPrinterLibrary.lineWrap(3)
+    SunmiPrinterLibrary.lineWrap(5)
+  } catch (error: any) {
+    console.warn(error.message)
+  }
+}
+
+async function print2() {
+  try {
+    await SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.setTextStyle('bold', true)
+    await SunmiPrinterLibrary.setParagraphStyle('leftSpacing', 60)
+    SunmiPrinterLibrary.lineWrap(2)
+
+    SunmiPrinterLibrary.printText('　  _, ,_ 　ﾊﾟｰﾝ')
+    SunmiPrinterLibrary.printText('　（　‘д‘）')
+    SunmiPrinterLibrary.printText('　　⊂彡☆))Д´）')
+
+    SunmiPrinterLibrary.lineWrap(5)
   } catch (error: any) {
     console.warn(error.message)
   }
