@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectAsciiArtSeasonalEvent } from '@/redux/modules/asciiArt/selectors'
 import {
   SeasonalEvent,
-  printAsciiArt,
   printAsciiArtChristmas,
   printAsciiArtNewYear,
   printAsciiArtSnow,
