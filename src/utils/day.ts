@@ -6,6 +6,16 @@ import dayjs from 'dayjs'
 export const timeStamp = () => dayjs().locale('ja').format('YYYY/MM/DD HH:mm')
 
 /**
+ * 引数のunix時間（ミリ秒）と今を比較して、日付が変わったか判定する
+ */
+export const isMoreThanOneDay = (milliUnixTime: number) => {
+  const compared = dayjs(milliUnixTime).startOf('day')
+  const current = dayjs().startOf('day')
+  const diff = current.diff(compared, 'day')
+  return diff > 0
+}
+
+/**
  * 今日がクリスマス期間か調べる
  */
 export const isChristmasDuration = () => {
