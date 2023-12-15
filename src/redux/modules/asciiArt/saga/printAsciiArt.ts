@@ -4,7 +4,7 @@ import { call } from 'redux-saga/effects'
 /**
  * @package
  */
-export function* printAsciiSage() {
+export function* printAsciiArtSage() {
   try {
     const random = Math.floor(Math.random() * 3)
     switch (random) {

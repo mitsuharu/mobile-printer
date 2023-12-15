@@ -41,6 +41,9 @@ const slice = createSlice({
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printAsciiArtNewYear(_state, _payload: PayloadAction<void>) {},
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    printAsciiArtSnow(_state, _payload: PayloadAction<void>) {},
   },
 })
 
@@ -50,6 +53,7 @@ export const {
   printAsciiArt,
   printAsciiArtChristmas,
   printAsciiArtNewYear,
+  printAsciiArtSnow,
 } = slice.actions
 
 export const AsciiArtReducer = persistReducer(config, slice.reducer)

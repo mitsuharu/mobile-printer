@@ -7,6 +7,7 @@ import {
   printAsciiArt,
   printAsciiArtChristmas,
   printAsciiArtNewYear,
+  printAsciiArtSnow,
   updateSeasonalEvent,
 } from '@/redux/modules/asciiArt/slice'
 
@@ -15,17 +16,20 @@ type ComponentProps = Props & {
   seasonalEvent: SeasonalEvent
   onPressAsciiArt: () => void
   onPressChristmas: () => void
+  onPressSnow: () => void
   onPressNewYear: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
   onPressAsciiArt,
   onPressChristmas,
+  onPressSnow,
   onPressNewYear,
 }) => {
   return (
     <Section title="Happy Day!">
       <Cell title="Christmas" onPress={onPressChristmas} />
+      <Cell title="Snow" onPress={onPressSnow} />
       <Cell title="New Year" onPress={onPressNewYear} />
       <Cell title="Ascii Art" onPress={onPressAsciiArt} />
     </Section>
@@ -54,10 +58,20 @@ const Container: React.FC<Props> = (props) => {
     dispatch(printAsciiArt())
   }, [dispatch])
 
+  const onPressSnow = useCallback(() => {
+    dispatch(printAsciiArtSnow())
+  }, [dispatch])
+
   return (
     <Component
       {...props}
-      {...{ seasonalEvent, onPressChristmas, onPressNewYear, onPressAsciiArt }}
+      {...{
+        seasonalEvent,
+        onPressChristmas,
+        onPressNewYear,
+        onPressAsciiArt,
+        onPressSnow,
+      }}
     />
   )
 
