@@ -1,9 +1,11 @@
 import { RootState } from '@/redux/RootState'
+import { SeasonalEvent } from './slice'
 
-export {}
+export const selectAsciiArtUpdatedAt = (state: RootState): number =>
+  state.asciiArt.updatedAt
 
-// export const selectNfcIsSupported = (state: RootState): boolean =>
-//   state.nfc.isSupported
+export const selectAsciiArtSeasonalEvent = (state: RootState): SeasonalEvent =>
+  state.asciiArt.seasonalEvent
 
-// export const selectNfcIsReading = (state: RootState): boolean =>
-//   state.nfc.isReading
+export const selectAsciiArtIsSeasonalEvent = (state: RootState): boolean =>
+  state.asciiArt.seasonalEvent !== 'none'

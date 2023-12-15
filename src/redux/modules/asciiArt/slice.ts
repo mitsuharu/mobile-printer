@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import dayjs from 'dayjs'
 import { PersistConfig, persistReducer } from 'redux-persist'
 
+export type SeasonalEvent = 'none' | 'christmas' | 'newYear'
+
 export type AsciiArtState = {
-  specialDuration: boolean
+  seasonalEvent: SeasonalEvent
+  updatedAt: number
 }
 
 const config: PersistConfig<AsciiArtState> = {
@@ -13,20 +17,21 @@ const config: PersistConfig<AsciiArtState> = {
 }
 
 const initialState: AsciiArtState = {
-  specialDuration: false,
+  seasonalEvent: 'none',
+  updatedAt: 0,
 }
 
 const slice = createSlice({
   name: 'AsciiArt',
   initialState,
   reducers: {
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // startReadingNfc(_state, _action: PayloadAction<void>) {},
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // stopReadingNfc(_state, _action: PayloadAction<void>) {},
+    assignSeasonalEvent(state, { payload }: PayloadAction<SeasonalEvent>) {
+      state.seasonalEvent = payload
+      state.updatedAt = dayjs().valueOf()
+    },
   },
 })
 
-export const {} = slice.actions
+export const { assignSeasonalEvent } = slice.actions
 
 export const AsciiArtReducer = persistReducer(config, slice.reducer)
