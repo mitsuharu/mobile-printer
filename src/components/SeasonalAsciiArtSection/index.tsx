@@ -14,24 +14,28 @@ import {
 type Props = {}
 type ComponentProps = Props & {
   seasonalEvent: SeasonalEvent
-  onPressAsciiArt: () => void
   onPressChristmas: () => void
   onPressSnow: () => void
   onPressNewYear: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
-  onPressAsciiArt,
+  seasonalEvent,
   onPressChristmas,
   onPressSnow,
   onPressNewYear,
 }) => {
   return (
     <Section title="Happy Day!">
-      <Cell title="Christmas" onPress={onPressChristmas} />
-      <Cell title="Snow" onPress={onPressSnow} />
-      <Cell title="New Year" onPress={onPressNewYear} />
-      <Cell title="Ascii Art" onPress={onPressAsciiArt} />
+      {seasonalEvent === 'christmas' && (
+        <>
+          <Cell title="Christmas" onPress={onPressChristmas} />
+          <Cell title="Snow" onPress={onPressSnow} />
+        </>
+      )}
+      {seasonalEvent === 'newYear' && (
+        <Cell title="New Year" onPress={onPressNewYear} />
+      )}
     </Section>
   )
 }
@@ -41,7 +45,6 @@ const Container: React.FC<Props> = (props) => {
   const seasonalEvent: SeasonalEvent = useSelector(selectAsciiArtSeasonalEvent)
 
   useEffect(() => {
-    console.log(`AsciiArtSection#useEffect`)
     dispatch(updateSeasonalEvent())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -54,33 +57,21 @@ const Container: React.FC<Props> = (props) => {
     dispatch(printAsciiArtNewYear())
   }, [dispatch])
 
-  const onPressAsciiArt = useCallback(() => {
-    dispatch(printAsciiArt())
-  }, [dispatch])
-
   const onPressSnow = useCallback(() => {
     dispatch(printAsciiArtSnow())
   }, [dispatch])
 
-  return (
+  return seasonalEvent !== 'none' ? (
     <Component
       {...props}
       {...{
         seasonalEvent,
         onPressChristmas,
         onPressNewYear,
-        onPressAsciiArt,
         onPressSnow,
       }}
     />
-  )
-
-  // return seasonalEvent !== 'none' ? (
-  //   <Component
-  //     {...props}
-  //     {...{ seasonalEvent, onPressChristmas, onPressNewYear }}
-  //   />
-  // ) : null
+  ) : null
 }
 
 export { Container as SeasonalAsciiArtSection }
