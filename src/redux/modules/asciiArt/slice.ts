@@ -29,9 +29,27 @@ const slice = createSlice({
       state.seasonalEvent = payload
       state.updatedAt = dayjs().valueOf()
     },
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    updateSeasonalEvent(_state, _payload: PayloadAction<void>) {},
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    printAsciiArt(_state, _payload: PayloadAction<void>) {},
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    printAsciiArtChristmas(_state, _payload: PayloadAction<void>) {},
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    printAsciiArtNewYear(_state, _payload: PayloadAction<void>) {},
   },
 })
 
-export const { assignSeasonalEvent } = slice.actions
+export const {
+  assignSeasonalEvent,
+  updateSeasonalEvent,
+  printAsciiArt,
+  printAsciiArtChristmas,
+  printAsciiArtNewYear,
+} = slice.actions
 
 export const AsciiArtReducer = persistReducer(config, slice.reducer)
