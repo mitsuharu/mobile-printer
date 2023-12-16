@@ -1,3 +1,4 @@
+import { AsciiArtState } from './modules/asciiArt/slice'
 import { NfcState } from './modules/nfc/slice'
 import { PrinterState } from './modules/printer/slice'
 import { SnackbarState } from './modules/snackbar/slice'
@@ -8,6 +9,7 @@ export interface RootState {
   snackbar: SnackbarState
   userSetting: UserSettingState
   nfc: NfcState
+  asciiArt: AsciiArtState
 }
 
 // typescript definition
