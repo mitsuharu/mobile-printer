@@ -19,6 +19,16 @@ async function printSnow() {
     await SunmiPrinterLibrary.setParagraphStyle('leftSpacing', 30)
     SunmiPrinterLibrary.lineWrap(2)
 
+    // 33％で雪が積もる
+    if (Math.floor(Math.random() * 9) % 3 === 0 || true) {
+      SunmiPrinterLibrary.printText('︶︶︶︶︶︶︶︶︶︶︶︶︶︶')
+      SunmiPrinterLibrary.printText('　*( 　 )*　')
+      SunmiPrinterLibrary.printText('　  (‥)　。')
+      SunmiPrinterLibrary.printText('　。 uu 　')
+      SunmiPrinterLibrary.lineWrap(1)
+    }
+
+    SunmiPrinterLibrary.printText('　　　　.　　 。 　　ﾟ 　　　　')
     SunmiPrinterLibrary.printText('.　　 。 　　ﾟ 　　　　　　　ﾟ　　。')
     SunmiPrinterLibrary.printText('　　 　 　 　。　 　　　　　ﾟ　　 　 o')
     SunmiPrinterLibrary.printText(' 　｡　 　ﾟ 　　.　　　　゜　　　　。　　　o')
@@ -45,6 +55,12 @@ async function printSnow() {
     SunmiPrinterLibrary.printText('　　　　o　　　　　　。　　　　　　　　')
     SunmiPrinterLibrary.printText('｡　　○　')
     SunmiPrinterLibrary.printText('。   o　　　　　　゜　 　 。　　　　　○　')
+    SunmiPrinterLibrary.printText('　　　　　　　　　　o　　o　　　　　　゜')
+    SunmiPrinterLibrary.printText('　　　　　　　゜　 　 。　　　　　○')
+    SunmiPrinterLibrary.printText('゜　　.　　　 　 ﾟ　 　 。 　　 ')
+    SunmiPrinterLibrary.printText('　　　　゜　　　　　　　　　o')
+    SunmiPrinterLibrary.printText('　　○　　　　　　゜　')
+    SunmiPrinterLibrary.printText('　。　　　　　　　　゜　　　　　　。　')
 
     SunmiPrinterLibrary.lineWrap(5)
   } catch (error: any) {

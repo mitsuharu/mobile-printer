@@ -71,7 +71,7 @@ const Component: React.FC<ComponentProps> = ({
           <Cell title="NFCタグの内容を複製する" onPress={onPressNfc} />
         </Section>
       )}
-      <Section title="開発中の機能">
+      <Section title="試験先行実装">
         <Cell
           title="アスキーアートをランダム印刷する"
           onPress={onPressAsciiArt}

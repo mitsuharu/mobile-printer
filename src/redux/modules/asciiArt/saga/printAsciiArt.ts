@@ -34,7 +34,7 @@ async function print0() {
     SunmiPrinterLibrary.lineWrap(2)
 
     SunmiPrinterLibrary.printText('みんな幸せになぁれ♬')
-    SunmiPrinterLibrary.printText('　∧,＿,∧　')
+    SunmiPrinterLibrary.printText('　∧＿∧　')
     SunmiPrinterLibrary.printText('（`・ω・)つ━☆・*。')
     SunmiPrinterLibrary.printText('⊂　　 ノ 　　　・゜+.')
     SunmiPrinterLibrary.printText('　し’´Ｊ　　*・ °”')

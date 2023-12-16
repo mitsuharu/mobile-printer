@@ -69,7 +69,7 @@ async function print1() {
 
     SunmiPrinterLibrary.lineWrap(2)
 
-    SunmiPrinterLibrary.printText('　∩　.∩')
+    SunmiPrinterLibrary.printText('　 ∩　∩')
     SunmiPrinterLibrary.printText('　.い_cノ　　／￣＞Ｏ')
     SunmiPrinterLibrary.printText('.c/・ ・っ　(ニニニ)')
     SunmiPrinterLibrary.printText('.（"●" )　.(・ω・`)')
