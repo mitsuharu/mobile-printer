@@ -9,6 +9,7 @@ import { snackbarReducer } from './modules/snackbar/slice'
 import { userSettingReducer } from './modules/userSetting/slice'
 import { printerReducer } from './modules/printer/slice'
 import { NFCReducer } from './modules/nfc/slice'
+import { AsciiArtReducer } from './modules/asciiArt/slice'
 
 let store: Store
 let persistor: Persistor
@@ -22,6 +23,7 @@ export function initializeRedux() {
       snackbar: snackbarReducer,
       userSetting: userSettingReducer,
       nfc: NFCReducer,
+      asciiArt: AsciiArtReducer,
     })
 
     const sagaMiddleware = createSagaMiddleware({
