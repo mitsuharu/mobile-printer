@@ -56,7 +56,7 @@ async function print0() {
     SunmiPrinterLibrary.printText('　　　　　　　　　　　＼＿)')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -76,7 +76,7 @@ async function print1() {
     SunmiPrinterLibrary.printText('.（"●" )　.(・ω・`)')
 
     await SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -113,7 +113,7 @@ async function print2() {
     printSantaAndReindeer()
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -134,7 +134,7 @@ async function print3() {
     SunmiPrinterLibrary.printText('⌒⌒⌒⌒⌒⌒⌒')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -159,7 +159,7 @@ async function print4() {
     SunmiPrinterLibrary.printText('　　　 ―=☆=―')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }

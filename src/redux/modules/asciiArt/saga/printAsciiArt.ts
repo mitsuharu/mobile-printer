@@ -40,7 +40,7 @@ async function print0() {
     SunmiPrinterLibrary.printText('　し’´Ｊ　　*・ °”')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -62,7 +62,7 @@ async function print1() {
     SunmiPrinterLibrary.printText('((（;;　ミ三三彡')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -80,7 +80,7 @@ async function print2() {
     SunmiPrinterLibrary.printText('　　⊂彡☆))Д´）')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }

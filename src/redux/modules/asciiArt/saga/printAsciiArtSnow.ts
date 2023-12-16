@@ -63,7 +63,7 @@ async function printSnow() {
     SunmiPrinterLibrary.printText('　。　　　　　　　　゜　　　　　　。　')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }

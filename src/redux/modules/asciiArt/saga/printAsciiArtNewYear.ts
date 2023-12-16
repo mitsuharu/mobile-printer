@@ -45,7 +45,7 @@ async function print0() {
     SunmiPrinterLibrary.printText('　おめでとうごさいます')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
@@ -67,7 +67,7 @@ async function print1() {
     SunmiPrinterLibrary.printText('　_|_|_|_|_|_|_　')
 
     SunmiPrinterLibrary.lineWrap(5)
-    SunmiPrinterLibrary.resetPrinterStyle()
+    await SunmiPrinterLibrary.resetPrinterStyle()
   } catch (error: any) {
     console.warn(error.message)
   }
