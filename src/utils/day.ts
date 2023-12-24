@@ -22,7 +22,10 @@ export const isChristmasDuration = () => {
   const year = dayjs().locale('ja').year()
   const startDay = `${year}-12-24`
   const endDay = `${year}-12-25`
-  return dayjs().locale('ja').isBetween(startDay, endDay, null, '[]')
+  return dayjs()
+    .locale('ja')
+    .startOf('day')
+    .isBetween(startDay, endDay, null, '[]')
 }
 
 /**
@@ -32,5 +35,8 @@ export const isNewYearDuration = () => {
   const year = dayjs().locale('ja').year()
   const startDay = `${year}-01-01`
   const endDay = `${year}-01-03`
-  return dayjs().locale('ja').isBetween(startDay, endDay, null, '[]')
+  return dayjs()
+    .locale('ja')
+    .startOf('day')
+    .isBetween(startDay, endDay, null, '[]')
 }
