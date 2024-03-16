@@ -11,11 +11,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BASE64 } from '@/CONSTANTS'
-import MultipleImagePicker, {
-  MediaType,
-} from '@baronha/react-native-multiple-image-picker'
-import ImageResizer from '@bam.tech/react-native-image-resizer'
-import { readFile } from 'react-native-fs'
+import { fetchBase64Image } from '@/utils/ImagePicker'
 
 type Props = {
   base64?: string
@@ -60,26 +56,11 @@ const Container: React.FC<Props> = (props) => {
 
   const onPress = useCallback(async () => {
     try {
-      const { path, width, height } = await MultipleImagePicker.openPicker({
-        mediaType: 'image' as MediaType,
-        usedCameraButton: false,
-        isPreview: false,
-        singleSelectedMode: true,
-      })
-
-      const { uri } = await ImageResizer.createResizedImage(
-        path,
-        BASE64.PROFILE_ICON_SIZE,
-        (BASE64.PROFILE_ICON_SIZE * height) / width,
-        'PNG',
-        80,
-        0,
-      )
-
-      const base64Data = await readFile(uri, { encoding: 'base64' })
-
-      onChange?.(base64Data)
-      setSource(makeBase64ImageSource(base64Data))
+      const base64 = await fetchBase64Image(BASE64.PROFILE_ICON_SIZE)
+      if (!!base64){
+        onChange?.(base64)
+        setSource(makeBase64ImageSource(base64))
+      }
     } catch (e: any) {
       console.warn(e)
     }

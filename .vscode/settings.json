@@ -6,7 +6,8 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "always",
     },
     "cSpell.words": [
       "baronha",
