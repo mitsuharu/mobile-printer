@@ -4,12 +4,8 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { ImageSource } from '../utils'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { BASE64 } from '@/CONSTANTS'
-import MultipleImagePicker, {
-  MediaType,
-} from '@baronha/react-native-multiple-image-picker'
-import ImageResizer from '@bam.tech/react-native-image-resizer'
-import { readFile } from 'react-native-fs'
 import { validatePrinterSaga } from './printerSagaUtils'
+import { fetchBase64Image } from '@/utils/ImagePicker'
 
 /**
  * @package
@@ -55,25 +51,8 @@ export function* printImageFromImagePickerSaga({
 type GetImageBase64Result = { base64: string | undefined; width: number }
 async function getImageBase64(): Promise<GetImageBase64Result> {
   try {
-    const { path, width, height } = await MultipleImagePicker.openPicker({
-      mediaType: 'image' as MediaType,
-      usedCameraButton: false,
-      isPreview: false,
-      singleSelectedMode: true,
-    })
-
-    const { uri } = await ImageResizer.createResizedImage(
-      path,
-      BASE64.MAX_SIZE,
-      (BASE64.MAX_SIZE * height) / width,
-      'PNG',
-      80,
-      0,
-    )
-
-    const base64Data = await readFile(uri, { encoding: 'base64' })
-
-    return { base64: base64Data, width: BASE64.MAX_SIZE }
+    const base64 = await fetchBase64Image(BASE64.MAX_SIZE)
+    return { base64: base64, width: BASE64.MAX_SIZE }
   } catch (e: any) {
     console.warn(e)
     return { base64: undefined, width: 0 }
