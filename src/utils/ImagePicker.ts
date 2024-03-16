@@ -1,4 +1,7 @@
-import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker'
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from 'react-native-image-picker'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import { readFile } from 'react-native-fs'
 
@@ -6,13 +9,13 @@ import { readFile } from 'react-native-fs'
  * 写真ライブラリから画像を取得して、BASE64に変換して返す
  */
 export const fetchBase64Image = async (maxWidth: number) => {
-  try{
+  try {
     // maxWidth でリサイズ機能があるが、適切に動作しない
     // そのため、ここでサイズ調整やBase64計算は行わないず、パス取得のみを行う
     const options: ImageLibraryOptions = {
-      mediaType: "photo",
+      mediaType: 'photo',
       includeBase64: false,
-      selectionLimit: 1
+      selectionLimit: 1,
     }
     const { assets } = await launchImageLibrary(options)
     if (!assets) {

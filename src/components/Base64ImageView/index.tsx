@@ -56,10 +56,10 @@ const Container: React.FC<Props> = (props) => {
 
   const onPress = useCallback(async () => {
     try {
-      const base64 = await fetchBase64Image(BASE64.PROFILE_ICON_SIZE)
-      if (!!base64){
-        onChange?.(base64)
-        setSource(makeBase64ImageSource(base64))
+      const base64Image = await fetchBase64Image(BASE64.PROFILE_ICON_SIZE)
+      if (!!base64Image) {
+        onChange?.(base64Image)
+        setSource(makeBase64ImageSource(base64Image))
       }
     } catch (e: any) {
       console.warn(e)
