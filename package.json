@@ -39,7 +39,7 @@
     "react-native-inappbrowser-reborn": "^3.7.0",
     "react-native-nfc-manager": "^3.14.11",
     "react-native-paper": "^5.11.3",
-    "react-native-safe-area-context": "^4.7.4",
+    "react-native-safe-area-context": "^4.9.0",
     "react-native-screens": "^3.29.0",
     "react-native-swag-styles": "^0.2.2",
     "react-native-uuid": "^2.0.2",
