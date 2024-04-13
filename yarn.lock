@@ -2004,10 +2004,10 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
-"@react-native-segmented-control/segmented-control@^2.4.2":
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/@react-native-segmented-control/segmented-control/-/segmented-control-2.4.2.tgz#ff8a8bebd6c6e41fba6b3ffe29a1ef97405fda21"
-  integrity sha512-sWRzXgM4zfQdlAwYb8KzInwRLQDFI1myzzedZxV6pLYo7WxLgVUsbb4gcb8jqVrQGws3ZtuMebXPIHkCZUCZXg==
+"@react-native-segmented-control/segmented-control@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-segmented-control/segmented-control/-/segmented-control-2.5.0.tgz#3a27a391b9ab9247d97038f8ad917f22ec93bb88"
+  integrity sha512-16tX2PPdeH1pQK/oVjNloU3ZKAKjg2NkllissESG6Xb7Cc7gOBuKDEqQgmpfb/9Wb/gGzF+7lhNbOnFjFJmyvA==
 
 "@react-native/assets-registry@0.73.1":
   version "0.73.1"
@@ -2545,7 +2545,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-redux@^7.1.33":
+"@types/react-redux@^7.1.31":
   version "7.1.33"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.33.tgz#53c5564f03f1ded90904e3c90f77e4bd4dc20b15"
   integrity sha512-NF8m5AjWCkert+fosDsN3hAlHzpjSiXlVy9EgQEmLoBhaNXbmyeGs/aj5dQzKuF+/q+S7JQagorGDW8pJ28Hmg==
