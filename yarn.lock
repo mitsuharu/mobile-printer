@@ -2545,7 +2545,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-redux@^7.1.33":
+"@types/react-redux@^7.1.31":
   version "7.1.33"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.33.tgz#53c5564f03f1ded90904e3c90f77e4bd4dc20b15"
   integrity sha512-NF8m5AjWCkert+fosDsN3hAlHzpjSiXlVy9EgQEmLoBhaNXbmyeGs/aj5dQzKuF+/q+S7JQagorGDW8pJ28Hmg==
@@ -4523,10 +4523,10 @@ eslint-plugin-ft-flow@^2.0.1:
     lodash "^4.17.21"
     string-natural-compare "^3.0.1"
 
-eslint-plugin-import-access@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import-access/-/eslint-plugin-import-access-2.1.2.tgz#24ddd61963ea42591f365981bc675b1a590341a7"
-  integrity sha512-pSkOemuqFUdn/AfPx2WpeVQmErRqXOH8utfbzfjk69F+F1Ax7seFXJP9u3T9D/Jk/a2s0Q0RRjgplKFq+4ybfg==
+eslint-plugin-import-access@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import-access/-/eslint-plugin-import-access-2.2.0.tgz#e036fad9d33658cc2ae14694cf38b53c9a6a2732"
+  integrity sha512-i2x9GHo3I5vWkyZJBwqXORwo5XmKr9EVq0sZjMGN6iDHlntQ3PIxOKuB7FhwNLmNFTLdsCbyRFfAMSe8cUKrFA==
   dependencies:
     "@typescript-eslint/utils" "^6.2.0"
     tsutils "^3.21.0"
