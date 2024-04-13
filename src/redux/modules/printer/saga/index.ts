@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects'
+import { call, fork, put, takeEvery, takeLeading } from 'redux-saga/effects'
 import {
   assignIsPrintable,
   duplicateQRCode,
@@ -32,8 +32,8 @@ export function* printerSaga() {
 
   yield fork(printInitSaga)
   yield fork(monitorScanSuccessSaga)
-  yield takeEvery(printProfile, printProfileSaga)
-  yield takeEvery(printProfileRandomly, printProfileRandomlySaga)
+  yield takeLeading(printProfile, printProfileSaga)
+  yield takeLeading(printProfileRandomly, printProfileRandomlySaga)
   yield takeEvery(printText, printTextSaga)
   yield takeEvery(printImage, printImageSaga)
   yield takeEvery(printImageFromImagePicker, printImageFromImagePickerSaga)

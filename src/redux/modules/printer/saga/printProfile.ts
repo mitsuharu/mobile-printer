@@ -70,6 +70,12 @@ async function print({
   title,
 }: Profile) {
   try {
+    // 区切り線用のテキスト
+    const hr = await SunmiPrinterLibrary.hr('line')
+
+    // 名刺印刷用の transaction を開始して割り込みを防ぐ
+    await SunmiPrinterLibrary.enterPrinterBuffer(true)
+
     SunmiPrinterLibrary.setFontSize(FONT_SIZE.DEFAULT)
     SunmiPrinterLibrary.setAlignment('center')
     SunmiPrinterLibrary.setTextStyle('bold', true)
@@ -104,7 +110,7 @@ async function print({
     if (hasAnyKeyValue(title, ['position', 'company', 'address'])) {
       const { position, company, address } = title
 
-      await SunmiPrinterLibrary.printHR('line')
+      SunmiPrinterLibrary.printText(hr)
       if (company) {
         SunmiPrinterLibrary.printText(company)
       }
@@ -120,7 +126,7 @@ async function print({
     if (hasAnyKeyValue(sns, ['twitter', 'facebook', 'github', 'website'])) {
       const { twitter, facebook, github, website } = sns
 
-      await SunmiPrinterLibrary.printHR('line')
+      SunmiPrinterLibrary.printText(hr)
       SunmiPrinterLibrary.setAlignment('left')
       const widths = [10, 22]
       const alignments: SunmiPrinterLibrary.Alignment[] = ['left', 'left']
@@ -160,7 +166,7 @@ async function print({
       const { description: desc, url } = qr
 
       SunmiPrinterLibrary.setAlignment('center')
-      await SunmiPrinterLibrary.printHR('line')
+      SunmiPrinterLibrary.printText(hr)
       if (desc) {
         SunmiPrinterLibrary.printText(desc)
         SunmiPrinterLibrary.lineWrap(1)
@@ -178,5 +184,7 @@ async function print({
   } catch (e: any) {
     console.warn('print', e)
     throw e
+  } finally {
+    await SunmiPrinterLibrary.exitPrinterBuffer(true)
   }
 }
