@@ -7657,10 +7657,10 @@ react-native-fs@^2.20.0:
     base-64 "^0.1.0"
     utf8 "^3.0.0"
 
-react-native-image-picker@^7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.1.1.tgz#89ea4611d5a05e4748adefef9bdf22e175f6f56d"
-  integrity sha512-8zQS8RJkGq+jV6bzmIQ560QL2tccXUwouDWktJt7typfNu/QpuDm9pnESeLkdA5MHGTMm8YR09tcV1qtBD+0fg==
+react-native-image-picker@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.1.2.tgz#383849d1953caf4578874a1f5e5dd11c737bd5cd"
+  integrity sha512-b5y5nP60RIPxlAXlptn2QwlIuZWCUDWa/YPUVjgHc0Ih60mRiOg1PSzf0IjHSLeOZShCpirpvSPGnDExIpTRUg==
 
 react-native-inappbrowser-reborn@^3.7.0:
   version "3.7.0"
