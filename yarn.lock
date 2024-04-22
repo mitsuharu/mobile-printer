@@ -5865,10 +5865,10 @@ jest-config@^29.7.0:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-date-mock@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.9.tgz#ec74aff3ffba6ac22bdb7771b2c3b3e80ec9ec74"
-  integrity sha512-1cAXJMNFRYPctj/up9eOC2XwJF0ktHTTaHZ64yHF5sjojfZ+805DAqBJY5GbLCgajz71Lfw5dQwDgIiyQ5QA9g==
+jest-date-mock@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.10.tgz#eba83935971aa1ce9de979a693b3feb81c18ebc8"
+  integrity sha512-g0CM7mJHppz8SCayrtJ0Wm2ge8T0SiKCR9bmVLeflipqWjZ8hieNk6vBF0t3dJFc5jlsjvzTbRud8kPjoD0VgA==
 
 jest-diff@^29.7.0:
   version "29.7.0"
