@@ -1,24 +1,20 @@
 {
-    "files.insertFinalNewline": true,
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-      "source.fixAll.stylelint": "explicit",
-    },
-    "cSpell.words": [
-      "baronha",
-      "heasy",
-      "milli",
-      "mitsuharu",
-      "persistor",
-      "pressable",
-      "reduxjs",
-      "Resizer",
-      "sunmi"
-    ],
-  }
-  
+  "files.insertFinalNewline": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "cSpell.words": [
+    "baronha",
+    "heasy",
+    "milli",
+    "mitsuharu",
+    "persistor",
+    "pressable",
+    "reduxjs",
+    "Resizer",
+    "sunmi"
+  ]
+}
