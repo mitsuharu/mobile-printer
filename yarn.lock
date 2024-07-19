@@ -2466,13 +2466,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mitsuharu/react-native-sunmi-printer-library@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.1.1"
+"@mitsuharu/react-native-sunmi-printer-library@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.2.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/4b89cc7f31e4eed3c8f556d76a06bfbfd4e8d2da2e4cc8229f6cc3bcadf2a350550c51ef8f7c2e4722e3754e14cbf858c358758d07e704f577f3d914c18311f9
+  checksum: 10c0/e7cc0db4d708bea328b3d9a777a741bedd57b710e52124f054f57d12b81d0acaa879a71a5aef30bdeeffb04dae3fcc1836b286263c291b7a37cf027814945201
   languageName: node
   linkType: hard
 
@@ -9454,7 +9454,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.24.4"
     "@babel/runtime": "npm:^7.24.4"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.7"
-    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.1.1"
+    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.2.0"
     "@react-native-async-storage/async-storage": "npm:^1.23.1"
     "@react-native-segmented-control/segmented-control": "npm:^2.5.0"
     "@react-native/babel-preset": "npm:^0.74.85"
