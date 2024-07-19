@@ -3756,7 +3756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:7.16.1":
+"@typescript-eslint/utils@npm:7.16.1, @typescript-eslint/utils@npm:^7.7.1":
   version: 7.16.1
   resolution: "@typescript-eslint/utils@npm:7.16.1"
   dependencies:
@@ -3805,7 +3805,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^6.0.0, @typescript-eslint/utils@npm:^6.2.0":
+"@typescript-eslint/utils@npm:^6.0.0":
   version: 6.21.0
   resolution: "@typescript-eslint/utils@npm:6.21.0"
   dependencies:
@@ -6078,13 +6078,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import-access@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "eslint-plugin-import-access@npm:2.2.0"
+"eslint-plugin-import-access@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "eslint-plugin-import-access@npm:2.2.2"
   dependencies:
-    "@typescript-eslint/utils": "npm:^6.2.0"
+    "@typescript-eslint/utils": "npm:^7.7.1"
     tsutils: "npm:^3.21.0"
-  checksum: 10c0/62eed99db3ebb5b2c34ff39eb8842b770c772d891e36059d3c58c5e60a41d961a2e62b86c816718fa29b9e7ec703d6a55f4d6d369ab6ef5a82b5c68c40374e11
+  checksum: 10c0/b708a6dd956207896629f9c565838fb63635e1eadf601f1904cc53ba0dae8ed3421385ae358a7b661277cc9b8c6663a382bd293be1505b0e53bab1f710f5ae47
   languageName: node
   linkType: hard
 
@@ -9485,7 +9485,7 @@ __metadata:
     eslint-config-airbnb-typescript: "npm:^18.0.0"
     eslint-import-resolver-typescript: "npm:^3.6.1"
     eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-import-access: "npm:^2.2.0"
+    eslint-plugin-import-access: "npm:^2.2.2"
     eslint-plugin-jest: "npm:^28.2.0"
     eslint-plugin-jsx-a11y: "npm:^6.8.0"
     eslint-plugin-prettier: "npm:^5.1.3"
