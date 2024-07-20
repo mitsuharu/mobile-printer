@@ -8823,15 +8823,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-mock-extended@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "jest-mock-extended@npm:3.0.6"
+"jest-mock-extended@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "jest-mock-extended@npm:3.0.7"
   dependencies:
-    ts-essentials: "npm:^9.4.2"
+    ts-essentials: "npm:^10.0.0"
   peerDependencies:
     jest: ^24.0.0 || ^25.0.0 || ^26.0.0 || ^27.0.0 || ^28.0.0 || ^29.0.0
     typescript: ^3.0.0 || ^4.0.0 || ^5.0.0
-  checksum: 10c0/4f7c23c86971116d6cbc8fdda27efe487302a4ca88d335074c139eb5663e38e6db5fdd285f45b81341712069e0d2a8543ee8fa134e13fa8819bd3c7c9c859862
+  checksum: 10c0/17d2e816eae8e95933817102987ba9f700890c4b1223495012bca2ec76644cd203336843a4c381a662e03bde0b637767ad8e2c13b490e9a5eaeb87d211994647
   languageName: node
   linkType: hard
 
@@ -10122,7 +10122,7 @@ __metadata:
     jest-date-mock: "npm:^1.0.10"
     jest-fetch-mock: "npm:^3.0.3"
     jest-junit: "npm:^16.0.0"
-    jest-mock-extended: "npm:^3.0.6"
+    jest-mock-extended: "npm:^3.0.7"
     metro-react-native-babel-preset: "npm:^0.77.0"
     mockdate: "npm:^3.0.5"
     patch-package: "npm:^8.0.0"
@@ -12710,15 +12710,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-essentials@npm:^9.4.2":
-  version: 9.4.2
-  resolution: "ts-essentials@npm:9.4.2"
+"ts-essentials@npm:^10.0.0":
+  version: 10.0.1
+  resolution: "ts-essentials@npm:10.0.1"
   peerDependencies:
-    typescript: ">=4.1.0"
+    typescript: ">=4.5.0"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/125d79a0fc4fbfcfbc6f6461e05cde1f9da46035867ae3164812e615d6cc02cd0b2f470c944f619e87f89bebb00b81eb5c9558e83cf6e8e0f47be184474f855e
+  checksum: 10c0/bc412ae9dafc97a7ab51c63743628d58cc9e7f4f7449d8c89ccb04f50502d04c3dd35a6dea94dbaab2845b856f198a8eb2e8d93e897218d1eb810ca826c1b080
   languageName: node
   linkType: hard
 
