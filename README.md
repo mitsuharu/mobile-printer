@@ -32,7 +32,7 @@
 
 ### frameworks
 
-- React Native 0.72.7
+- React Native 0.74.3
 
 ### architectures
 
