@@ -96,7 +96,7 @@
     "redux-saga-test-plan": "^4.0.6",
     "ts-jest": "^29.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.3"
   },
   "engines": {
     "node": ">=20"
