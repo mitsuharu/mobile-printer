@@ -3085,14 +3085,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:^1.23.1":
-  version: 1.23.1
-  resolution: "@react-native-async-storage/async-storage@npm:1.23.1"
+"@react-native-async-storage/async-storage@npm:^1.24.0":
+  version: 1.24.0
+  resolution: "@react-native-async-storage/async-storage@npm:1.24.0"
   dependencies:
     merge-options: "npm:^3.0.4"
   peerDependencies:
     react-native: ^0.0.0-0 || >=0.60 <1.0
-  checksum: 10c0/6cfdcab91f0e04f80f4aa91397eb4aedcd1124bf2a997cb730c7f2c70dad75d2aa0ca0f41576ed4e34544a1f79e090169f566366c32a89a41b74bf74bea1c1db
+  checksum: 10c0/cad2098ef84251f2ab8ebc07b750e585a20ac7ca07f26e5441e957a76f2b66f01d10ef5fbddb63d675431377b31beb5208548093e1eb17d262d2184b51133f4d
   languageName: node
   linkType: hard
 
@@ -10034,7 +10034,7 @@ __metadata:
     "@babel/runtime": "npm:^7.24.8"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.7"
     "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.2.0"
-    "@react-native-async-storage/async-storage": "npm:^1.23.1"
+    "@react-native-async-storage/async-storage": "npm:^1.24.0"
     "@react-native-segmented-control/segmented-control": "npm:^2.5.2"
     "@react-native/babel-preset": "npm:^0.74.85"
     "@react-native/eslint-config": "npm:^0.74.85"
