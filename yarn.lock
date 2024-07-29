@@ -10103,7 +10103,7 @@ __metadata:
     react-native-image-picker: "npm:^7.1.2"
     react-native-inappbrowser-reborn: "npm:^3.7.0"
     react-native-nfc-manager: "npm:^3.15.1"
-    react-native-paper: "npm:^5.12.3"
+    react-native-paper: "npm:^5.12.5"
     react-native-safe-area-context: "npm:^4.10.8"
     react-native-screens: "npm:^3.32.0"
     react-native-swag-styles: "npm:^0.2.2"
@@ -11125,9 +11125,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-paper@npm:^5.12.3":
-  version: 5.12.3
-  resolution: "react-native-paper@npm:5.12.3"
+"react-native-paper@npm:^5.12.5":
+  version: 5.12.5
+  resolution: "react-native-paper@npm:5.12.5"
   dependencies:
     "@callstack/react-theme-provider": "npm:^3.0.9"
     color: "npm:^3.1.2"
@@ -11137,7 +11137,7 @@ __metadata:
     react-native: "*"
     react-native-safe-area-context: "*"
     react-native-vector-icons: "*"
-  checksum: 10c0/0adc7c5dd3e47af357b9e0b700e9663d32d9e6e47cba10b26af76a4a63197bda47e5295d6bdc031904039aaa12b875a135fa512c323ea44d4c1ae97d68e1d356
+  checksum: 10c0/feeeedae6fcd9684be04a8a9e9f568776d1680efa190cf0594d72fd91724985bbef2847e06e474ee6221dd1e236701e69c28f1e47f41cc0be8c99656ecf3f58c
   languageName: node
   linkType: hard
 
