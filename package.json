@@ -74,7 +74,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "babel-plugin-optional-require": "^0.3.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "eslint": "^8.57.0",
+    "eslint": "^9.9.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
