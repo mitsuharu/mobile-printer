@@ -5,18 +5,40 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    target-branch: "develop"
+  - package-ecosystem: 'npm'
+    directory: '/'
+    target-branch: 'main'
     open-pull-requests-limit: 10
     commit-message:
-      prefix: "[skip ci] "
+      prefix: '[skip ci] '
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    target-branch: "develop"
-    schedule: 
-      interval: "monthly"
+      interval: 'weekly'
+    groups:
+      update-redux:
+        patterns:
+          - '@reduxjs/toolkit'
+          - 'redux'
+          - 'redux-*'
+          - 'react-redux'
+          - 'reselect'
+      update-eslint:
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+          - '@eslint/*'
+      update-textlint:
+        patterns:
+          - 'textlint'
+          - 'textlint-*'
+      update-babel:
+        patterns:
+          - 'babel'
+          - '@babel/*'
+          - 'babel-*'
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    target-branch: 'main'
+    schedule:
+      interval: 'monthly'
     commit-message:
-      prefix: "[skip ci] "
+      prefix: '[skip ci] '
