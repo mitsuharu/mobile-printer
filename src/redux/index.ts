@@ -1,7 +1,5 @@
 import { Store } from 'redux'
 import { persistStore } from 'redux-persist'
-import createSagaMiddleware from 'redux-saga'
-import { RootState } from '@/redux/RootState'
 import { rootSaga } from '@/redux/saga'
 import { Persistor } from 'redux-persist/es/types'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
@@ -11,6 +9,11 @@ import { printerReducer } from './modules/printer/slice'
 import { NFCReducer } from './modules/nfc/slice'
 import { AsciiArtReducer } from './modules/asciiArt/slice'
 
+// import createSagaMiddleware from 'redux-saga' で読み込むと
+// _reduxSaga.default is not a function (it is undefined) となる
+// https://github.com/redux-saga/redux-saga/issues/2705
+const createSagaMiddleware = require('redux-saga').default
+
 let store: Store
 let persistor: Persistor
 
@@ -18,7 +21,7 @@ export function initializeRedux() {
   console.log(`initializeRedux store: ${!!store}, persistor: ${!!persistor}`)
 
   if (store == null || persistor == null) {
-    const reducer = combineReducers<RootState>({
+    const reducer = combineReducers({
       printer: printerReducer,
       snackbar: snackbarReducer,
       userSetting: userSettingReducer,
@@ -38,12 +41,10 @@ export function initializeRedux() {
      */
     store = configureStore({
       reducer: reducer,
-      middleware: (getDefaultMiddleware) => [
-        ...getDefaultMiddleware({
+      middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
           serializableCheck: { ignoredActions: ['persist/PERSIST'] },
-        }),
-        sagaMiddleware,
-      ],
+        }).concat(sagaMiddleware),
       devTools: true,
     })
 
