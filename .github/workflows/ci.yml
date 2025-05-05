@@ -39,6 +39,10 @@ jobs:
       #     yarn typecheck
       #     yarn lint
 
+      # 時間関連のテスト向けにタイムゾーンを固定する
+      - name: Set timezone to Asia/Tokyo
+        run: sudo timedatectl set-timezone Asia/Tokyo
+
       - name: Run test
         run: |
           yarn test
