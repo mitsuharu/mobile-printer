@@ -3586,13 +3586,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mitsuharu/react-native-sunmi-printer-library@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.2.0"
+"@mitsuharu/react-native-sunmi-printer-library@https://github.com/mitsuharu/react-native-sunmi-printer-library#develop":
+  version: 2.3.0
+  resolution: "@mitsuharu/react-native-sunmi-printer-library@https://github.com/mitsuharu/react-native-sunmi-printer-library.git#commit=49f6fc37b51d879525453f678153bde27adfb42a"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/e7cc0db4d708bea328b3d9a777a741bedd57b710e52124f054f57d12b81d0acaa879a71a5aef30bdeeffb04dae3fcc1836b286263c291b7a37cf027814945201
+  checksum: 10c0/dd583a7d8e5f47853489826dec994069f027fc771fb08ed3e1176f89869e73ba0fdccabf6983f5a352efcc91b9fac01f2ee70651e633b8d58c3a3dac9a0f8a47
   languageName: node
   linkType: hard
 
@@ -10782,7 +10782,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.27.1"
     "@babel/runtime": "npm:^7.27.1"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.10"
-    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.2.0"
+    "@mitsuharu/react-native-sunmi-printer-library": "https://github.com/mitsuharu/react-native-sunmi-printer-library#develop"
     "@react-native-async-storage/async-storage": "npm:^1.24.0"
     "@react-native-community/cli": "npm:^18.0.0"
     "@react-native-community/cli-platform-android": "npm:18.0.0"
@@ -10841,8 +10841,8 @@ __metadata:
     react-native-inappbrowser-reborn: "npm:^3.7.0"
     react-native-nfc-manager: "npm:^3.15.1"
     react-native-paper: "npm:^5.12.3"
-    react-native-safe-area-context: "npm:^4.10.8"
-    react-native-screens: "npm:^3.32.0"
+    react-native-safe-area-context: "npm:^5.4.0"
+    react-native-screens: "npm:^4.10.0"
     react-native-swag-styles: "npm:^0.2.2"
     react-native-uuid: "npm:^2.0.2"
     react-native-vector-icons: "npm:^10.1.0"
@@ -11855,26 +11855,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.10.8":
-  version: 4.10.8
-  resolution: "react-native-safe-area-context@npm:4.10.8"
+"react-native-safe-area-context@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "react-native-safe-area-context@npm:5.4.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/dd0eb162e2f35e3be88a9f1c868bac198d77caa063bf2438692d61459fe5334d981a47296818d19ca35c8b83c8c9a2a70df468786382157a5d00b1ea440d714b
+  checksum: 10c0/729fef1f768d57b905f51882374aa93b209d54576b8a0cf328e0a349c8dc9705ae8f9032e572fd7a7c9e94b588105f44760c0bb15ab9911b7977073d6754b54d
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^3.32.0":
-  version: 3.32.0
-  resolution: "react-native-screens@npm:3.32.0"
+"react-native-screens@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "react-native-screens@npm:4.10.0"
   dependencies:
     react-freeze: "npm:^1.0.0"
     warn-once: "npm:^0.1.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/38dc2e2bf3072c544d3bacceedbcc8ffaee5a588f4984c8d7186a236bd436f761c9b987a37fb3af8e0df2e5980db6155c5f6b6d4a3983001d0f45aa704a20b93
+  checksum: 10c0/09d1f55431b85e556ef7b5efd776ac5e85303e47d9138f910cb8c25ff3804effc43185f84e8842bcae2219e8fee12366b3725f955f638c109387efb82e0260f3
   languageName: node
   linkType: hard
 
