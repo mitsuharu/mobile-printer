@@ -3857,13 +3857,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-segmented-control/segmented-control@npm:^2.5.2":
-  version: 2.5.2
-  resolution: "@react-native-segmented-control/segmented-control@npm:2.5.2"
+"@react-native-segmented-control/segmented-control@npm:^2.5.7":
+  version: 2.5.7
+  resolution: "@react-native-segmented-control/segmented-control@npm:2.5.7"
   peerDependencies:
     react: ">=16.0"
     react-native: ">=0.62"
-  checksum: 10c0/c70120bb920723a87022928138f2a19b88276dc1f38506627b9667c0d90cc99b4b0b293c450c4909ccb83377caed32d6a9cd74702a0e3d825fe9b83367bbde41
+  checksum: 10c0/4f684cbcac813d53598107a88056ae8c9e7a5e4e0ed94776706f400828f50ff3bf87e1fda3a34b437b9c5776331f8a4fab4b080b3260534db5183dcc3f20a3c7
   languageName: node
   linkType: hard
 
@@ -11317,7 +11317,7 @@ __metadata:
     "@react-native-community/cli": "npm:^18.0.0"
     "@react-native-community/cli-platform-android": "npm:18.0.0"
     "@react-native-community/cli-platform-ios": "npm:18.0.0"
-    "@react-native-segmented-control/segmented-control": "npm:^2.5.2"
+    "@react-native-segmented-control/segmented-control": "npm:^2.5.7"
     "@react-native/babel-preset": "npm:0.79.2"
     "@react-native/eslint-config": "npm:0.79.2"
     "@react-native/metro-config": "npm:0.79.2"
