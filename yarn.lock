@@ -2976,13 +2976,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bam.tech/react-native-image-resizer@npm:^3.0.10":
-  version: 3.0.10
-  resolution: "@bam.tech/react-native-image-resizer@npm:3.0.10"
+"@bam.tech/react-native-image-resizer@npm:^3.0.11":
+  version: 3.0.11
+  resolution: "@bam.tech/react-native-image-resizer@npm:3.0.11"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/980d40d38d9a93829f4cddb699c7a72a65cc06091adffc6de560d87de67d28c762ecd9f5ba3dce412f5502a3746b90d34000e318ae60cfcf323a78b4f813587b
+  checksum: 10c0/0ac39fe41bee48b9c300d58bf1341e2d5ade7d9cab99b8cb1153df0f25c4791e295b19c77b051777e782dc957752dab203f1716a26a8595ed7b41b2d43143ce1
   languageName: node
   linkType: hard
 
@@ -11311,7 +11311,7 @@ __metadata:
     "@babel/plugin-proposal-decorators": "npm:^7.24.7"
     "@babel/preset-env": "npm:^7.27.1"
     "@babel/runtime": "npm:^7.27.1"
-    "@bam.tech/react-native-image-resizer": "npm:^3.0.10"
+    "@bam.tech/react-native-image-resizer": "npm:^3.0.11"
     "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.3.0"
     "@react-native-async-storage/async-storage": "npm:^1.24.0"
     "@react-native-community/cli": "npm:^18.0.0"
