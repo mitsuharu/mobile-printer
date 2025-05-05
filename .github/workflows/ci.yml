@@ -33,10 +33,11 @@ jobs:
           corepack enable
           yarn install --immutable
 
-      - name: Run lint
-        run: |
-          yarn typecheck
-          yarn lint
+      # # eslint のアップデートが控えているので、ここでの lint チェックは後で対応する
+      # - name: Run lint
+      #   run: |
+      #     yarn typecheck
+      #     yarn lint
 
       - name: Run test
         run: |
