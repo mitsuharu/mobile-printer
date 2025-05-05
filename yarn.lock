@@ -3586,13 +3586,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mitsuharu/react-native-sunmi-printer-library@https://github.com/mitsuharu/react-native-sunmi-printer-library#develop":
+"@mitsuharu/react-native-sunmi-printer-library@npm:^2.3.0":
   version: 2.3.0
-  resolution: "@mitsuharu/react-native-sunmi-printer-library@https://github.com/mitsuharu/react-native-sunmi-printer-library.git#commit=49f6fc37b51d879525453f678153bde27adfb42a"
+  resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.3.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/dd583a7d8e5f47853489826dec994069f027fc771fb08ed3e1176f89869e73ba0fdccabf6983f5a352efcc91b9fac01f2ee70651e633b8d58c3a3dac9a0f8a47
+  checksum: 10c0/f8f77d8f9fec9ac9dfbbab12f878273b5374c96502434d93cdbc33941ae8cc806f28b4917c411de8d40d5de965be6dc873cc0065868031a8c588cb9c34354b6c
   languageName: node
   linkType: hard
 
@@ -11312,7 +11312,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.27.1"
     "@babel/runtime": "npm:^7.27.1"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.10"
-    "@mitsuharu/react-native-sunmi-printer-library": "https://github.com/mitsuharu/react-native-sunmi-printer-library#develop"
+    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.3.0"
     "@react-native-async-storage/async-storage": "npm:^1.24.0"
     "@react-native-community/cli": "npm:^18.0.0"
     "@react-native-community/cli-platform-android": "npm:18.0.0"
