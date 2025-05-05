@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    name: Build Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up JDK
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: '.node-version'
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      # # eslint のアップデートが控えているので、ここでの lint チェックは後で対応する
+      # - name: Run lint
+      #   run: |
+      #     yarn typecheck
+      #     yarn lint
+
+      # 時間関連のテスト向けにタイムゾーンを固定する
+      - name: Set timezone to Asia/Tokyo
+        run: sudo timedatectl set-timezone Asia/Tokyo
+
+      - name: Run test
+        run: |
+          yarn test
+
+      - name: Cache Gradle files
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x android/gradlew
+
+      # # Android 側の lint は整備していない
+      # - name: Run Android Lint
+      #   run: cd android && ./gradlew lint
+
+      # # Android 側の test は整備していない
+      # - name: Run Android Unit Tests
+      #   run: cd android && ./gradlew test
+
+      - name: Build Debug APK
+        run: cd android && ./gradlew assembleDebug
