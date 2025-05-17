@@ -1,12 +1,10 @@
-モバイル印刷 for SUNMI V2 PRO / V2s
-==
+# モバイル印刷 for SUNMI V2 PRO / V2s
 
 業務用端末 SUNMI V2 PRO / V2s を使用したレシート型名刺などを印刷するアプリです。
 
 ## Demo
 
 [![動作デモ動画](README_Images/thumbnail.png)](https://www.youtube.com/watch?v=s9HNWSZ2Gbo)
-
 
 ### 印刷結果
 
@@ -15,12 +13,12 @@
 ## 機能
 
 - 汎用印刷
-	- テキスト
-	- 画像
-	- QRコード
-	- NFC解析
+  - テキスト
+  - 画像
+  - QRコード
+  - NFC解析
 - プロフィール印刷
-	- 名刺
+  - 名刺
 
 ## Develop
 
@@ -32,7 +30,7 @@
 
 ### frameworks
 
-- React Native 0.74.3
+- React Native 0.79.2
 
 ### architectures
 
@@ -48,8 +46,8 @@ yarn android
 ### release
 
 - apk
-	- `android/app/build/outputs/apk/release/app-release.apk`
-	- 開発版向け
+  - `android/app/build/outputs/apk/release/app-release.apk`
+  - 開発版向け
 
 ```shell
 cd ./android
@@ -57,13 +55,18 @@ cd ./android
 ```
 
 - aab
-	- `android/app/build/outputs/bundle/release/app-release.aab`
-	- ストアリリース向け（予定なし）
+  - `android/app/build/outputs/bundle/release/app-release.aab`
+  - ストアリリース向け（予定なし）
 
 ```shell
 cd ./android
 ./gradlew bundleRelease
 ```
+
+### CI
+
+- PR を作成すると、Android apk (debug) のビルドが実行されます
+- リリースタグをつけて push すると、リリースビルドが作られて、リリース処理および DeployGate に apk がアップロードされます
 
 ## Features
 
@@ -71,7 +74,7 @@ cd ./android
   - UI は鮮麗されていません
 - 画像は端末内のライブラリから選択可能です
   - 事前に白黒加工をするのがおすすめです
- 
+
 ## その他
 
 - ビルド済みアプリは Releases にて apk を公開しています
@@ -89,4 +92,3 @@ MIT
 ## Link
 
 - [業務用スマホ SUNMI V2 PRO の開発準備の手引き - Qiita](https://qiita.com/mitsuharu_e/items/3f2add415136005da719)
-
