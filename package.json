@@ -29,7 +29,7 @@
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "react": "19.0.0",
-    "react-hook-form": "^7.52.1",
+    "react-hook-form": "^7.56.4",
     "react-native": "0.79.2",
     "react-native-alert-async": "^1.0.5",
     "react-native-device-info": "^11.1.0",
