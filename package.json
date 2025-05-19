@@ -24,7 +24,7 @@
     "@react-native-segmented-control/segmented-control": "^2.5.2",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.10.1",
-    "@reduxjs/toolkit": "^2.7.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "dayjs": "^1.11.10",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
