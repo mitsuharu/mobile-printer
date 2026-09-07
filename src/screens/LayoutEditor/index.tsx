@@ -40,6 +40,7 @@ type ComponentProps = Props & {
   onPressAdd: () => void
   onPressFields: () => void
   onPressPreview: () => void
+  onPressPrintData: () => void
   isPickerVisible: boolean
   onSelectElementType: (type: LayoutElementType) => void
   onCancelPicker: () => void
@@ -52,6 +53,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressAdd,
   onPressFields,
   onPressPreview,
+  onPressPrintData,
   isPickerVisible,
   onSelectElementType,
   onCancelPicker,
@@ -99,6 +101,11 @@ const Component: React.FC<ComponentProps> = ({
         <Cell
           title="印刷イメージを見る"
           onPress={onPressPreview}
+          accessory="disclosure"
+        />
+        <Cell
+          title="印刷データ"
+          onPress={onPressPrintData}
           accessory="disclosure"
         />
       </Section>
@@ -154,6 +161,10 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('LayoutPreview', { layoutId })
   }, [navigation, layoutId])
 
+  const onPressPrintData = useCallback(() => {
+    navigation.navigate('PrintDataList', { layoutId })
+  }, [navigation, layoutId])
+
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false)
 
   const onPressAdd = useCallback(() => {
@@ -185,6 +196,7 @@ const Container: React.FC<Props> = (props) => {
         onPressAdd,
         onPressFields,
         onPressPreview,
+        onPressPrintData,
         isPickerVisible,
         onSelectElementType,
         onCancelPicker,

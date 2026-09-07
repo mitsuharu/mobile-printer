@@ -8,5 +8,7 @@ export type MainParams = {
   LayoutEditor: { layoutId: string }
   ElementEditor: { layoutId: string; elementId: string }
   LayoutFields: { layoutId: string }
-  LayoutPreview: { layoutId: string }
+  LayoutPreview: { layoutId: string; printDataId?: string }
+  PrintDataList: { layoutId: string }
+  PrintDataForm: { layoutId: string; printDataId: string }
 }

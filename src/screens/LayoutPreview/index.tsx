@@ -19,9 +19,10 @@ import { makeStyles } from 'react-native-swag-styles'
 import { useSelector } from 'react-redux'
 import { BASE64, COLOR } from '@/CONSTANTS'
 import { createPreviewPrintData, PrintPreview } from '@/components/PrintPreview'
-import type { Layout, PrintCommand } from '@/print'
+import type { Layout, PrintCommand, PrintData } from '@/print'
 import { buildPrintCommands } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
+import { selectPrintDataById } from '@/redux/modules/printData/selectors'
 import { selectPrinterInfo } from '@/redux/modules/printer/selectors'
 import type { MainParams } from '@/routes/main.params'
 import { styleType } from '@/utils/styles'
@@ -36,6 +37,7 @@ const HORIZONTAL_PADDING = 16
 type Props = {}
 type ComponentProps = Props & {
   layout: Layout | undefined
+  isPlaceholder: boolean
   commands: PrintCommand[]
   paperPixelWidth: number
   scale: number
@@ -44,6 +46,7 @@ type ComponentProps = Props & {
 
 const Component: React.FC<ComponentProps> = ({
   layout,
+  isPlaceholder,
   commands,
   paperPixelWidth,
   scale,
@@ -62,8 +65,10 @@ const Component: React.FC<ComponentProps> = ({
   return (
     <View style={styles.container} onLayout={onLayout}>
       <Text style={styles.description}>
-        用紙の幅 {paperPixelWidth}px
-        で描いています。差し込み口は表示名を仮の値として入れています。
+        用紙の幅 {paperPixelWidth}px で描いています。
+        {isPlaceholder
+          ? '差し込み口は表示名を仮の値として入れています。'
+          : null}
       </Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {commands.length === 0 ? (
@@ -92,11 +97,16 @@ const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
 
   const {
-    params: { layoutId },
+    params: { layoutId, printDataId },
   } = useRoute<ParamsProps>()
 
-  const selector = useMemo(() => selectLayoutById(layoutId), [layoutId])
-  const layout = useSelector(selector)
+  const layoutSelector = useMemo(() => selectLayoutById(layoutId), [layoutId])
+  const printDataSelector = useMemo(
+    () => selectPrintDataById(printDataId),
+    [printDataId],
+  )
+  const layout = useSelector(layoutSelector)
+  const printData: PrintData | undefined = useSelector(printDataSelector)
   const printerInfo = useSelector(selectPrinterInfo)
 
   const paperPixelWidth = printerInfo?.pixelWidth ?? BASE64.MAX_SIZE
@@ -111,8 +121,12 @@ const Container: React.FC<Props> = (props) => {
     if (!layout) {
       return []
     }
-    return buildPrintCommands(layout, createPreviewPrintData(layout))
-  }, [layout])
+    // 印刷データを指定されていなければ、差し込み口へ仮の値を入れて体裁を見せる
+    return buildPrintCommands(
+      layout,
+      printData ?? createPreviewPrintData(layout),
+    )
+  }, [layout, printData])
 
   const scale = useMemo(() => {
     const usable = availableWidth - HORIZONTAL_PADDING * 2
@@ -129,7 +143,14 @@ const Container: React.FC<Props> = (props) => {
   return (
     <Component
       {...props}
-      {...{ layout, commands, paperPixelWidth, scale, onLayout }}
+      {...{
+        layout,
+        isPlaceholder: !printData,
+        commands,
+        paperPixelWidth,
+        scale,
+        onLayout,
+      }}
     />
   )
 }

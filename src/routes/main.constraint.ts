@@ -7,6 +7,8 @@ export const MainName = {
   ElementEditor: 'ElementEditor',
   LayoutFields: 'LayoutFields',
   LayoutPreview: 'LayoutPreview',
+  PrintDataList: 'PrintDataList',
+  PrintDataForm: 'PrintDataForm',
 } as const
 
 export type MainName = (typeof MainName)[keyof typeof MainName]
