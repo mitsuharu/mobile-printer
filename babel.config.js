@@ -20,6 +20,8 @@ module.exports = {
     ],
     'optional-require',
     'lodash',
+    // react-native-reanimated が使う worklets のプラグインは最後に置く
+    'react-native-worklets/plugin',
   ],
   env: {
     production: {
