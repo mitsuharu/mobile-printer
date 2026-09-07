@@ -6,4 +6,6 @@ export type MainParams = {
   Printer: undefined
   LayoutList: undefined
   LayoutEditor: { layoutId: string }
+  ElementEditor: { layoutId: string; elementId: string }
+  LayoutFields: { layoutId: string }
 }
