@@ -1,9 +1,9 @@
-import {
-  launchImageLibrary,
-  ImageLibraryOptions,
-} from 'react-native-image-picker'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import { readFile } from 'react-native-fs'
+import {
+  type ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker'
 
 /**
  * 写真ライブラリから画像を取得して、BASE64に変換して返す

@@ -1,21 +1,22 @@
-import React, { useCallback } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 import {
   ActivityIndicator,
   Modal,
   StyleSheet,
   Text,
-  TextStyle,
-  View,
-  ViewStyle,
+  type TextStyle,
   useColorScheme,
+  View,
+  type ViewStyle,
 } from 'react-native'
-import { styleType } from '@/utils/styles'
 import { makeStyles } from 'react-native-swag-styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { COLOR, MESSAGE } from '@/CONSTANTS'
 import { Button } from '@/components/Button'
-import { MESSAGE, COLOR } from '@/CONSTANTS'
-import { useSelector, useDispatch } from 'react-redux'
 import { selectNfcIsReading } from '@/redux/modules/nfc/selectors'
 import { stopReadingNfc } from '@/redux/modules/nfc/slice'
+import { styleType } from '@/utils/styles'
 
 type Props = {}
 type ComponentProps = Props & {

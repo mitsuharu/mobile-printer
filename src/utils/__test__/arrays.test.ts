@@ -1,11 +1,11 @@
 import {
-  nonNull,
-  nonFalsy,
   asyncFilter,
+  chunk,
+  makeSteppedArray,
+  nonFalsy,
+  nonNull,
   unique,
   uniqueBy,
-  makeSteppedArray,
-  chunk,
 } from '@/utils/arrays'
 
 describe('nonNull', () => {

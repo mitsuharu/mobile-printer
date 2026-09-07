@@ -1,7 +1,7 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
-import { openWeb } from './slice'
-import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+import { call, put, takeEvery } from 'redux-saga/effects'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import { openWeb } from './slice'
 
 export function* inAppBrowserSaga() {
   yield takeEvery(openWeb, openWebSaga)

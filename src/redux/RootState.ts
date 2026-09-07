@@ -1,8 +1,8 @@
-import { AsciiArtState } from './modules/asciiArt/slice'
-import { NfcState } from './modules/nfc/slice'
-import { PrinterState } from './modules/printer/slice'
-import { SnackbarState } from './modules/snackbar/slice'
-import { UserSettingState } from './modules/userSetting/slice'
+import type { AsciiArtState } from './modules/asciiArt/slice'
+import type { NfcState } from './modules/nfc/slice'
+import type { PrinterState } from './modules/printer/slice'
+import type { SnackbarState } from './modules/snackbar/slice'
+import type { UserSettingState } from './modules/userSetting/slice'
 
 export interface RootState {
   printer: PrinterState

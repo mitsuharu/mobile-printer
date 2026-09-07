@@ -1,4 +1,4 @@
-import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
+import type { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type Profile = {
   /**

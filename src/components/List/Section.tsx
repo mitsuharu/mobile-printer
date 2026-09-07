@@ -1,7 +1,7 @@
-import React from 'react'
-import { SectionHeader } from './SectionHeader'
+import type React from 'react'
+import type { StyleProp, ViewStyle } from 'react-native'
 import { CellGroup } from './CellGroup'
-import { StyleProp, ViewStyle } from 'react-native'
+import { SectionHeader } from './SectionHeader'
 import { SectionSeparator } from './Separator'
 
 type Props = {

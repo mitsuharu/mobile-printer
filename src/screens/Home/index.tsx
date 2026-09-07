@@ -1,21 +1,25 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react'
-import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import type React from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
+import { ScrollView, StyleSheet, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
-import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
+import { EditToggleButton } from '@/components/Button/EditToggleButton'
+import { Cell, Section } from '@/components/List'
+import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
+import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
 import {
   printProfile,
   printProfileRandomly,
   printText,
 } from '@/redux/modules/printer/slice'
-import { Cell, Section } from '@/components/List'
-import { useNavigation } from '@react-navigation/native'
-import { EditToggleButton } from '@/components/Button/EditToggleButton'
+import {
+  createSubmission,
+  type Submission,
+} from '@/redux/modules/printer/utils'
 import { sampleProfile } from '@/redux/modules/printer/utils/sample'
-import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
-import { createSubmission, Submission } from '@/redux/modules/printer/utils'
+import { styleType } from '@/utils/styles'
 import { InputDialogCell } from './InputDialogCell'
-import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -101,12 +105,11 @@ const Container: React.FC<Props> = (props) => {
 
   const toggle = useCallback(() => {
     setIsEditable(!isEditable)
-  }, [isEditable, setIsEditable])
+  }, [isEditable])
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'モバイル印刷 for SUNMI',
-      // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => (
         <EditToggleButton isEditable={isEditable} toggle={toggle} />
       ),

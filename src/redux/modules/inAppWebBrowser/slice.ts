@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 export type InAppWebState = {}
 
@@ -8,7 +8,6 @@ const inAppWebSlice = createSlice({
   name: 'IN_APP_WEB_BROWSER',
   initialState,
   reducers: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     openWeb(_state, _action: PayloadAction<string>) {},
   },
 })

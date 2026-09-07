@@ -1,7 +1,8 @@
-import { MESSAGE } from '@/CONSTANTS'
-import React, { useCallback, useRef } from 'react'
+import type React from 'react'
+import { useCallback, useRef } from 'react'
 import { View } from 'react-native'
 import RnDialog from 'react-native-dialog'
+import { MESSAGE } from '@/CONSTANTS'
 
 type Props = {
   title?: string
@@ -22,7 +23,7 @@ const Component: React.FC<ComponentProps> = ({
   const textRef = useRef('')
   const onChangeText = useCallback(
     (text: string) => (textRef.current = text),
-    [textRef],
+    [],
   )
 
   return (

@@ -1,27 +1,28 @@
-import React, { useCallback, createRef, useState } from 'react'
+import type { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
+import type React from 'react'
+import { createRef, useCallback, useState } from 'react'
+import { type ErrorOption, useForm } from 'react-hook-form'
 import {
   Keyboard,
-  View,
-  ViewStyle,
-  TextInput,
-  StyleProp,
   ScrollView,
+  type StyleProp,
   StyleSheet,
   Text,
+  type TextInput,
+  View,
+  type ViewStyle,
 } from 'react-native'
-import { useForm, ErrorOption } from 'react-hook-form'
-import { ImageSource, Submission } from '@/redux/modules/printer/utils'
 import { makeStyles } from 'react-native-swag-styles'
-import { styleType } from '@/utils/styles'
-import { TextInputController } from './TextInputController'
-import { Spacer, SpacerLine } from '@/components/Spacer'
 import { useDispatch } from 'react-redux'
-import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { SubmitView } from './SubmitView'
-import { Base64ImageView } from '@/components/Base64ImageView'
 import { BASE64 } from '@/CONSTANTS'
+import { Base64ImageView } from '@/components/Base64ImageView'
+import { Spacer, SpacerLine } from '@/components/Spacer'
+import type { ImageSource, Submission } from '@/redux/modules/printer/utils'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import { styleType } from '@/utils/styles'
 import { PrintImageTypeSegmentedControl } from './ImageTypeSegmentedControl'
-import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
+import { SubmitView } from './SubmitView'
+import { TextInputController } from './TextInputController'
 
 export type OnSubmit = (
   props: Submission,
@@ -98,9 +99,9 @@ export const FormView: React.FC<Props> = ({
   const makeShrunkenText = useCallback((text: string | undefined) => {
     if (text) {
       if (text.length > 35) {
-        return '(' + text.slice(0, 10) + '...' + text.slice(-25) + ')'
+        return `(${text.slice(0, 10)}...${text.slice(-25)})`
       }
-      return '(' + text + ')'
+      return `(${text})`
     }
     return ''
   }, [])
@@ -130,7 +131,7 @@ export const FormView: React.FC<Props> = ({
       setEnableSegmentedControl(true)
       setBase64Text(makeShrunkenText(base64))
     },
-    [getValues, setValue, setBase64Text, makeShrunkenText],
+    [getValues, setValue, makeShrunkenText],
   )
 
   /**

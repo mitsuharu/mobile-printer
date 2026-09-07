@@ -1,10 +1,14 @@
-import { dequeueSnackbar, SnackbarItem } from '@/redux/modules/snackbar/slice'
-import { selectSnackbarItem } from '@/redux/modules/snackbar/selectors'
-import { styleType } from '@/utils/styles'
-import React, { useCallback } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 import { StyleSheet } from 'react-native'
 import { Snackbar } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
+import { selectSnackbarItem } from '@/redux/modules/snackbar/selectors'
+import {
+  dequeueSnackbar,
+  type SnackbarItem,
+} from '@/redux/modules/snackbar/slice'
+import { styleType } from '@/utils/styles'
 
 /**
  * SnackBar の表示秒数(ミリ秒)

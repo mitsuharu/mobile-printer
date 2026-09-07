@@ -21,11 +21,6 @@ updates:
           - 'redux-*'
           - 'react-redux'
           - 'reselect'
-      update-eslint:
-        patterns:
-          - 'eslint'
-          - 'eslint-*'
-          - '@eslint/*'
       update-textlint:
         patterns:
           - 'textlint'

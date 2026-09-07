@@ -1,6 +1,6 @@
-import { RootState } from '@/redux/RootState'
 import { createSelector } from 'reselect'
-import { SnackbarItem } from './slice'
+import type { RootState } from '@/redux/RootState'
+import type { SnackbarItem } from './slice'
 
 const selectSnackbarItemQueue = (state: RootState): SnackbarItem[] =>
   state.snackbar.itemQueue

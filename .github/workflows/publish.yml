@@ -35,7 +35,7 @@ jobs:
           corepack enable
           yarn install --immutable
 
-      # # eslint のアップデートが控えているので、ここでの lint チェックは後で対応する
+      # typecheck は既存の型エラー解消後に有効化する
       # - name: Run lint
       #   run: |
       #     yarn typecheck

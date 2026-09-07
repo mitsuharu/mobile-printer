@@ -1,12 +1,12 @@
-import { call, put, takeLeading } from 'redux-saga/effects'
-import { printQRCode } from '../slice'
-import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { QRCodeSource } from '../utils'
-import { eventChannel } from 'redux-saga'
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { DeviceEventEmitter } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
+import { eventChannel } from 'redux-saga'
+import { call, put, takeLeading } from 'redux-saga/effects'
 import { MESSAGE } from '@/CONSTANTS'
-import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import { printQRCode } from '../slice'
+import type { QRCodeSource } from '../utils'
 import { validatePrinterSaga } from './printerSagaUtils'
 
 /**

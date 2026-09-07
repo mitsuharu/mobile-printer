@@ -1,7 +1,12 @@
-import React from 'react'
-import { ActivityIndicator, StyleSheet, View, ViewStyle } from 'react-native'
-import { styleType } from '@/utils/styles'
+import type React from 'react'
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  type ViewStyle,
+} from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
+import { styleType } from '@/utils/styles'
 
 type Props = {
   isLoading: boolean

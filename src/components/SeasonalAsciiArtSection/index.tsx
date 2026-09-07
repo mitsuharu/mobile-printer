@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect } from 'react'
-import { Cell, Section } from '../List'
-import { useSelector, useDispatch } from 'react-redux'
+import type React from 'react'
+import { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectAsciiArtSeasonalEvent } from '@/redux/modules/asciiArt/selectors'
 import {
-  SeasonalEvent,
   printAsciiArtChristmas,
   printAsciiArtNewYear,
   printAsciiArtSnow,
+  type SeasonalEvent,
   updateSeasonalEvent,
 } from '@/redux/modules/asciiArt/slice'
+import { Cell, Section } from '../List'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -45,8 +46,7 @@ const Container: React.FC<Props> = (props) => {
 
   useEffect(() => {
     dispatch(updateSeasonalEvent())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch])
 
   const onPressChristmas = useCallback(() => {
     dispatch(printAsciiArtChristmas())

@@ -1,10 +1,10 @@
-import { call, put, select } from 'redux-saga/effects'
-import { selectIsPrintable } from '../selectors'
-import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import {
-  PrinterInfo,
   getPrinterInfo,
+  type PrinterInfo,
 } from '@mitsuharu/react-native-sunmi-printer-library'
+import { call, put, select } from 'redux-saga/effects'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import { selectIsPrintable } from '../selectors'
 import { assignPrinterInfo } from '../slice'
 
 /**

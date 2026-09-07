@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createSlice } from '@reduxjs/toolkit'
-import { PersistConfig, persistReducer } from 'redux-persist'
+import { type PersistConfig, persistReducer } from 'redux-persist'
 
 export type UserSettingState = {
   temp: string

@@ -1,4 +1,4 @@
-import { isEmpty, hasAnyObject, hasAnyKeyValue } from '../object'
+import { hasAnyKeyValue, hasAnyObject, isEmpty } from '../object'
 
 describe('isEmpty', () => {
   beforeEach(async () => {})

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 
 export type ToastType = 'success' | 'error' | 'info'

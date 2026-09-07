@@ -1,11 +1,11 @@
-import { call, put } from 'redux-saga/effects'
-import { printImage, printImageFromImagePicker } from '../slice'
-import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { ImageSource } from '../utils'
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
+import { call, put } from 'redux-saga/effects'
 import { BASE64 } from '@/CONSTANTS'
-import { validatePrinterSaga } from './printerSagaUtils'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { fetchBase64Image } from '@/utils/ImagePicker'
+import { printImage, type printImageFromImagePicker } from '../slice'
+import type { ImageSource } from '../utils'
+import { validatePrinterSaga } from './printerSagaUtils'
 
 /**
  * @package

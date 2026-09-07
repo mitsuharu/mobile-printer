@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
-import { PersistConfig, persistReducer } from 'redux-persist'
+import { type PersistConfig, persistReducer } from 'redux-persist'
 
 export type SeasonalEvent = 'none' | 'christmas' | 'newYear'
 
@@ -30,19 +30,14 @@ const slice = createSlice({
       state.updatedAt = dayjs().valueOf()
     },
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     updateSeasonalEvent(_state, _payload: PayloadAction<void>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printAsciiArt(_state, _payload: PayloadAction<void>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printAsciiArtChristmas(_state, _payload: PayloadAction<void>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printAsciiArtNewYear(_state, _payload: PayloadAction<void>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printAsciiArtSnow(_state, _payload: PayloadAction<void>) {},
   },
 })

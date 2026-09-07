@@ -1,5 +1,5 @@
-import { RootState } from '@/redux/RootState'
-import { SeasonalEvent } from './slice'
+import type { RootState } from '@/redux/RootState'
+import type { SeasonalEvent } from './slice'
 
 export const selectAsciiArtUpdatedAt = (state: RootState): number =>
   state.asciiArt.updatedAt

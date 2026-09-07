@@ -43,6 +43,15 @@ yarn
 yarn android
 ```
 
+### lint and format
+
+BiomeでJavaScript、TypeScript、JSONなどの対応ファイルを検査・整形します。
+
+```shell
+yarn lint
+yarn lint-force
+```
+
 ### release
 
 - apk

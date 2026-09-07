@@ -1,17 +1,18 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import type { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 import SegmentedControl, {
-  NativeSegmentedControlIOSChangeEvent,
+  type NativeSegmentedControlIOSChangeEvent,
 } from '@react-native-segmented-control/segmented-control'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
-  NativeSyntheticEvent,
+  type NativeSyntheticEvent,
   StyleSheet,
-  ViewStyle,
   useColorScheme,
+  type ViewStyle,
 } from 'react-native'
-import { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 import { makeStyles } from 'react-native-swag-styles'
-import { styleType } from '@/utils/styles'
 import { COLOR } from '@/CONSTANTS'
+import { styleType } from '@/utils/styles'
 
 type Props = {
   initialPrintImageType?: PrintImageType

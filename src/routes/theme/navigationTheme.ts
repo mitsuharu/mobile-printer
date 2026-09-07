@@ -1,6 +1,6 @@
+import { DarkTheme, DefaultTheme, type Theme } from '@react-navigation/native'
+import type { ColorSchemeName } from 'react-native'
 import { COLOR } from '@/CONSTANTS'
-import { DarkTheme, DefaultTheme, Theme } from '@react-navigation/native'
-import { ColorSchemeName } from 'react-native'
 
 type Colors = Pick<Theme, 'colors'>['colors']
 

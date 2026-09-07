@@ -1,4 +1,4 @@
-import { Insets } from 'react-native'
+import type { Insets } from 'react-native'
 
 export const contentInset: Required<Insets> = {
   top: 12,

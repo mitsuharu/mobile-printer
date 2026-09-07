@@ -1,7 +1,8 @@
-import { styleType } from '@/utils/styles'
-import React, { memo } from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import type React from 'react'
+import { memo } from 'react'
+import { StyleSheet, View, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
+import { styleType } from '@/utils/styles'
 import { borderInset } from './util'
 
 type Props = {}

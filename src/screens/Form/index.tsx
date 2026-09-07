@@ -1,16 +1,21 @@
-import React, { useCallback, useLayoutEffect } from 'react'
-import { ViewStyle, StyleSheet } from 'react-native'
-import { makeStyles } from 'react-native-swag-styles'
-import { styleType } from '@/utils/styles'
-import { useDispatch } from 'react-redux'
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
-import { Submission } from '@/redux/modules/printer/utils'
-import { MainParams } from '@/routes/main.params'
-import { FormView, OnSubmit } from './FormView'
-import { deleteSubmission, saveSubmission } from '@/redux/modules/printer/slice'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {
+  type RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native'
+import type React from 'react'
+import { useCallback, useLayoutEffect } from 'react'
+import { StyleSheet, type ViewStyle } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { makeStyles } from 'react-native-swag-styles'
+import { useDispatch } from 'react-redux'
 import { MESSAGE } from '@/CONSTANTS'
+import { deleteSubmission, saveSubmission } from '@/redux/modules/printer/slice'
+import type { Submission } from '@/redux/modules/printer/utils'
+import type { MainParams } from '@/routes/main.params'
+import { styleType } from '@/utils/styles'
+import { FormView, type OnSubmit } from './FormView'
 
 type ParamsProps = RouteProp<MainParams, 'Form'>
 
@@ -56,7 +61,6 @@ const Container: React.FC<Props> = (props) => {
   }, [navigation])
 
   const onSubmit = useCallback<OnSubmit>(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (payload, _setError) => {
       try {
         dispatch(saveSubmission(payload))

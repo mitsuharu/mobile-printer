@@ -1,12 +1,12 @@
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { call, put, select } from 'redux-saga/effects'
-import { printProfile } from '../slice'
+import { BASE64, FONT_SIZE } from '@/CONSTANTS'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { timeStamp } from '@/utils/day'
-import { Profile, Submission } from '../utils'
 import { hasAnyKeyValue } from '@/utils/object'
-import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
-import { BASE64, FONT_SIZE } from '@/CONSTANTS'
 import { selectPrinterSubmissions } from '../selectors'
+import { printProfile } from '../slice'
+import type { Profile, Submission } from '../utils'
 import { validatePrinterSaga } from './printerSagaUtils'
 
 /**

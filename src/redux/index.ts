@@ -1,13 +1,13 @@
-import { Store } from 'redux'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import type { Store } from 'redux'
 import { persistStore } from 'redux-persist'
+import type { Persistor } from 'redux-persist/es/types'
 import { rootSaga } from '@/redux/saga'
-import { Persistor } from 'redux-persist/es/types'
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { AsciiArtReducer } from './modules/asciiArt/slice'
+import { NFCReducer } from './modules/nfc/slice'
+import { printerReducer } from './modules/printer/slice'
 import { snackbarReducer } from './modules/snackbar/slice'
 import { userSettingReducer } from './modules/userSetting/slice'
-import { printerReducer } from './modules/printer/slice'
-import { NFCReducer } from './modules/nfc/slice'
-import { AsciiArtReducer } from './modules/asciiArt/slice'
 
 // import createSagaMiddleware from 'redux-saga' で読み込むと
 // _reduxSaga.default is not a function (it is undefined) となる

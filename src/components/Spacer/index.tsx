@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import type React from 'react'
+import { StyleSheet, View, type ViewStyle } from 'react-native'
 
 type Props = Pick<ViewStyle, 'width' | 'height'>
 
