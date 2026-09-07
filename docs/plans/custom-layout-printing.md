@@ -174,21 +174,35 @@ SQLite を唯一の情報源とし、Redux は画面へ供給するキャッシ�
 
 ## 進捗
 
-- [ ] PR1 計画の記録
-- [ ] PR2 SQLite 基盤
-- [ ] PR3 ドメインモデルと印刷レンダラ
-- [ ] PR4 レイアウトのCRUD
-- [ ] PR5 レイアウト一覧UI
-- [ ] PR6a 要素の追加・削除とドラッグ並べ替え
-- [ ] PR6b 要素の個別編集とフィールド定義
-- [ ] PR6c レイアウト編集画面のプレビュー
-- [ ] PR7 印刷データとフォーム
-- [ ] PR8 印刷実行
-- [ ] PR9 旧プロフィール印刷の撤去
-- [ ] PR10 ドキュメント更新
+すべてのPRを作成済みです。マージはメンテナーが行います。
 
-## 未確定・要検討
+- [x] PR1 計画の記録 … [#463](https://github.com/mitsuharu/mobile-printer/pull/463)（まとめPR）
+- [x] PR2 SQLite 基盤 … [#464](https://github.com/mitsuharu/mobile-printer/pull/464)
+- [x] PR3 ドメインモデルと印刷レンダラ … [#466](https://github.com/mitsuharu/mobile-printer/pull/466)
+- [x] PR4 レイアウトのCRUD … [#467](https://github.com/mitsuharu/mobile-printer/pull/467)
+- [x] PR5 レイアウト一覧UI … [#468](https://github.com/mitsuharu/mobile-printer/pull/468)
+- [x] PR6a 要素の追加・削除とドラッグ並べ替え … [#469](https://github.com/mitsuharu/mobile-printer/pull/469)
+- [x] PR6b 要素の個別編集と入力項目の定義 … [#470](https://github.com/mitsuharu/mobile-printer/pull/470)
+- [x] PR6c レイアウト編集画面のプレビュー … [#471](https://github.com/mitsuharu/mobile-printer/pull/471)
+- [x] PR7 印刷データとフォーム … [#472](https://github.com/mitsuharu/mobile-printer/pull/472)
+- [x] PR8 印刷実行 … [#473](https://github.com/mitsuharu/mobile-printer/pull/473)
+- [x] PR9 旧プロフィール印刷の撤去 … [#474](https://github.com/mitsuharu/mobile-printer/pull/474)
+- [x] PR9.5 「差し込み口」を「入力項目」へ改称 … [#475](https://github.com/mitsuharu/mobile-printer/pull/475)
+- [x] PR10 ドキュメント更新
 
-- SUNMI 実機（Android 7 系）での Reanimated 4 / op-sqlite の動作は、PR2 と PR6 の実機確認で必ず検証する。問題が出た場合は並べ替えを上下ボタン方式へ、SQLite を別ライブラリへ切り替える判断を行う。
-- プレビューは `PrintCommand[]` を画面へ描き直す方式とし、レイアウト編集中に印刷結果を確かめられるようにする（PR6c）。印刷幅は 384px（58mm）を前提とし、80mm 端末の扱いは `PrinterInfo.pixelWidth` を参照して決める。
-- 画像要素の元データ管理（未参照アセットの掃除）は PR7 以降で検討する。
+## 実装して分かったこと
+
+計画から変えた点と、実機でしか分からなかった点を残します。
+
+- **Reanimated 4 / Gesture Handler は SUNMI V2 PRO（Android 7.1.2、armeabi-v7a）で問題なく動作しました。** 計画に挙げていた「並べ替えを上下ボタン方式へ切り替える」フォールバックは不要でした。op-sqlite も同様に動作します。
+- **AndroidのAlertは3つまでしかボタンを表示できません。** 要素の種類（7つ）をAlertで選ばせると実機で選択肢が切り捨てられたため、一覧を持つ `ListPickerModal` を用意しました。寄せ・線種・誤り訂正レベルなど、ほかの選択肢にも同じ制約が効きます。
+- **プレビューはプリンターの文字サイズをそのまま画面のフォントサイズに使えません。** 等幅フォントの送り幅の差で1行に入る文字数がずれ、区切り線が用紙幅からはみ出しました。字送りが一致するよう換算しています。
+- **レイアウトの保存で入力項目をまとめて入れ替えると、印刷データの値が連鎖削除で消えます。** `node:sqlite` に対する実スキーマのテストで見つかりました。無くなった入力項目だけを削除するようにしています。
+- **要素の編集は6a（並べ替え）/ 6b（個別編集）/ 6c（プレビュー）に分割しました。** 依存追加と編集UIを1本にまとめると大きすぎたためです。プレビューはレビューでの提案を受けて追加しました。
+- **「差し込み口」は「入力項目」へ改称しました。** レビューで分かりにくいと指摘されたためです。レイアウトの要素は固定値か入力可能かのどちらかなので、入力側の呼び名へ寄せています。
+
+## 残っている検討事項
+
+- 画像アセットの掃除（どこからも参照されなくなった `image_assets` の削除）は `deleteUnreferencedImageAssets` を用意してありますが、まだどこからも呼んでいません。件数が増えてきたら呼び出す場所を決めます。
+- 印刷データが増えたときのホームの一覧は、いまのところ全件を並べています。並べ替えや絞り込みは必要になってから考えます。
+- プレビューの用紙幅は接続中のプリンターの `pixelWidth` を使い、未接続時は 384px（58mm）とします。80mm 端末での見え方は実機で未確認です。
