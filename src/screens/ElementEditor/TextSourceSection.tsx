@@ -1,14 +1,22 @@
 import type React from 'react'
-import { useCallback } from 'react'
-import { Cell, Section } from '@/components/List'
-import type { Layout, TextSource } from '@/print'
+import { useCallback, useState } from 'react'
+import { InputDialog } from '@/components/Dialog'
+import { Section } from '@/components/List'
+import type { Layout, LayoutField, TextSource } from '@/print'
+import { createLayoutField } from '@/print'
 import { PickerCell, TextValueCell } from './rows'
 
 type Props = {
   title: string
   layout: Layout
   source: TextSource
-  onChange: (source: TextSource) => void
+
+  /**
+   * 供給元を変える
+   *
+   * その場で作った入力項目は、要素の変更と一緒に保存するため `field` で渡す。
+   */
+  onChange: (source: TextSource, field?: LayoutField) => void
 }
 
 type SourceKind = TextSource['kind']
@@ -22,6 +30,21 @@ export const TextSourceSection: React.FC<Props> = ({
   source,
   onChange,
 }) => {
+  const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
+
+  const onSubmitNewField = useCallback(
+    (label: string) => {
+      setIsDialogVisible(false)
+      const trimmed = label.trim()
+      const field = createLayoutField({
+        label: trimmed || '入力項目',
+        key: trimmed || `field${layout.fields.length + 1}`,
+      })
+      onChange({ kind: 'field', fieldId: field.id }, field)
+    },
+    [layout.fields.length, onChange],
+  )
+
   const onChangeKind = useCallback(
     (kind: SourceKind) => {
       if (kind === source.kind) {
@@ -61,24 +84,31 @@ export const TextSourceSection: React.FC<Props> = ({
           value={source.value}
           onChange={(value) => onChange({ kind: 'static', value })}
         />
-      ) : layout.fields.length === 0 ? (
-        <Cell
-          title="入力項目がありません"
-          description="レイアウトの「入力項目」から追加してください"
-          inactive={true}
-        />
       ) : (
         <PickerCell
           title="入力項目"
+          description="印刷データごとに入力する箇所です"
           value={source.fieldId}
           items={layout.fields.map((field) => ({
             value: field.id,
             title: field.label || field.key,
             description: field.key,
           }))}
+          action={{
+            title: '入力項目を追加する',
+            description: 'このレイアウトに新しい入力欄を作ります',
+            onPress: () => setIsDialogVisible(true),
+          }}
           onChange={(fieldId) => onChange({ kind: 'field', fieldId })}
         />
       )}
+      <InputDialog
+        isVisible={isDialogVisible}
+        title="入力項目の追加"
+        description="表示名を入力してください"
+        onPress={onSubmitNewField}
+        onCancel={() => setIsDialogVisible(false)}
+      />
     </Section>
   )
 }
