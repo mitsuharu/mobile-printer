@@ -3589,13 +3589,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mitsuharu/react-native-sunmi-printer-library@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.3.0"
+"@mitsuharu/react-native-sunmi-printer-library@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.4.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/f8f77d8f9fec9ac9dfbbab12f878273b5374c96502434d93cdbc33941ae8cc806f28b4917c411de8d40d5de965be6dc873cc0065868031a8c588cb9c34354b6c
+  checksum: 10c0/6268a0baf713a1ecea85e613cf3cf975cd35c49e3907dc0c5ed2808e847401af2f2489dba0697e356828a7c6e6fef2e975f247fd6f0fc1cec835a849829775b0
   languageName: node
   linkType: hard
 
@@ -8624,7 +8624,7 @@ __metadata:
     "@babel/runtime": "npm:^7.27.1"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.10"
     "@biomejs/biome": "npm:^2.5.6"
-    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.3.0"
+    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.4.0"
     "@react-native-async-storage/async-storage": "npm:^1.24.0"
     "@react-native-community/cli": "npm:^18.0.0"
     "@react-native-community/cli-platform-android": "npm:18.0.0"
