@@ -96,7 +96,8 @@ const Row: React.FC<{ row: PreviewRow; paperPixelWidth: number }> = ({
       return (
         <View style={{ alignItems: toFlex(row.alignment) }}>
           <Image
-            source={{ uri: `${BASE64.PREFIX}${row.base64}` }}
+            // ファイルのまま渡すと、Base64 の復号を経ずにネイティブで描画できる
+            source={{ uri: `file://${row.path}` }}
             style={[styles.image, { width: row.width, height: row.width }]}
             resizeMode="contain"
           />

@@ -11,23 +11,32 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BASE64 } from '@/CONSTANTS'
-import { fetchBase64Image } from '@/utils/ImagePicker'
+import { fetchResizedImagePath } from '@/utils/ImagePicker'
 import { styleType } from '@/utils/styles'
 
 type Props = {
-  base64?: string
+  /**
+   * 表示する画像ファイルのパス
+   */
+  path?: string
+
   onPress?: () => void
-  onChange?: (base64: string) => void
+
+  /**
+   * 選び直した画像ファイルのパスを返す
+   */
+  onChange?: (path: string) => void
+
   style?: StyleProp<ViewStyle>
 }
 type ComponentProps = Props & {
   source?: ImageSourcePropType
 }
 
-const makeBase64ImageSource = (
-  base64: string | undefined,
+const makeImageSource = (
+  path: string | undefined,
 ): ImageSourcePropType | undefined =>
-  base64 ? { uri: `${BASE64.PREFIX}${base64}` } : undefined
+  path ? { uri: `file://${path}` } : undefined
 
 const Component: React.FC<ComponentProps> = ({ style, source, onPress }) => {
   return (
@@ -49,18 +58,18 @@ const Component: React.FC<ComponentProps> = ({ style, source, onPress }) => {
 }
 
 const Container: React.FC<Props> = (props) => {
-  const { base64, onChange } = props
+  const { path, onChange } = props
 
   const [source, setSource] = useState<ImageSourcePropType | undefined>(
-    makeBase64ImageSource(base64),
+    makeImageSource(path),
   )
 
   const onPress = useCallback(async () => {
     try {
-      const base64Image = await fetchBase64Image(BASE64.PROFILE_ICON_SIZE)
-      if (base64Image) {
-        onChange?.(base64Image)
-        setSource(makeBase64ImageSource(base64Image))
+      const nextPath = await fetchResizedImagePath(BASE64.PROFILE_ICON_SIZE)
+      if (nextPath) {
+        onChange?.(nextPath)
+        setSource(makeImageSource(nextPath))
       }
     } catch (e: any) {
       console.warn(e)
@@ -70,7 +79,7 @@ const Container: React.FC<Props> = (props) => {
   return <Component {...props} {...{ source, onPress }} />
 }
 
-export { Container as Base64ImageView }
+export { Container as ImageFileView }
 
 const styles = StyleSheet.create({
   container: styleType<ViewStyle>({

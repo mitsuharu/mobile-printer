@@ -60,7 +60,7 @@ async function print(commands: PrintCommand[]) {
   try {
     // 割り込みを防ぐため、1件の印刷をまとめて送る
     await SunmiPrinterLibrary.enterPrinterBuffer(true)
-    executePrintCommands(commands)
+    await executePrintCommands(commands)
   } catch (e: any) {
     console.warn('print', e)
     throw e

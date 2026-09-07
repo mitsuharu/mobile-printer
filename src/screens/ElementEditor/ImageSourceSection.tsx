@@ -2,9 +2,10 @@ import type React from 'react'
 import { useCallback } from 'react'
 import { StyleSheet, View, type ViewStyle } from 'react-native'
 import { BASE64 } from '@/CONSTANTS'
-import { Base64ImageView } from '@/components/Base64ImageView'
+import { ImageFileView } from '@/components/ImageFileView'
 import { Cell, Section } from '@/components/List'
 import type { ImageSource, Layout } from '@/print'
+import { copyImageFile } from '@/utils/imageStore'
 import { styleType } from '@/utils/styles'
 import { createUUID } from '@/utils/uuid'
 import { PickerCell } from './rows'
@@ -41,18 +42,19 @@ export const ImageSourceSection: React.FC<Props> = ({
     [layout.fields, onChange, source.kind],
   )
 
-  const onChangeBase64 = useCallback(
-    (base64: string) => {
-      onChange({
-        kind: 'static',
-        asset: {
-          // 画像を選び直したら別のアセットとして保存する
-          id: createUUID(),
-          base64,
-          width,
-          imageType: 'binary',
-        },
-      })
+  const onChangeImage = useCallback(
+    async (pickedPath: string) => {
+      try {
+        // 画像を選び直したら別のアセットとして保存する
+        const id = createUUID()
+        const path = await copyImageFile(id, pickedPath)
+        onChange({
+          kind: 'static',
+          asset: { id, path, width, imageType: 'binary' },
+        })
+      } catch (e: any) {
+        console.warn('onChangeImage', e)
+      }
     },
     [onChange, width],
   )
@@ -78,10 +80,7 @@ export const ImageSourceSection: React.FC<Props> = ({
       />
       {source.kind === 'static' ? (
         <View style={styles.imageView}>
-          <Base64ImageView
-            base64={source.asset?.base64}
-            onChange={onChangeBase64}
-          />
+          <ImageFileView path={source.asset?.path} onChange={onChangeImage} />
         </View>
       ) : layout.fields.length === 0 ? (
         <Cell

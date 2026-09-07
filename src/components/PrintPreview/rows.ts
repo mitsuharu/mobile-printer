@@ -17,7 +17,7 @@ export type PreviewRow =
     }
   | {
       type: 'image'
-      base64: string
+      path: string
       width: number
       imageType: PrintImageType
       alignment: Alignment
@@ -91,7 +91,7 @@ export const buildPreviewRows = (commands: PrintCommand[]): PreviewRow[] => {
       case 'printImage':
         rows.push({
           type: 'image',
-          base64: command.base64,
+          path: command.path,
           width: command.width,
           imageType: command.imageType,
           alignment: style.alignment,

@@ -72,7 +72,12 @@ describe('buildPreviewRows', () => {
   it('画像・QR・列・区切り線・空白を行にする', () => {
     const commands: PrintCommand[] = [
       { type: 'setAlignment', alignment: 'center' },
-      { type: 'printImage', base64: 'AAAA', width: 200, imageType: 'binary' },
+      {
+        type: 'printImage',
+        path: '/images/asset-1.png',
+        width: 200,
+        imageType: 'binary',
+      },
       {
         type: 'printQRCode',
         text: 'https://example.com/',
@@ -92,7 +97,7 @@ describe('buildPreviewRows', () => {
     expect(buildPreviewRows(commands)).toEqual([
       {
         type: 'image',
-        base64: 'AAAA',
+        path: '/images/asset-1.png',
         width: 200,
         imageType: 'binary',
         alignment: 'center',

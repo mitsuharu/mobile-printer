@@ -99,7 +99,7 @@ describe('describeElement 各種', () => {
           kind: 'static',
           asset: {
             id: 'a',
-            base64: 'AAAA',
+            path: '/images/asset-1.png',
             width: 200,
             imageType: 'binary',
           },

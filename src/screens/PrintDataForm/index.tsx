@@ -16,7 +16,7 @@ import {
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE64, COLOR } from '@/CONSTANTS'
-import { Base64ImageView } from '@/components/Base64ImageView'
+import { ImageFileView } from '@/components/ImageFileView'
 import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, LayoutField, PrintData, PrintDataValue } from '@/print'
@@ -24,6 +24,7 @@ import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { selectPrintDataById } from '@/redux/modules/printData/selectors'
 import { printLayout, savePrintData } from '@/redux/modules/printData/slice'
 import type { MainParams } from '@/routes/main.params'
+import { copyImageFile } from '@/utils/imageStore'
 import { styleType } from '@/utils/styles'
 import { createUUID } from '@/utils/uuid'
 import { TextValueCell } from '../ElementEditor/rows'
@@ -36,6 +37,7 @@ type ComponentProps = Props & {
   printData: PrintData | undefined
   onChangeTitle: (title: string) => void
   onChangeValue: (field: LayoutField, value: PrintDataValue) => void
+  onChangeImage: (field: LayoutField, path: string) => Promise<void>
   onPressPreview: () => void
   onPressPrint: () => void
   onPressLayout: () => void
@@ -44,11 +46,15 @@ type ComponentProps = Props & {
 const textValueOf = (value: PrintDataValue | undefined) =>
   value?.kind === 'text' ? value.value : ''
 
+const imagePathOf = (value: PrintDataValue | undefined) =>
+  value?.kind === 'image' ? value.asset.path : undefined
+
 const Component: React.FC<ComponentProps> = ({
   layout,
   printData,
   onChangeTitle,
   onChangeValue,
+  onChangeImage,
   onPressPreview,
   onPressPrint,
   onPressLayout,
@@ -90,28 +96,9 @@ const Component: React.FC<ComponentProps> = ({
                 <Text style={styles.imageLabel}>
                   {field.label || field.key}
                 </Text>
-                <Base64ImageView
-                  base64={
-                    printData.values[field.id]?.kind === 'image'
-                      ? // biome-ignore lint/style/noNonNullAssertion: 直前の判定で画像であることを確かめている
-                        (
-                          printData.values[field.id] as {
-                            asset: { base64: string }
-                          }
-                        ).asset.base64
-                      : undefined
-                  }
-                  onChange={(base64) =>
-                    onChangeValue(field, {
-                      kind: 'image',
-                      asset: {
-                        id: createUUID(),
-                        base64,
-                        width: BASE64.PROFILE_ICON_SIZE,
-                        imageType: 'binary',
-                      },
-                    })
-                  }
+                <ImageFileView
+                  path={imagePathOf(printData.values[field.id])}
+                  onChange={(path) => onChangeImage(field, path)}
                 />
               </View>
             ) : (
@@ -192,6 +179,28 @@ const Container: React.FC<Props> = (props) => {
     [dispatch, printData],
   )
 
+  const onChangeImage = useCallback(
+    async (field: LayoutField, pickedPath: string) => {
+      try {
+        // 画像を選び直したら別のアセットとして保存する
+        const id = createUUID()
+        const path = await copyImageFile(id, pickedPath)
+        onChangeValue(field, {
+          kind: 'image',
+          asset: {
+            id,
+            path,
+            width: BASE64.PROFILE_ICON_SIZE,
+            imageType: 'binary',
+          },
+        })
+      } catch (e: any) {
+        console.warn('onChangeImage', e)
+      }
+    },
+    [onChangeValue],
+  )
+
   const onPressPreview = useCallback(() => {
     navigation.navigate('LayoutPreview', { layoutId, printDataId })
   }, [layoutId, navigation, printDataId])
@@ -212,6 +221,7 @@ const Container: React.FC<Props> = (props) => {
         printData,
         onChangeTitle,
         onChangeValue,
+        onChangeImage,
         onPressPreview,
         onPressPrint,
         onPressLayout,
