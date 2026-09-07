@@ -142,18 +142,32 @@ export const saveLayout = async (
       }
     }
 
+    // 要素は参照されていないため、まとめて入れ替える
     await tx.execute('DELETE FROM layout_elements WHERE layout_id = ?', [
       layout.id,
     ])
-    await tx.execute('DELETE FROM layout_fields WHERE layout_id = ?', [
-      layout.id,
-    ])
+
+    // 差し込み口は印刷データの値から参照されている。まとめて消すと、
+    // 残す差し込み口の値まで連鎖削除されるため、無くなったものだけを消す
+    const fieldIds = layout.fields.map(({ id }) => id)
+    const placeholders = fieldIds.map(() => '?').join(', ')
+    await tx.execute(
+      `DELETE FROM layout_fields
+       WHERE layout_id = ?
+       ${fieldIds.length ? `AND id NOT IN (${placeholders})` : ''}`,
+      [layout.id, ...fieldIds],
+    )
 
     for (const [index, field] of layout.fields.entries()) {
       const row = serializeField(field, layout.id, index)
       await tx.execute(
         `INSERT INTO layout_fields (id, layout_id, key, label, value_type, sort_order)
-         VALUES (?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+           key = excluded.key,
+           label = excluded.label,
+           value_type = excluded.value_type,
+           sort_order = excluded.sort_order`,
         [
           row.id,
           row.layout_id,
