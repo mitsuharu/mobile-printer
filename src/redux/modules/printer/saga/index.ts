@@ -1,21 +1,18 @@
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { Platform } from 'react-native'
 import { getBrand, isEmulator } from 'react-native-device-info'
-import { call, fork, put, takeEvery, takeLeading } from 'redux-saga/effects'
+import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import {
   assignIsPrintable,
   duplicateQRCode,
   printImage,
   printImageFromImagePicker,
-  printProfile,
-  printProfileRandomly,
   printQRCode,
   printText,
 } from '../slice'
 import { getPrinterInfoSaga } from './printerSagaUtils'
 import { printImageFromImagePickerSaga, printImageSaga } from './printImage'
-import { printProfileRandomlySaga, printProfileSaga } from './printProfile'
 import {
   duplicateQRCodeSaga,
   monitorScanSuccessSaga,
@@ -32,8 +29,6 @@ export function* printerSaga() {
 
   yield fork(printInitSaga)
   yield fork(monitorScanSuccessSaga)
-  yield takeLeading(printProfile, printProfileSaga)
-  yield takeLeading(printProfileRandomly, printProfileRandomlySaga)
   yield takeEvery(printText, printTextSaga)
   yield takeEvery(printImage, printImageSaga)
   yield takeEvery(printImageFromImagePicker, printImageFromImagePickerSaga)
