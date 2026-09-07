@@ -37,6 +37,16 @@ const printDataSlice = createSlice({
     duplicatePrintData(_state, _action: PayloadAction<PrintData>) {},
 
     deletePrintData(_state, _action: PayloadAction<PrintData>) {},
+
+    /**
+     * レイアウトを印刷する
+     *
+     * `printDataId` を省略すると、差し込みのない要素だけが印刷される。
+     */
+    printLayout(
+      _state,
+      _action: PayloadAction<{ layoutId: string; printDataId?: string }>,
+    ) {},
   },
 })
 
@@ -47,5 +57,6 @@ export const {
   savePrintData,
   duplicatePrintData,
   deletePrintData,
+  printLayout,
 } = printDataSlice.actions
 export const printDataReducer = printDataSlice.reducer

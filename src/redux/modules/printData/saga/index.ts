@@ -15,14 +15,17 @@ import {
   deletePrintData,
   duplicatePrintData,
   fetchPrintData,
+  printLayout,
   savePrintData,
 } from '../slice'
+import { printLayoutSaga } from './printLayout'
 
 export function* printDataSaga() {
   yield takeLeading(fetchPrintData, fetchPrintDataSaga)
   yield takeEvery(savePrintData, savePrintDataSaga)
   yield takeEvery(duplicatePrintData, duplicatePrintDataSaga)
   yield takeEvery(deletePrintData, deletePrintDataSaga)
+  yield takeLeading(printLayout, printLayoutSaga)
 }
 
 /**
