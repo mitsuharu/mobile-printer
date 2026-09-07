@@ -6,7 +6,6 @@ import {
 import type React from 'react'
 import { useCallback, useLayoutEffect, useMemo } from 'react'
 import {
-  ScrollView,
   StyleSheet,
   Text,
   type TextStyle,
@@ -19,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BASE64, COLOR } from '@/CONSTANTS'
 import { Base64ImageView } from '@/components/Base64ImageView'
 import { Cell, Section } from '@/components/List'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, LayoutField, PrintData, PrintDataValue } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { selectPrintDataById } from '@/redux/modules/printData/selectors'
@@ -38,6 +38,7 @@ type ComponentProps = Props & {
   onChangeValue: (field: LayoutField, value: PrintDataValue) => void
   onPressPreview: () => void
   onPressPrint: () => void
+  onPressLayout: () => void
 }
 
 const textValueOf = (value: PrintDataValue | undefined) =>
@@ -50,6 +51,7 @@ const Component: React.FC<ComponentProps> = ({
   onChangeValue,
   onPressPreview,
   onPressPrint,
+  onPressLayout,
 }) => {
   const styles = useStyles()
 
@@ -62,7 +64,7 @@ const Component: React.FC<ComponentProps> = ({
   }
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <SafeScrollView style={styles.scrollView}>
       <Section title="印刷データ">
         <TextValueCell
           title="名前"
@@ -134,8 +136,14 @@ const Component: React.FC<ComponentProps> = ({
           onPress={onPressPreview}
           accessory="disclosure"
         />
+        <Cell
+          title="レイアウトを編集する"
+          description={layout.name}
+          onPress={onPressLayout}
+          accessory="disclosure"
+        />
       </Section>
-    </ScrollView>
+    </SafeScrollView>
   )
 }
 
@@ -192,6 +200,10 @@ const Container: React.FC<Props> = (props) => {
     dispatch(printLayout({ layoutId, printDataId }))
   }, [dispatch, layoutId, printDataId])
 
+  const onPressLayout = useCallback(() => {
+    navigation.navigate('LayoutEditor', { layoutId })
+  }, [layoutId, navigation])
+
   return (
     <Component
       {...props}
@@ -202,6 +214,7 @@ const Container: React.FC<Props> = (props) => {
         onChangeValue,
         onPressPreview,
         onPressPrint,
+        onPressLayout,
       }}
     />
   )

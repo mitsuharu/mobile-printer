@@ -1,10 +1,11 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import type React from 'react'
 import { useCallback, useEffect, useLayoutEffect, useMemo } from 'react'
-import { ScrollView, StyleSheet, type ViewStyle } from 'react-native'
+import { StyleSheet, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { Cell, Section } from '@/components/List'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
 import type { Layout, PrintData } from '@/print'
 import { selectDatabaseIsReady } from '@/redux/modules/database/selectors'
@@ -15,6 +16,7 @@ import { fetchPrintData, printLayout } from '@/redux/modules/printData/slice'
 import { printText } from '@/redux/modules/printer/slice'
 import { styleType } from '@/utils/styles'
 import { InputDialogCell } from './InputDialogCell'
+import { PrintDataCell } from './PrintDataCell'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -22,6 +24,7 @@ type ComponentProps = Props & {
   layoutNames: Record<string, string>
   onPressText: (text: string) => void
   onPressPrintData: (value: PrintData) => void
+  onPressEditPrintData: (value: PrintData) => void
   onNavigateToPrinter: () => void
   onNavigateToLayoutList: () => void
 }
@@ -31,13 +34,14 @@ const Component: React.FC<ComponentProps> = ({
   layoutNames,
   onPressText,
   onPressPrintData,
+  onPressEditPrintData,
   onNavigateToPrinter,
   onNavigateToLayoutList,
 }) => {
   const styles = useStyles()
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <SafeScrollView style={styles.scrollView}>
       <SeasonalAsciiArtSection />
       <Section title="汎用印刷">
         <InputDialogCell
@@ -61,11 +65,12 @@ const Component: React.FC<ComponentProps> = ({
           />
         ) : (
           printData.map((value) => (
-            <Cell
+            <PrintDataCell
               key={value.id}
-              title={value.title}
-              description={layoutNames[value.layoutId]}
-              onPress={() => onPressPrintData(value)}
+              printData={value}
+              layoutName={layoutNames[value.layoutId]}
+              onPressPrint={onPressPrintData}
+              onPressEdit={onPressEditPrintData}
             />
           ))
         )}
@@ -78,7 +83,7 @@ const Component: React.FC<ComponentProps> = ({
           accessory="disclosure"
         />
       </Section>
-    </ScrollView>
+    </SafeScrollView>
   )
 }
 
@@ -122,6 +127,16 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
+  const onPressEditPrintData = useCallback(
+    (value: PrintData) => {
+      navigation.navigate('PrintDataForm', {
+        layoutId: value.layoutId,
+        printDataId: value.id,
+      })
+    },
+    [navigation],
+  )
+
   const onNavigateToPrinter = useCallback(() => {
     navigation.navigate('Printer')
   }, [navigation])
@@ -138,6 +153,7 @@ const Container: React.FC<Props> = (props) => {
         layoutNames,
         onPressText,
         onPressPrintData,
+        onPressEditPrintData,
         onNavigateToPrinter,
         onNavigateToLayoutList,
       }}
