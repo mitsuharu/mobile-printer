@@ -50,6 +50,12 @@ TZ=Asia/Tokyo yarn test --runInBand
 - 依存関係の編集をまとめてからYarnでインストールして `yarn.lock` を更新します。npmやパッケージ単位の追加インストールを繰り返しません。
 - 更新後は上記の検証と、接続可能なSUNMI実機でのインストール・起動・該当機能の確認を行います。
 
+## 進行中の大規模改修
+
+- プロフィール印刷を自由レイアウト印刷へ作り替える改修が進行中です。設計・PR分割・進捗は [`docs/plans/custom-layout-printing.md`](./docs/plans/custom-layout-printing.md) に記録します。
+- この改修に着手するときは、まず同ファイルの「進捗」を読み、完了したPRにチェックを入れながら進めます。決定事項を変更したときも同ファイルへ反映します。
+- 分割したPRは `gh stack`（`gh extension install github/gh-stack`）でスタックPRとして積み上げます。
+
 ## 画像選択の互換性
 
 - Android 7〜12では、`react-native-image-picker` のPhoto PickerがGoogle Play servicesへ委譲され、SUNMI端末で選択画面を表示せずキャンセルされる場合があります。現在は `patches/react-native-image-picker+8.2.1.patch` により、これらのOSでシステムのDocuments UIを使用します。
