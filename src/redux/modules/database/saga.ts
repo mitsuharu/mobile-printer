@@ -1,11 +1,19 @@
 import { call, put } from 'redux-saga/effects'
-import { initializeDatabase } from '@/database'
+import {
+  type InitializeDatabaseResult,
+  initializeDatabase,
+  seedPresets,
+} from '@/database'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { assignIsReady } from './slice'
 
 export function* databaseSaga() {
   try {
-    yield call(initializeDatabase)
+    const { connection, isCreated }: InitializeDatabaseResult =
+      yield call(initializeDatabase)
+    if (isCreated) {
+      yield call(seedPresets, connection)
+    }
     yield put(assignIsReady(true))
   } catch (e: any) {
     console.warn('databaseSaga', e)
