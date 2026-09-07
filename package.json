@@ -21,6 +21,7 @@
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
     "@mitsuharu/react-native-sunmi-printer-library": "^3.0.0",
+    "@op-engineering/op-sqlite": "18.1.4",
     "@react-native-async-storage/async-storage": "^3.1.1",
     "@react-native-segmented-control/segmented-control": "^2.5.7",
     "@react-navigation/native": "^7.3.18",
