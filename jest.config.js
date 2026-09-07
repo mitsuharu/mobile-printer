@@ -9,5 +9,6 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^@op-engineering/op-sqlite$': '<rootDir>/jest/mocks/opSqlite.ts',
+    '^react-native-fs$': '<rootDir>/jest/mocks/reactNativeFs.ts',
   },
 }
