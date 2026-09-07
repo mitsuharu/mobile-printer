@@ -8931,7 +8931,6 @@ __metadata:
     react-native: "npm:0.87.1"
     react-native-alert-async: "npm:^1.0.5"
     react-native-device-info: "npm:^15.0.2"
-    react-native-dialog: "npm:^9.3.0"
     react-native-fs: "npm:^2.20.0"
     react-native-gesture-handler: "npm:3.2.1"
     react-native-image-picker: "npm:^8.2.1"
@@ -9728,15 +9727,6 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: 10c0/c4a1d9ae049f42f0aa3c5aba539a9826d2400cb15a6d17815824204e4e842fbc15c80afec7387acd07e02f80a1fa49aaef1d4d6e96bc9ec53c42ba63046e8ce1
-  languageName: node
-  linkType: hard
-
-"react-native-dialog@npm:^9.3.0":
-  version: 9.3.0
-  resolution: "react-native-dialog@npm:9.3.0"
-  peerDependencies:
-    react-native: ">=0.63.0"
-  checksum: 10c0/bda8e9cc96b99bdc7291b64c16a983ef131af291610e640ea88a7064ce8442cfd32db4fb0a1bb29a64a5c3da8ca51d4f0a8f2e279887a0056dee692a0e74b3d7
   languageName: node
   linkType: hard
 
