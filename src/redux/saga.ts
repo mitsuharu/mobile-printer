@@ -1,5 +1,4 @@
 import { all, fork } from 'redux-saga/effects'
-import { asciiArtSaga } from './modules/asciiArt/saga'
 import { databaseSaga } from './modules/database/saga'
 import { inAppBrowserSaga } from './modules/inAppWebBrowser/saga'
 import { layoutSaga } from './modules/layout/saga'
@@ -16,6 +15,5 @@ export function* rootSaga() {
     fork(inAppBrowserSaga),
     fork(printerSaga),
     fork(nfcSaga),
-    fork(asciiArtSaga),
   ])
 }

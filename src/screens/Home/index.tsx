@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Cell, Section } from '@/components/List'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { SafeScrollView } from '@/components/SafeScrollView'
-import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
 import type { Layout, PrintData } from '@/print'
 import {
   selectLayoutIsLoading,
@@ -47,7 +46,6 @@ const Component: React.FC<ComponentProps> = ({
   return (
     <>
       <SafeScrollView style={styles.scrollView}>
-        <SeasonalAsciiArtSection />
         <Section title="汎用印刷">
           <InputDialogCell
             title="テキストを印刷する"
