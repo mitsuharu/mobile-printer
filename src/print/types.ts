@@ -8,11 +8,18 @@ import type {
 /**
  * 印刷する画像
  *
+ * 実体はファイルとして保存し、ここではその場所を持つ。一覧を読むたびに
+ * Base64 がメモリへ載るのを避けるため。
  * `width` と `imageType` は取り込んだときの設定で、印刷時は要素側の指定が優先される。
  */
 export type ImageAsset = {
   id: string
-  base64: string
+
+  /**
+   * 端末に保存した画像ファイルのパス
+   */
+  path: string
+
   width: number
   imageType: PrintImageType
 }

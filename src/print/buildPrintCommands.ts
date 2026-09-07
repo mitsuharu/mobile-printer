@@ -72,7 +72,7 @@ const imageCommands = (
   printData: PrintData | undefined,
 ): PrintCommand[] => {
   const asset = resolveImage(element.source, printData)
-  if (!asset?.base64) {
+  if (!asset?.path) {
     // 画像は差し替えられないため、hideWhenEmpty によらず出力しない
     return []
   }
@@ -80,7 +80,7 @@ const imageCommands = (
     { type: 'setAlignment', alignment: element.alignment },
     {
       type: 'printImage',
-      base64: asset.base64,
+      path: asset.path,
       width: element.width,
       imageType: element.imageType,
     },

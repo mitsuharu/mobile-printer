@@ -1,5 +1,6 @@
 import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { BASE64 } from '@/CONSTANTS'
+import { readImageFile } from '@/utils/imageStore'
 import type { PrintCommand } from './commands'
 
 /**
@@ -19,6 +20,11 @@ export type Printer = {
     width: number,
     type: SunmiPrinterLibrary.PrintImageType,
   ) => void
+
+  /**
+   * 保存した画像を Base64 で読む
+   */
+  readImage: (path: string) => Promise<string>
   printQRCode: (
     text: string,
     moduleSize: number,
@@ -44,6 +50,7 @@ export const defaultPrinter: Printer = {
   printText: (text) => SunmiPrinterLibrary.printText(text),
   printImage: (base64, width, type) =>
     SunmiPrinterLibrary.printImage(BASE64.PREFIX + base64, width, type),
+  readImage: (path) => readImageFile(path),
   printQRCode: (text, moduleSize, errorLevel) =>
     SunmiPrinterLibrary.printQRCode(text, moduleSize, errorLevel),
   printColumnsString: (texts, widths, alignments) =>
@@ -54,11 +61,13 @@ export const defaultPrinter: Printer = {
 
 /**
  * 組み立てた操作をプリンターへ送る
+ *
+ * 画像はパスで受け取り、送る直前にファイルから読む。
  */
-export const executePrintCommands = (
+export const executePrintCommands = async (
   commands: PrintCommand[],
   printer: Printer = defaultPrinter,
-): void => {
+): Promise<void> => {
   for (const command of commands) {
     switch (command.type) {
       case 'setAlignment':
@@ -73,9 +82,11 @@ export const executePrintCommands = (
       case 'printText':
         printer.printText(command.text)
         break
-      case 'printImage':
-        printer.printImage(command.base64, command.width, command.imageType)
+      case 'printImage': {
+        const base64 = await printer.readImage(command.path)
+        printer.printImage(base64, command.width, command.imageType)
         break
+      }
       case 'printQRCode':
         printer.printQRCode(
           command.text,

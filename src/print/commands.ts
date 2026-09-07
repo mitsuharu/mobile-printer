@@ -19,7 +19,14 @@ export type PrintCommand =
   | { type: 'printText'; text: string }
   | {
       type: 'printImage'
-      base64: string
+
+      /**
+       * 端末に保存した画像ファイルのパス
+       *
+       * プリンターは Base64 しか受け取らないため、送るときに読み込む。
+       */
+      path: string
+
       width: number
       imageType: PrintImageType
     }
