@@ -1,5 +1,6 @@
 import type { AsciiArtState } from './modules/asciiArt/slice'
 import type { DatabaseState } from './modules/database/slice'
+import type { LayoutState } from './modules/layout/slice'
 import type { NfcState } from './modules/nfc/slice'
 import type { PrinterState } from './modules/printer/slice'
 import type { SnackbarState } from './modules/snackbar/slice'
@@ -7,6 +8,7 @@ import type { UserSettingState } from './modules/userSetting/slice'
 
 export interface RootState {
   database: DatabaseState
+  layout: LayoutState
   printer: PrinterState
   snackbar: SnackbarState
   userSetting: UserSettingState

@@ -5,6 +5,7 @@ import type { Persistor } from 'redux-persist/es/types'
 import { rootSaga } from '@/redux/saga'
 import { AsciiArtReducer } from './modules/asciiArt/slice'
 import { databaseReducer } from './modules/database/slice'
+import { layoutReducer } from './modules/layout/slice'
 import { NFCReducer } from './modules/nfc/slice'
 import { printerReducer } from './modules/printer/slice'
 import { snackbarReducer } from './modules/snackbar/slice'
@@ -24,6 +25,7 @@ export function initializeRedux() {
   if (store == null || persistor == null) {
     const reducer = combineReducers({
       database: databaseReducer,
+      layout: layoutReducer,
       printer: printerReducer,
       snackbar: snackbarReducer,
       userSetting: userSettingReducer,
