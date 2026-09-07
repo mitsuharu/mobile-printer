@@ -50,6 +50,13 @@ TZ=Asia/Tokyo yarn test --runInBand
 - 依存関係の編集をまとめてからYarnでインストールして `yarn.lock` を更新します。npmやパッケージ単位の追加インストールを繰り返しません。
 - 更新後は上記の検証と、接続可能なSUNMI実機でのインストール・起動・該当機能の確認を行います。
 
+## 画像選択の互換性
+
+- Android 7〜12では、`react-native-image-picker` のPhoto PickerがGoogle Play servicesへ委譲され、SUNMI端末で選択画面を表示せずキャンセルされる場合があります。現在は `patches/react-native-image-picker+8.2.1.patch` により、これらのOSでシステムのDocuments UIを使用します。
+- 将来 `expo-image-picker` へ移行する場合、アプリ全体をExpo Managedへ移行する必要はありません。既存のBare React NativeへExpo Modulesを導入し、対象React Nativeバージョンとの正式な互換性を確認します。
+- SUNMIなどの旧Android端末では、`expo-image-picker` のAndroid用 `legacy: true` を候補とし、Android 7の実機で画像一覧の表示、選択結果の取得、白黒変換、印刷まで確認します。
+- 実機確認が完了してから `react-native-image-picker` とそのpatchを削除します。`patch-package` がほかに使われていない場合に限り、依存関係と `postinstall` からも削除します。
+
 ## 変更時のルール
 
 - PRは1つの目的に絞り、無関係な整理や修正を含めません。

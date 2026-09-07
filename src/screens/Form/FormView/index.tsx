@@ -8,7 +8,6 @@ import {
   type StyleProp,
   StyleSheet,
   Text,
-  type TextInput,
   View,
   type ViewStyle,
 } from 'react-native'
@@ -22,6 +21,7 @@ import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { styleType } from '@/utils/styles'
 import { PrintImageTypeSegmentedControl } from './ImageTypeSegmentedControl'
 import { SubmitView } from './SubmitView'
+import type { TextInputInstance } from './TextInput'
 import { TextInputController } from './TextInputController'
 
 export type OnSubmit = (
@@ -152,26 +152,26 @@ export const FormView: React.FC<Props> = ({
 
   // 次の入力フォームにfocusさせるため
   const inputRefs = {
-    title: createRef<TextInput>(),
+    title: createRef<TextInputInstance>(),
     profile: {
-      name: createRef<TextInput>(),
-      alias: createRef<TextInput>(),
+      name: createRef<TextInputInstance>(),
+      alias: createRef<TextInputInstance>(),
       title: {
-        position: createRef<TextInput>(),
-        company: createRef<TextInput>(),
-        address: createRef<TextInput>(),
+        position: createRef<TextInputInstance>(),
+        company: createRef<TextInputInstance>(),
+        address: createRef<TextInputInstance>(),
       },
-      description: createRef<TextInput>(),
-      icon: createRef<TextInput>(),
+      description: createRef<TextInputInstance>(),
+      icon: createRef<TextInputInstance>(),
       sns: {
-        twitter: createRef<TextInput>(),
-        facebook: createRef<TextInput>(),
-        github: createRef<TextInput>(),
-        website: createRef<TextInput>(),
+        twitter: createRef<TextInputInstance>(),
+        facebook: createRef<TextInputInstance>(),
+        github: createRef<TextInputInstance>(),
+        website: createRef<TextInputInstance>(),
       },
       qr: {
-        url: createRef<TextInput>(),
-        description: createRef<TextInput>(),
+        url: createRef<TextInputInstance>(),
+        description: createRef<TextInputInstance>(),
       },
     },
   }

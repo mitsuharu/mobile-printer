@@ -5,6 +5,8 @@ name: Check npm packages by AikidoSec Safe Chain
 env:
   AIKIDO_SAFE_CHAIN_VERSION: '1.5.16'
   AIKIDO_SAFE_CHAIN_INSTALLER_SHA256: '7a7b6e54c2e0adbcb53bc1bf7d258cc974f8f31e77ed048b88e4d2e4ac758839'
+  # 自作パッケージは公開直後でも検証できるよう、48時間の公開期間チェックのみ除外する
+  SAFE_CHAIN_MINIMUM_PACKAGE_AGE_EXCLUSIONS: '@mitsuharu/react-native-sunmi-printer-library'
 
 on:
   pull_request:

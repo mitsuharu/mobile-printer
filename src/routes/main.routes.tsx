@@ -13,7 +13,7 @@ const Routes: React.FC = () => {
     <Stack.Navigator
       initialRouteName={MainName.Home}
       screenOptions={{
-        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: 'minimal',
       }}
     >
       <Stack.Screen name={MainName.Home} component={Home} />

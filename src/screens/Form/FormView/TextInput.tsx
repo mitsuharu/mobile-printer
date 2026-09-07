@@ -16,16 +16,18 @@ import { styleType } from '@/utils/styles'
 // https://stackoverflow.com/questions/43230765/typescript-react-access-component-property-types
 type Props = React.ComponentProps<typeof TextInput> & {
   /** このTextInputのref */
-  ref?: React.Ref<TextInput | null>
+  ref?: React.Ref<TextInputInstance | null>
   /** 次のTextInputのref */
-  nextRef?: React.Ref<TextInput | null>
+  nextRef?: React.Ref<TextInputInstance | null>
 }
+
+export type TextInputInstance = React.ElementRef<typeof TextInput>
 
 type ComponentProps = Omit<Props, 'ref'> & {
-  forwardedRef?: React.ForwardedRef<TextInput>
+  forwardedRef?: React.ForwardedRef<TextInputInstance>
 }
 
-type TextInputRefObject = React.RefObject<TextInput>
+type TextInputRefObject = React.RefObject<TextInputInstance | null>
 
 const isTextInputRefObject = (arg: unknown): arg is TextInputRefObject => {
   return typeof arg === 'object' && arg !== null && 'current' in arg
@@ -61,9 +63,9 @@ const Component: React.FC<ComponentProps> = (props) => {
   )
 }
 
-export const MyTextInput = forwardRef<TextInput, Props>((props, ref) => (
-  <Component {...props} forwardedRef={ref} />
-))
+export const MyTextInput = forwardRef<TextInputInstance, Props>(
+  (props, ref) => <Component {...props} forwardedRef={ref} />,
+)
 
 const useStyles = makeStyles(useColorScheme, (colorScheme) => {
   const styles = StyleSheet.create({

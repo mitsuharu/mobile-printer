@@ -4,7 +4,7 @@ import { COLOR } from '@/CONSTANTS'
 
 type Colors = Pick<Theme, 'colors'>['colors']
 
-const makeColors = (colorScheme: ColorSchemeName): Colors => {
+const makeColors = (colorScheme: ColorSchemeName | null): Colors => {
   const themeColors =
     colorScheme === 'dark' ? DarkTheme.colors : DefaultTheme.colors
   return {
@@ -18,7 +18,7 @@ const makeColors = (colorScheme: ColorSchemeName): Colors => {
   }
 }
 
-export const makeTheme = (colorScheme: ColorSchemeName): Theme => {
+export const makeTheme = (colorScheme: ColorSchemeName | null): Theme => {
   const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
   return {
     ...theme,

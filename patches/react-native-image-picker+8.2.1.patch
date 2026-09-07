@@ -1,0 +1,66 @@
+diff --git a/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java b/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java
+index 56149f1..0bce0a2 100644
+--- a/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java
++++ b/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java
+@@ -134,27 +134,42 @@ public class ImagePickerModuleImpl implements ActivityEventListener {
+         boolean isPhoto = this.options.mediaType.equals(mediaTypePhoto);
+         boolean isVideo = this.options.mediaType.equals(mediaTypeVideo);
+ 
+-        // Note: Casting works, even though Android Studio complains about it
+-        if (isPhoto) {
+-            mediaType = (PickVisualMedia.VisualMediaType) PickVisualMedia.ImageOnly.INSTANCE;
+-        } else if (isVideo) {
+-            mediaType = (PickVisualMedia.VisualMediaType) PickVisualMedia.VideoOnly.INSTANCE;
++        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
++            libraryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
++            libraryIntent.addCategory(Intent.CATEGORY_OPENABLE);
++            libraryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, !isSingleSelect);
++
++            if (isPhoto) {
++                libraryIntent.setType("image/*");
++            } else if (isVideo) {
++                libraryIntent.setType("video/*");
++            } else {
++                libraryIntent.setType("*/*");
++                libraryIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
++            }
+         } else {
+-            mediaType = (PickVisualMedia.VisualMediaType) PickVisualMedia.ImageAndVideo.INSTANCE;
+-        }
+-
+-        mediaRequest = new PickVisualMediaRequest.Builder()
+-                .setMediaType(mediaType)
+-                .build();
++            // Note: Casting works, even though Android Studio complains about it
++            if (isPhoto) {
++                mediaType = (PickVisualMedia.VisualMediaType) PickVisualMedia.ImageOnly.INSTANCE;
++            } else if (isVideo) {
++                mediaType = (PickVisualMedia.VisualMediaType) PickVisualMedia.VideoOnly.INSTANCE;
++            } else {
++                mediaType = (PickVisualMedia.VisualMediaType) PickVisualMedia.ImageAndVideo.INSTANCE;
++            }
+ 
+-        // https://developer.android.com/training/data-storage/shared/photopicker
+-        if (isSingleSelect) {
+-            libraryIntent = new PickVisualMedia().createIntent(this.reactContext.getApplicationContext(), mediaRequest);
+-        } else {
+-            PickMultipleVisualMedia pickMultipleVisualMedia = selectionLimit > 1
+-                    ? new PickMultipleVisualMedia(selectionLimit)
+-                    : new PickMultipleVisualMedia();
+-            libraryIntent = pickMultipleVisualMedia.createIntent(this.reactContext.getApplicationContext(), mediaRequest);
++            mediaRequest = new PickVisualMediaRequest.Builder()
++                    .setMediaType(mediaType)
++                    .build();
++
++            // https://developer.android.com/training/data-storage/shared/photopicker
++            if (isSingleSelect) {
++                libraryIntent = new PickVisualMedia().createIntent(this.reactContext.getApplicationContext(), mediaRequest);
++            } else {
++                PickMultipleVisualMedia pickMultipleVisualMedia = selectionLimit > 1
++                        ? new PickMultipleVisualMedia(selectionLimit)
++                        : new PickMultipleVisualMedia();
++                libraryIntent = pickMultipleVisualMedia.createIntent(this.reactContext.getApplicationContext(), mediaRequest);
++            }
+         }
+ 
+         if(this.options.restrictMimeTypes.length > 0) {

@@ -11,7 +11,6 @@ import {
   type StyleProp,
   StyleSheet,
   Text,
-  type TextInput,
   type TextStyle,
   useColorScheme,
   View,
@@ -21,7 +20,7 @@ import { makeStyles } from 'react-native-swag-styles'
 import { COLOR } from '@/CONSTANTS'
 import type { Submission } from '@/redux/modules/printer/utils'
 import { styleType } from '@/utils/styles'
-import { MyTextInput } from './TextInput'
+import { MyTextInput, type TextInputInstance } from './TextInput'
 import { getValidationMessage, isValidIfEmpty } from './validation'
 
 type Props = {
@@ -38,8 +37,8 @@ type Props = {
 
   returnKeyType?: ReturnKeyTypeOptions
 
-  textInputRef: React.RefObject<TextInput>
-  nextTextInputRef?: React.RefObject<TextInput>
+  textInputRef: React.RefObject<TextInputInstance | null>
+  nextTextInputRef?: React.RefObject<TextInputInstance | null>
 
   required?: boolean
 

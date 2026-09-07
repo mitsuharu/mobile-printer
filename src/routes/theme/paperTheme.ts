@@ -6,10 +6,10 @@ export type Theme = typeof DefaultTheme
 type Colors = Pick<Theme, 'colors'>['colors']
 
 // なぜか切り出さないで使うと `TypeError: Cannot read property 'colors' of undefined`
-const getThemeColors = (colorScheme: ColorSchemeName): Colors =>
+const getThemeColors = (colorScheme: ColorSchemeName | null): Colors =>
   colorScheme === 'dark' ? MD3DarkTheme.colors : DefaultTheme.colors
 
-const makeColors = (colorScheme: ColorSchemeName): Colors => {
+const makeColors = (colorScheme: ColorSchemeName | null): Colors => {
   const themeColors = getThemeColors(colorScheme)
   return {
     ...themeColors,
@@ -18,7 +18,7 @@ const makeColors = (colorScheme: ColorSchemeName): Colors => {
   }
 }
 
-export const makeTheme = (colorScheme: ColorSchemeName): Theme => {
+export const makeTheme = (colorScheme: ColorSchemeName | null): Theme => {
   const theme = colorScheme === 'dark' ? MD3DarkTheme : DefaultTheme
   return {
     ...theme,
