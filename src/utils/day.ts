@@ -6,6 +6,12 @@ import dayjs from 'dayjs'
 export const timeStamp = () => dayjs().locale('ja').format('YYYY/MM/DD HH:mm')
 
 /**
+ * @returns 引数のunix時間（ミリ秒）を YYYY/MM/DD HH:mm で表示する
+ */
+export const formatDateTime = (milliUnixTime: number) =>
+  dayjs(milliUnixTime).locale('ja').format('YYYY/MM/DD HH:mm')
+
+/**
  * 引数のunix時間（ミリ秒）と今を比較して、日付が変わったか判定する
  */
 export const isMoreThanOneDay = (milliUnixTime: number) => {

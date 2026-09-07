@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import MockDate from 'mockdate'
 import {
+  formatDateTime,
   isChristmasDuration,
   isMoreThanOneDay,
   isNewYearDuration,
@@ -19,6 +20,25 @@ describe('timeStamp', () => {
   ])('if unixTime is %s then timeStamp returns %s', (unixTime, expected) => {
     MockDate.set(unixTime * 1000)
     expect(timeStamp()).toEqual(expected)
+  })
+})
+
+describe('formatDateTime', () => {
+  it.each<[unixTime: number, expected: string]>([
+    [1666008000, '2022/10/17 21:00'],
+    [1560000000, '2019/06/08 22:20'],
+    [2560000000, '2051/02/15 00:06'],
+  ])(
+    'if unixTime is %s then formatDateTime returns %s',
+    (unixTime, expected) => {
+      expect(formatDateTime(unixTime * 1000)).toEqual(expected)
+    },
+  )
+
+  it('現在時刻ではなく引数の時刻を表示する', () => {
+    MockDate.set(0)
+    expect(formatDateTime(1666008000 * 1000)).toEqual('2022/10/17 21:00')
+    MockDate.reset()
   })
 })
 
