@@ -14,7 +14,7 @@ import {
 
 const asset: ImageAsset = {
   id: 'asset-1',
-  base64: 'AAAA',
+  path: '/images/asset-1.png',
   width: 200,
   imageType: 'binary',
 }

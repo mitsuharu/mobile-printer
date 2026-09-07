@@ -12,7 +12,7 @@ import { collectLayoutAssetIds, saveLayout } from '../layoutRepository'
 
 const asset = (id: string): ImageAsset => ({
   id,
-  base64: `base64-${id}`,
+  path: `/images/${id}.png`,
   width: 200,
   imageType: 'binary',
 })
@@ -67,11 +67,14 @@ describe('saveImageAsset', () => {
   it('同じIDで保存し直すと上書きする', async () => {
     await saveLayout(db, layoutWithAsset('a', asset('asset-1')))
     await saveLayout(db, {
-      ...layoutWithAsset('a', { ...asset('asset-1'), base64: 'updated' }),
+      ...layoutWithAsset('a', {
+        ...asset('asset-1'),
+        path: '/images/updated.png',
+      }),
     })
 
     const [saved] = await findImageAssets(db, ['asset-1'])
-    expect(saved.base64).toBe('updated')
+    expect(saved.path).toBe('/images/updated.png')
 
     const all = await db.execute('SELECT * FROM image_assets')
     expect(all.rows).toHaveLength(1)

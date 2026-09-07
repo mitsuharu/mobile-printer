@@ -1,9 +1,10 @@
 import type { ImageAsset } from '@/print'
+import { deleteImageFile } from '@/utils/imageStore'
 import type { SqliteConnection, SqliteTransaction } from '../types'
 
 type ImageAssetRow = {
   id: string
-  base64: string
+  path: string
   width: number
   image_type: string
   created_at: number
@@ -11,7 +12,7 @@ type ImageAssetRow = {
 
 const toImageAsset = (row: ImageAssetRow): ImageAsset => ({
   id: row.id,
-  base64: row.base64,
+  path: row.path,
   width: row.width,
   imageType: row.image_type as ImageAsset['imageType'],
 })
@@ -45,13 +46,13 @@ export const saveImageAsset = async (
   createdAt: number,
 ): Promise<void> => {
   await tx.execute(
-    `INSERT INTO image_assets (id, base64, width, image_type, created_at)
+    `INSERT INTO image_assets (id, path, width, image_type, created_at)
      VALUES (?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET
-       base64 = excluded.base64,
+       path = excluded.path,
        width = excluded.width,
        image_type = excluded.image_type`,
-    [asset.id, asset.base64, asset.width, asset.imageType, createdAt],
+    [asset.id, asset.path, asset.width, asset.imageType, createdAt],
   )
 }
 
@@ -70,11 +71,24 @@ export const deleteUnreferencedImageAssets = async (
     ? `AND id NOT IN (${placeholders})`
     : ''
 
-  const result = await db.execute(
-    `DELETE FROM image_assets
-     WHERE id NOT IN (SELECT asset_id FROM print_data_values WHERE asset_id IS NOT NULL)
-     ${notInLayouts}`,
+  const condition = `WHERE id NOT IN (SELECT asset_id FROM print_data_values WHERE asset_id IS NOT NULL)
+     ${notInLayouts}`
+
+  // 行を消す前に、消す対象のファイルを控えておく
+  const target = await db.execute(
+    `SELECT * FROM image_assets ${condition}`,
     referencedIds,
   )
+  const assets = (target.rows as unknown as ImageAssetRow[]).map(toImageAsset)
+
+  const result = await db.execute(
+    `DELETE FROM image_assets ${condition}`,
+    referencedIds,
+  )
+
+  for (const asset of assets) {
+    await deleteImageFile(asset.path)
+  }
+
   return result.rowsAffected
 }

@@ -22,26 +22,35 @@ const createPrinter = () => {
     printColumnsString: record('printColumnsString'),
     printHR: record('printHR'),
     lineWrap: record('lineWrap'),
+    readImage: async (path: string) => {
+      calls.push(['readImage', path])
+      return 'AAAA'
+    },
   } as unknown as Printer
 
   return { printer, calls }
 }
 
 describe('executePrintCommands', () => {
-  it('操作がなければ何も呼ばない', () => {
+  it('操作がなければ何も呼ばない', async () => {
     const { printer, calls } = createPrinter()
-    executePrintCommands([], printer)
+    await executePrintCommands([], printer)
     expect(calls).toEqual([])
   })
 
-  it('すべての操作を対応する呼び出しへ変換する', () => {
+  it('すべての操作を対応する呼び出しへ変換する', async () => {
     const { printer, calls } = createPrinter()
     const commands: PrintCommand[] = [
       { type: 'setAlignment', alignment: 'center' },
       { type: 'setFontSize', size: 32 },
       { type: 'setTextStyle', style: 'bold', enabled: true },
       { type: 'printText', text: '江本光晴' },
-      { type: 'printImage', base64: 'AAAA', width: 200, imageType: 'binary' },
+      {
+        type: 'printImage',
+        path: '/images/asset-1.png',
+        width: 200,
+        imageType: 'binary',
+      },
       {
         type: 'printQRCode',
         text: 'https://example.com/',
@@ -58,13 +67,14 @@ describe('executePrintCommands', () => {
       { type: 'lineWrap', count: 3 },
     ]
 
-    executePrintCommands(commands, printer)
+    await executePrintCommands(commands, printer)
 
     expect(calls).toEqual([
       ['setAlignment', 'center'],
       ['setFontSize', 32],
       ['setTextStyle', 'bold', true],
       ['printText', '江本光晴'],
+      ['readImage', '/images/asset-1.png'],
       ['printImage', 'AAAA', 200, 'binary'],
       ['printQRCode', 'https://example.com/', 8, 'low'],
       [
@@ -78,9 +88,9 @@ describe('executePrintCommands', () => {
     ])
   })
 
-  it('操作の順序を保つ', () => {
+  it('操作の順序を保つ', async () => {
     const { printer, calls } = createPrinter()
-    executePrintCommands(
+    await executePrintCommands(
       [
         { type: 'printText', text: 'A' },
         { type: 'setFontSize', size: 32 },
@@ -96,7 +106,7 @@ describe('executePrintCommands', () => {
     ])
   })
 
-  it('途中で失敗したらそこで止める', () => {
+  it('途中で失敗したらそこで止める', async () => {
     const { printer, calls } = createPrinter()
     const failing: Printer = {
       ...printer,
@@ -105,7 +115,7 @@ describe('executePrintCommands', () => {
       }),
     }
 
-    expect(() =>
+    await expect(
       executePrintCommands(
         [
           { type: 'setFontSize', size: 32 },
@@ -114,7 +124,7 @@ describe('executePrintCommands', () => {
         ],
         failing,
       ),
-    ).toThrow('printer error')
+    ).rejects.toThrow('printer error')
 
     expect(calls.map(([name]) => name)).toEqual(['setFontSize'])
   })

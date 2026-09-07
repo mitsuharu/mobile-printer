@@ -1,4 +1,8 @@
 import { beforeEach, describe, expect, it } from '@jest/globals'
+
+// biome-ignore lint/style/useNodejsImportProtocol: テスト用モックの中身を見る
+const { __paths, __reset } = require('react-native-fs')
+
 import { findAllLayouts } from '../repositories/layoutRepository'
 import { findAllPrintData } from '../repositories/printDataRepository'
 import { seedPresets } from '../seedPresets'
@@ -10,6 +14,7 @@ import {
 let db: TestConnection
 
 beforeEach(async () => {
+  __reset()
   db = await createMigratedTestConnection()
 })
 
@@ -53,5 +58,25 @@ describe('seedPresets', () => {
     )
 
     expect(images.length).toBeGreaterThan(0)
+  })
+
+  it('同梱の画像をファイルへ書き出す', async () => {
+    await seedPresets(db)
+
+    expect(__paths()).toHaveLength(2)
+  })
+
+  it('読み戻した画像が、書き出したファイルを指している', async () => {
+    await seedPresets(db)
+
+    const printData = await findAllPrintData(db)
+    const paths = printData.flatMap((value) =>
+      Object.values(value.values).flatMap((printDataValue) =>
+        printDataValue?.kind === 'image' ? [printDataValue.asset.path] : [],
+      ),
+    )
+
+    expect(paths).toHaveLength(2)
+    expect(paths.every((path) => __paths().includes(path))).toBe(true)
   })
 })

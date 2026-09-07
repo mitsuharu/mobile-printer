@@ -2,8 +2,35 @@ import { describe, expect, it } from '@jest/globals'
 import { buildPrintCommands } from '../buildPrintCommands'
 import { createPresets } from '../presets'
 
-const { layouts, printData } = createPresets()
+const { layouts, printData, images } = createPresets()
 const [layout] = layouts
+
+/**
+ * 保存時に画像ファイルへ書き出してパスが埋まった状態にする
+ */
+const withImagePaths = (title: string) => {
+  const value = printData.find((data) => data.title === title)
+  if (!value) {
+    throw new Error(`print data not found: ${title}`)
+  }
+  return {
+    ...value,
+    values: Object.fromEntries(
+      Object.entries(value.values).map(([fieldId, printDataValue]) => [
+        fieldId,
+        printDataValue?.kind === 'image'
+          ? {
+              ...printDataValue,
+              asset: {
+                ...printDataValue.asset,
+                path: `/images/${printDataValue.asset.id}.png`,
+              },
+            }
+          : printDataValue,
+      ]),
+    ),
+  }
+}
 
 const commandsFor = (title: string) => {
   const value = printData.find((data) => data.title === title)
@@ -29,6 +56,20 @@ describe('createPresets', () => {
       '開発者紹介',
       'サンプル',
     ])
+  })
+
+  it('同梱の画像を Base64 で持ち出す', () => {
+    expect(images).toHaveLength(2)
+    expect(images.every(({ base64 }) => base64.length > 0)).toBe(true)
+  })
+
+  it('同梱の画像のIDは印刷データの値と一致する', () => {
+    const assetIds = printData.flatMap((value) =>
+      Object.values(value.values).flatMap((printDataValue) =>
+        printDataValue?.kind === 'image' ? [printDataValue.asset.id] : [],
+      ),
+    )
+    expect(assetIds.sort()).toEqual(images.map(({ id }) => id).sort())
   })
 
   it('印刷データはすべて名刺レイアウトに紐づく', () => {
@@ -117,7 +158,9 @@ describe('createPresets の印刷内容', () => {
   })
 
   it('アイコン画像とQRコードを出力する', () => {
-    const commands = commandsFor('サンプル')
+    const commands = buildPrintCommands(layout, withImagePaths('サンプル'), {
+      printedAt: 0,
+    })
 
     expect(commands.some((command) => command.type === 'printImage')).toBe(true)
     expect(commands.find((command) => command.type === 'printQRCode')).toEqual({
@@ -129,9 +172,16 @@ describe('createPresets の印刷内容', () => {
   })
 
   it('画像は印刷用の幅で出力する', () => {
-    const image = commandsFor('サンプル').find(
-      (command) => command.type === 'printImage',
-    )
+    const image = buildPrintCommands(layout, withImagePaths('サンプル'), {
+      printedAt: 0,
+    }).find((command) => command.type === 'printImage')
     expect(image).toMatchObject({ width: 200, imageType: 'binary' })
+  })
+
+  it('画像はファイルへ書き出す前だと印刷されない', () => {
+    // createPresets の時点ではパスが空で、保存時に埋まる
+    expect(
+      commandsFor('サンプル').some((command) => command.type === 'printImage'),
+    ).toBe(false)
   })
 })

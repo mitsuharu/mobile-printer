@@ -47,7 +47,7 @@ describe('serializeElement', () => {
           kind: 'static',
           asset: {
             id: 'asset-1',
-            base64: 'AAAA',
+            path: '/images/asset-1.png',
             width: 200,
             imageType: 'binary',
           },

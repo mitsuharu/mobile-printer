@@ -12,7 +12,7 @@ const PRINTED_AT = new Date('2026-09-07T21:34:00+09:00').getTime()
 
 const asset: ImageAsset = {
   id: 'asset-1',
-  base64: 'AAAA',
+  path: '/images/asset-1.png',
   width: 200,
   imageType: 'binary',
 }
@@ -199,7 +199,7 @@ describe('buildPrintCommands image要素', () => {
       { type: 'setAlignment', alignment: 'center' },
       {
         type: 'printImage',
-        base64: 'AAAA',
+        path: '/images/asset-1.png',
         width: 384,
         imageType: 'grayscale',
       },
@@ -215,7 +215,7 @@ describe('buildPrintCommands image要素', () => {
 
     expect(commands).toContainEqual({
       type: 'printImage',
-      base64: 'AAAA',
+      path: '/images/asset-1.png',
       width: 200,
       imageType: 'binary',
     })

@@ -173,15 +173,27 @@ const createProfileLayout = (): {
 
 const text = (value: string): PrintDataValue => ({ kind: 'text', value })
 
-const image = (base64: string): PrintDataValue => ({
-  kind: 'image',
-  asset: {
-    id: createUUID(),
-    base64,
-    width: BASE64.PROFILE_ICON_SIZE,
-    imageType: 'binary',
-  } satisfies ImageAsset,
-})
+/**
+ * プリセットが同梱している画像
+ *
+ * ここでは Base64 のまま持ち、保存するときにファイルへ書き出してパスを埋める。
+ */
+export type PresetImage = { id: string; base64: string }
+
+const createImage = (base64: string, images: PresetImage[]): PrintDataValue => {
+  const id = createUUID()
+  images.push({ id, base64 })
+  return {
+    kind: 'image',
+    asset: {
+      id,
+      // 保存時にファイルへ書き出してから埋める
+      path: '',
+      width: BASE64.PROFILE_ICON_SIZE,
+      imageType: 'binary',
+    } satisfies ImageAsset,
+  }
+}
 
 const createPrintDataFor = (
   layout: Layout,
@@ -211,14 +223,16 @@ const createPrintDataFor = (
 export const createPresets = (): {
   layouts: Layout[]
   printData: PrintData[]
+  images: PresetImage[]
 } => {
   const { layout, fieldIds } = createProfileLayout()
+  const images: PresetImage[] = []
 
   const printData: PrintData[] = [
     createPrintDataFor(layout, fieldIds, '開発者紹介', {
       name: text('江本光晴'),
       alias: text('Mitsuharu Emoto'),
-      icon: image(AVATAR_BASE64),
+      icon: createImage(AVATAR_BASE64, images),
       description: text('iOSアプリの開発が好き'),
       twitter: text('@mitsuharu_e'),
       facebook: text('mitsuharu.emoto'),
@@ -230,7 +244,7 @@ export const createPresets = (): {
     createPrintDataFor(layout, fieldIds, 'サンプル', {
       name: text('織田信長'),
       alias: text('Nobunaga Oda'),
-      icon: image(SAMPLE_AVATAR_BASE64),
+      icon: createImage(SAMPLE_AVATAR_BASE64, images),
       description: text('人間五十年、下天の内をくらぶれば、夢幻の如くなり'),
       company: text('株式会社 織田軍'),
       position: text('代表取締役大名'),
@@ -246,5 +260,5 @@ export const createPresets = (): {
     }),
   ]
 
-  return { layouts: [layout], printData }
+  return { layouts: [layout], printData, images }
 }
