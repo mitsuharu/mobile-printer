@@ -1,124 +1,115 @@
 import { useNavigation } from '@react-navigation/native'
 import type React from 'react'
-import { useCallback, useLayoutEffect, useState } from 'react'
-import { ScrollView, StyleSheet, type ViewStyle } from 'react-native'
+import { useCallback, useLayoutEffect, useMemo } from 'react'
+import { StyleSheet, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { EditToggleButton } from '@/components/Button/EditToggleButton'
 import { Cell, Section } from '@/components/List'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
-import { selectPrinterSubmissions } from '@/redux/modules/printer/selectors'
+import type { Layout, PrintData } from '@/print'
 import {
-  printProfile,
-  printProfileRandomly,
-  printText,
-} from '@/redux/modules/printer/slice'
-import {
-  createSubmission,
-  type Submission,
-} from '@/redux/modules/printer/utils'
-import { sampleProfile } from '@/redux/modules/printer/utils/sample'
+  selectLayoutIsLoading,
+  selectLayouts,
+} from '@/redux/modules/layout/selectors'
+import { selectAllPrintData } from '@/redux/modules/printData/selectors'
+import { printLayout } from '@/redux/modules/printData/slice'
+import { printText } from '@/redux/modules/printer/slice'
 import { styleType } from '@/utils/styles'
 import { InputDialogCell } from './InputDialogCell'
+import { PrintDataCell } from './PrintDataCell'
 
 type Props = {}
 type ComponentProps = Props & {
-  isEditable: boolean
-  submissions: Submission[]
-  onPressSample: () => void
+  isLoading: boolean
+  printData: PrintData[]
+  layoutNames: Record<string, string>
   onPressText: (text: string) => void
-  onPressSubmission: (obj: Submission) => void
-  onPressPrintProfileRandomly: () => void
-  onPressNewSubmission: () => void
+  onPressPrintData: (value: PrintData) => void
+  onPressEditPrintData: (value: PrintData) => void
   onNavigateToPrinter: () => void
+  onNavigateToLayoutList: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
-  isEditable,
-  submissions,
-  onPressSample,
+  isLoading,
+  printData,
+  layoutNames,
   onPressText,
-  onPressSubmission,
-  onPressPrintProfileRandomly,
-  onPressNewSubmission,
+  onPressPrintData,
+  onPressEditPrintData,
   onNavigateToPrinter,
+  onNavigateToLayoutList,
 }) => {
   const styles = useStyles()
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <SeasonalAsciiArtSection />
-      <Section title="汎用印刷">
-        <InputDialogCell
-          title="テキストを印刷する"
-          dialogTitle="テキスト印刷"
-          dialogDescription="印刷するテキストを入力してください"
-          onSelectText={onPressText}
-          inactive={isEditable}
-        />
-        <Cell
-          title="その他"
-          onPress={onNavigateToPrinter}
-          inactive={isEditable}
-          accessory="disclosure"
-        />
-      </Section>
-      <Section title="プロフィール印刷">
-        {submissions.map((submission) => (
-          <Cell
-            title={submission.title}
-            onPress={() => onPressSubmission(submission)}
-            accessory={isEditable ? 'disclosure' : undefined}
-            key={submission.uuid}
+    <>
+      <SafeScrollView style={styles.scrollView}>
+        <SeasonalAsciiArtSection />
+        <Section title="汎用印刷">
+          <InputDialogCell
+            title="テキストを印刷する"
+            dialogTitle="テキスト印刷"
+            dialogDescription="印刷するテキストを入力してください"
+            onSelectText={onPressText}
           />
-        ))}
-      </Section>
-      <Section title="プロフィール印刷のオプション">
-        <Cell
-          title="サンプルのプロフィールを印刷する"
-          onPress={onPressSample}
-          inactive={isEditable}
-        />
-        <Cell
-          title="プロフィールをランダム印刷する"
-          onPress={onPressPrintProfileRandomly}
-          inactive={isEditable}
-        />
-        {isEditable ? (
           <Cell
-            title="プロフィールを追加する"
-            onPress={onPressNewSubmission}
-            accessory={'disclosure'}
+            title="その他"
+            onPress={onNavigateToPrinter}
+            accessory="disclosure"
           />
-        ) : null}
-      </Section>
-    </ScrollView>
+        </Section>
+        <Section title="レイアウト印刷">
+          {printData.length === 0 ? (
+            <Cell
+              title="印刷データがありません"
+              description="「レイアウトを管理する」から作成してください"
+              inactive={true}
+            />
+          ) : (
+            printData.map((value) => (
+              <PrintDataCell
+                key={value.id}
+                printData={value}
+                layoutName={layoutNames[value.layoutId]}
+                onPressPrint={onPressPrintData}
+                onPressEdit={onPressEditPrintData}
+              />
+            ))
+          )}
+        </Section>
+        <Section title="レイアウト印刷のオプション">
+          <Cell
+            title="レイアウトを管理する"
+            description="レイアウトの作成・編集と、印刷データの入力"
+            onPress={onNavigateToLayoutList}
+            accessory="disclosure"
+          />
+        </Section>
+      </SafeScrollView>
+      <LoadingSpinner isLoading={isLoading} />
+    </>
   )
 }
 
 const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const submissions: Submission[] = useSelector(selectPrinterSubmissions)
 
-  const [isEditable, setIsEditable] = useState<boolean>(false)
+  const isLoading = useSelector(selectLayoutIsLoading)
+  const layouts: Layout[] = useSelector(selectLayouts)
+  const printData: PrintData[] = useSelector(selectAllPrintData)
 
-  const toggle = useCallback(() => {
-    setIsEditable(!isEditable)
-  }, [isEditable])
+  const layoutNames = useMemo(
+    () => Object.fromEntries(layouts.map((layout) => [layout.id, layout.name])),
+    [layouts],
+  )
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'モバイル印刷 for SUNMI',
-      headerRight: () => (
-        <EditToggleButton isEditable={isEditable} toggle={toggle} />
-      ),
-    })
-  }, [navigation, isEditable, toggle])
-
-  const onPressSample = useCallback(() => {
-    dispatch(printProfile(sampleProfile))
-  }, [dispatch])
+    navigation.setOptions({ title: 'モバイル印刷 for SUNMI' })
+  }, [navigation])
 
   const onPressText = useCallback(
     (text: string) => {
@@ -127,41 +118,43 @@ const Container: React.FC<Props> = (props) => {
     [dispatch],
   )
 
-  const onPressSubmission = useCallback(
-    (submission: Submission) => {
-      if (isEditable) {
-        navigation.navigate('Form', { submission: submission })
-      } else {
-        dispatch(printProfile(submission.profile))
-      }
+  const onPressPrintData = useCallback(
+    (value: PrintData) => {
+      dispatch(printLayout({ layoutId: value.layoutId, printDataId: value.id }))
     },
-    [dispatch, isEditable, navigation],
+    [dispatch],
   )
 
-  const onPressPrintProfileRandomly = useCallback(() => {
-    dispatch(printProfileRandomly())
-  }, [dispatch])
-
-  const onPressNewSubmission = useCallback(() => {
-    navigation.navigate('Form', { submission: createSubmission() })
-  }, [navigation])
+  const onPressEditPrintData = useCallback(
+    (value: PrintData) => {
+      navigation.navigate('PrintDataForm', {
+        layoutId: value.layoutId,
+        printDataId: value.id,
+      })
+    },
+    [navigation],
+  )
 
   const onNavigateToPrinter = useCallback(() => {
     navigation.navigate('Printer')
+  }, [navigation])
+
+  const onNavigateToLayoutList = useCallback(() => {
+    navigation.navigate('LayoutList')
   }, [navigation])
 
   return (
     <Component
       {...props}
       {...{
-        isEditable,
-        submissions,
-        onPressSample,
+        isLoading,
+        printData,
+        layoutNames,
         onPressText,
-        onPressSubmission,
-        onPressPrintProfileRandomly,
-        onPressNewSubmission,
+        onPressPrintData,
+        onPressEditPrintData,
         onNavigateToPrinter,
+        onNavigateToLayoutList,
       }}
     />
   )

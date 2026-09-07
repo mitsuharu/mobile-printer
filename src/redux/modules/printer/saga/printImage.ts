@@ -2,7 +2,8 @@ import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-libr
 import { call, put } from 'redux-saga/effects'
 import { BASE64 } from '@/CONSTANTS'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { fetchBase64Image } from '@/utils/ImagePicker'
+import { fetchResizedImagePath } from '@/utils/ImagePicker'
+import { readImageFile } from '@/utils/imageStore'
 import { printImage, type printImageFromImagePicker } from '../slice'
 import type { ImageSource } from '../utils'
 import { validatePrinterSaga } from './printerSagaUtils'
@@ -51,8 +52,11 @@ export function* printImageFromImagePickerSaga({
 type GetImageBase64Result = { base64: string | undefined; width: number }
 async function getImageBase64(): Promise<GetImageBase64Result> {
   try {
-    const base64 = await fetchBase64Image(BASE64.MAX_SIZE)
-    return { base64: base64, width: BASE64.MAX_SIZE }
+    const path = await fetchResizedImagePath(BASE64.MAX_SIZE)
+    if (!path) {
+      return { base64: undefined, width: 0 }
+    }
+    return { base64: await readImageFile(path), width: BASE64.MAX_SIZE }
   } catch (e: any) {
     console.warn(e)
     return { base64: undefined, width: 0 }

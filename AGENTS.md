@@ -50,11 +50,14 @@ TZ=Asia/Tokyo yarn test --runInBand
 - 依存関係の編集をまとめてからYarnでインストールして `yarn.lock` を更新します。npmやパッケージ単位の追加インストールを繰り返しません。
 - 更新後は上記の検証と、接続可能なSUNMI実機でのインストール・起動・該当機能の確認を行います。
 
-## 進行中の大規模改修
+## レイアウト印刷
 
-- プロフィール印刷を自由レイアウト印刷へ作り替える改修が進行中です。設計・PR分割・進捗は [`docs/plans/custom-layout-printing.md`](./docs/plans/custom-layout-printing.md) に記録します。
-- この改修に着手するときは、まず同ファイルの「進捗」を読み、完了したPRにチェックを入れながら進めます。決定事項を変更したときも同ファイルへ反映します。
-- 分割したPRは `gh stack`（`gh extension install github/gh-stack`）でスタックPRとして積み上げます。
+- 印刷する内容は、体裁を定める **レイアウト** と、その入力項目へ入れる **印刷データ** に分けて SQLite へ保存します。設計と実装の経緯は [`docs/plans/custom-layout-printing.md`](./docs/plans/custom-layout-printing.md) にまとまっています。
+- レイアウトの解釈は `src/print/buildPrintCommands.ts` が `PrintCommand[]` を組み立て、`src/print/executePrintCommands.ts` がプリンターへ送ります。印刷の見た目を変えるときは、この純粋関数のテストを更新します。プレビューも同じ `PrintCommand[]` を描き直すため、印刷とプレビューで解釈が分かれません。
+- スキーマを変更するときは `src/database/migrations/` に新しい版を追加します。一度入れたマイグレーションの内容は書き換えません。
+- リポジトリ層のテストは Node 同梱の `node:sqlite` に対して実際のスキーマで実行します（`src/database/__test__/testConnection.ts`）。SQLや外部キーの挙動もここで検証できます。
+- AndroidのAlertは3つまでしかボタンを表示できません。選択肢が4つ以上になり得るものは `ListPickerModal` を使います。
+- 大きな改修をPRへ分割するときは `gh stack`（`gh extension install github/gh-stack`）でスタックPRとして積み上げます。
 
 ## 画像選択の互換性
 

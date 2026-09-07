@@ -3,7 +3,7 @@ import type { Migration } from './types'
 /**
  * 初版スキーマ
  *
- * レイアウト（体裁とフィールド定義）と、印刷データ（フィールドへ差し込む値）を分けて保存する。
+ * レイアウト（体裁と入力項目の定義）と、印刷データ（入力項目へ入れる値）を分けて保存する。
  * 画像の Base64 は一覧表示のたびに読み込まないよう `image_assets` へ分離する。
  */
 export const initialMigration: Migration = {

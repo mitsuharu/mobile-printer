@@ -1,14 +1,13 @@
 import ImageResizer from '@bam.tech/react-native-image-resizer'
-import { readFile } from 'react-native-fs'
 import {
   type ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker'
 
 /**
- * 写真ライブラリから画像を取得して、BASE64に変換して返す
+ * 写真ライブラリから画像を取得して、リサイズしたファイルのパスを返す
  */
-export const fetchBase64Image = async (maxWidth: number) => {
+export const fetchResizedImagePath = async (maxWidth: number) => {
   try {
     // maxWidth でリサイズ機能があるが、適切に動作しない
     // そのため、ここでサイズ調整やBase64計算は行わないず、パス取得のみを行う
@@ -36,8 +35,7 @@ export const fetchBase64Image = async (maxWidth: number) => {
       0,
     )
 
-    const base64 = await readFile(uri, { encoding: 'base64' })
-    return base64
+    return uri
   } catch (e: any) {
     console.warn(e)
     return undefined
