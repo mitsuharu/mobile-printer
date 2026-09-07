@@ -14,6 +14,8 @@ type Props = {
 /**
  * タップして数値を入れ直すセル
  *
+ * セルには単位を添えて表示するが、入力欄には数値だけを入れる。単位まで入れると、
+ * 入力し直すたびに単位を消す手間がかかる。
  * 範囲の外や数値でない入力は捨てて、元の値を保つ。
  */
 export const NumberValueCell: React.FC<Props> = ({
@@ -41,7 +43,8 @@ export const NumberValueCell: React.FC<Props> = ({
   return (
     <TextValueCell
       title={title}
-      value={`${value}${unit ?? ''}`}
+      value={String(value)}
+      displayValue={`${value}${unit ?? ''}`}
       dialogDescription={`${min}〜${max} の数値を入力してください`}
       keyboardType="number-pad"
       onChange={onChangeText}

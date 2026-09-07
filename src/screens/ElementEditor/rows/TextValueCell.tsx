@@ -6,7 +6,19 @@ import { Cell } from '@/components/List'
 
 type Props = {
   title: string
+
+  /**
+   * 入力欄に入れる値
+   */
   value: string
+
+  /**
+   * セルに表示する文字
+   *
+   * 単位を添えるなど、表示と入力を分けたいときに使う。省略すると値をそのまま表示する。
+   */
+  displayValue?: string
+
   placeholder?: string
   dialogDescription?: string
   keyboardType?: KeyboardTypeOptions
@@ -19,6 +31,7 @@ type Props = {
 export const TextValueCell: React.FC<Props> = ({
   title,
   value,
+  displayValue,
   placeholder,
   dialogDescription,
   keyboardType,
@@ -40,7 +53,9 @@ export const TextValueCell: React.FC<Props> = ({
     <>
       <Cell
         title={title}
-        description={value === '' ? (placeholder ?? '（未設定）') : value}
+        description={
+          value === '' ? (placeholder ?? '（未設定）') : (displayValue ?? value)
+        }
         onPress={onPress}
       />
       <InputDialog
