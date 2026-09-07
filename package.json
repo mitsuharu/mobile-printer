@@ -30,6 +30,7 @@
     "dayjs": "^1.11.23",
     "patch-package": "^8.0.1",
     "postinstall-postinstall": "^2.1.0",
+    "qrcode-generator": "2.0.4",
     "react": "19.2.3",
     "react-hook-form": "^7.87.0",
     "react-native": "0.87.1",

@@ -8925,6 +8925,7 @@ __metadata:
     mockdate: "npm:^3.0.5"
     patch-package: "npm:^8.0.1"
     postinstall-postinstall: "npm:^2.1.0"
+    qrcode-generator: "npm:2.0.4"
     react: "npm:19.2.3"
     react-hook-form: "npm:^7.87.0"
     react-native: "npm:0.87.1"
@@ -9602,6 +9603,13 @@ __metadata:
   version: 7.0.1
   resolution: "pure-rand@npm:7.0.1"
   checksum: 10c0/9cade41030f5ec95f5d55a11a71404cd6f46b69becaad892097cd7f58e2c6248cd0a933349ca7d21336ab629f1da42ffe899699b671bc4651600eaf6e57f837e
+  languageName: node
+  linkType: hard
+
+"qrcode-generator@npm:2.0.4":
+  version: 2.0.4
+  resolution: "qrcode-generator@npm:2.0.4"
+  checksum: 10c0/52dc3894bda6afecf09cb36aba9c181f3c4641fcbeac40c2af05d68da1383e3a1c7354bd3dc8c5e2a199d2e62314bbdec8cb4fbbd00bcfda40de56bb36bfdb17
   languageName: node
   linkType: hard
 
