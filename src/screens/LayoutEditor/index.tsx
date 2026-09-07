@@ -13,23 +13,20 @@ import {
   View,
   type ViewStyle,
 } from 'react-native'
-import AlertAsync from 'react-native-alert-async'
 import ReorderableList, {
   type ReorderableListReorderEvent,
-  reorderItems,
 } from 'react-native-reorderable-list'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { COLOR, MESSAGE } from '@/CONSTANTS'
+import { COLOR } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import type { Layout, LayoutElement, LayoutElementType } from '@/print'
-import { createLayoutElement } from '@/print'
+import { addElement, createLayoutElement, moveElement } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { saveLayout } from '@/redux/modules/layout/slice'
 import type { MainParams } from '@/routes/main.params'
 import { styleType } from '@/utils/styles'
-import { describeElementType } from './describeElement'
 import { ElementCell } from './ElementCell'
 import { ElementTypePickerModal } from './ElementTypePickerModal'
 
@@ -41,6 +38,7 @@ type ComponentProps = Props & {
   onReorder: (event: ReorderableListReorderEvent) => void
   onPressElement: (element: LayoutElement) => void
   onPressAdd: () => void
+  onPressFields: () => void
   isPickerVisible: boolean
   onSelectElementType: (type: LayoutElementType) => void
   onCancelPicker: () => void
@@ -51,6 +49,7 @@ const Component: React.FC<ComponentProps> = ({
   onReorder,
   onPressElement,
   onPressAdd,
+  onPressFields,
   isPickerVisible,
   onSelectElementType,
   onCancelPicker,
@@ -89,6 +88,12 @@ const Component: React.FC<ComponentProps> = ({
       />
       <Section>
         <Cell title="要素を追加する" onPress={onPressAdd} />
+        <Cell
+          title="差し込み口"
+          description={`${layout.fields.length}個`}
+          onPress={onPressFields}
+          accessory="disclosure"
+        />
       </Section>
       <ElementTypePickerModal
         visible={isPickerVisible}
@@ -119,44 +124,24 @@ const Container: React.FC<Props> = (props) => {
       if (!layout) {
         return
       }
-      dispatch(
-        saveLayout({
-          ...layout,
-          elements: reorderItems(layout.elements, from, to),
-        }),
-      )
+      dispatch(saveLayout(moveElement(layout, from, to)))
     },
     [dispatch, layout],
   )
 
   const onPressElement = useCallback(
-    async (element: LayoutElement) => {
-      if (!layout) {
-        return
-      }
-      try {
-        const confirmed = await AlertAsync(
-          describeElementType(element.type),
-          'この要素を削除しますか？',
-          [
-            { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
-            { text: MESSAGE.YES, onPress: () => true },
-          ],
-        )
-        if (confirmed) {
-          dispatch(
-            saveLayout({
-              ...layout,
-              elements: layout.elements.filter(({ id }) => id !== element.id),
-            }),
-          )
-        }
-      } catch (e: any) {
-        console.warn('onPressElement', e)
-      }
+    (element: LayoutElement) => {
+      navigation.navigate('ElementEditor', {
+        layoutId,
+        elementId: element.id,
+      })
     },
-    [dispatch, layout],
+    [navigation, layoutId],
   )
+
+  const onPressFields = useCallback(() => {
+    navigation.navigate('LayoutFields', { layoutId })
+  }, [navigation, layoutId])
 
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false)
 
@@ -174,12 +159,7 @@ const Container: React.FC<Props> = (props) => {
       if (!layout) {
         return
       }
-      dispatch(
-        saveLayout({
-          ...layout,
-          elements: [...layout.elements, createLayoutElement(type)],
-        }),
-      )
+      dispatch(saveLayout(addElement(layout, createLayoutElement(type))))
     },
     [dispatch, layout],
   )
@@ -192,6 +172,7 @@ const Container: React.FC<Props> = (props) => {
         onReorder,
         onPressElement,
         onPressAdd,
+        onPressFields,
         isPickerVisible,
         onSelectElementType,
         onCancelPicker,
