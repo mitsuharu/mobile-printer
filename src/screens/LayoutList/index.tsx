@@ -26,6 +26,7 @@ type ComponentProps = Props & {
   layouts: Layout[]
   isDialogVisible: boolean
   onPressLayout: (layout: Layout) => void
+  onLongPressLayout: (layout: Layout) => void
   onPressAdd: () => void
   onSubmitName: (name: string) => void
   onCancelDialog: () => void
@@ -35,6 +36,7 @@ const Component: React.FC<ComponentProps> = ({
   layouts,
   isDialogVisible,
   onPressLayout,
+  onLongPressLayout,
   onPressAdd,
   onSubmitName,
   onCancelDialog,
@@ -59,12 +61,17 @@ const Component: React.FC<ComponentProps> = ({
                 description={`要素${layout.elements.length}個・${formatDateTime(layout.updatedAt)}`}
                 accessory="disclosure"
                 onPress={() => onPressLayout(layout)}
+                onLongPress={() => onLongPressLayout(layout)}
               />
             ))
           )}
         </Section>
         <Section title="操作">
-          <Cell title="レイアウトを追加する" onPress={onPressAdd} />
+          <Cell
+            title="レイアウトを追加する"
+            description="セルを長押しすると複製と削除ができます"
+            onPress={onPressAdd}
+          />
         </Section>
       </ScrollView>
       <InputDialog
@@ -100,6 +107,13 @@ const Container: React.FC<Props> = (props) => {
   }, [dispatch, isFocused, isDatabaseReady])
 
   const onPressLayout = useCallback(
+    (layout: Layout) => {
+      navigation.navigate('LayoutEditor', { layoutId: layout.id })
+    },
+    [navigation],
+  )
+
+  const onLongPressLayout = useCallback(
     async (layout: Layout) => {
       try {
         const action = await AlertAsync(layout.name, '操作を選んでください', [
@@ -127,7 +141,7 @@ const Container: React.FC<Props> = (props) => {
           }
         }
       } catch (e: any) {
-        console.warn('onPressLayout', e)
+        console.warn('onLongPressLayout', e)
       }
     },
     [dispatch],
@@ -156,6 +170,7 @@ const Container: React.FC<Props> = (props) => {
         layouts,
         isDialogVisible,
         onPressLayout,
+        onLongPressLayout,
         onPressAdd,
         onSubmitName,
         onCancelDialog,
