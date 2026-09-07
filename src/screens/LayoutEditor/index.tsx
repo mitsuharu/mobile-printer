@@ -25,6 +25,7 @@ import type { Layout, LayoutElement, LayoutElementType } from '@/print'
 import { addElement, createLayoutElement, moveElement } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { saveLayout } from '@/redux/modules/layout/slice'
+import { printLayout } from '@/redux/modules/printData/slice'
 import type { MainParams } from '@/routes/main.params'
 import { styleType } from '@/utils/styles'
 import { ElementCell } from './ElementCell'
@@ -41,6 +42,7 @@ type ComponentProps = Props & {
   onPressFields: () => void
   onPressPreview: () => void
   onPressPrintData: () => void
+  onPressPrint: () => void
   isPickerVisible: boolean
   onSelectElementType: (type: LayoutElementType) => void
   onCancelPicker: () => void
@@ -54,6 +56,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressFields,
   onPressPreview,
   onPressPrintData,
+  onPressPrint,
   isPickerVisible,
   onSelectElementType,
   onCancelPicker,
@@ -97,6 +100,11 @@ const Component: React.FC<ComponentProps> = ({
           description={`${layout.fields.length}個`}
           onPress={onPressFields}
           accessory="disclosure"
+        />
+        <Cell
+          title="このレイアウトで印刷する"
+          description="差し込み口は空のまま印刷します"
+          onPress={onPressPrint}
         />
         <Cell
           title="印刷イメージを見る"
@@ -165,6 +173,10 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('PrintDataList', { layoutId })
   }, [navigation, layoutId])
 
+  const onPressPrint = useCallback(() => {
+    dispatch(printLayout({ layoutId }))
+  }, [dispatch, layoutId])
+
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false)
 
   const onPressAdd = useCallback(() => {
@@ -197,6 +209,7 @@ const Container: React.FC<Props> = (props) => {
         onPressFields,
         onPressPreview,
         onPressPrintData,
+        onPressPrint,
         isPickerVisible,
         onSelectElementType,
         onCancelPicker,

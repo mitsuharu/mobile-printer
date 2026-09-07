@@ -22,7 +22,7 @@ import { Cell, Section } from '@/components/List'
 import type { Layout, LayoutField, PrintData, PrintDataValue } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { selectPrintDataById } from '@/redux/modules/printData/selectors'
-import { savePrintData } from '@/redux/modules/printData/slice'
+import { printLayout, savePrintData } from '@/redux/modules/printData/slice'
 import type { MainParams } from '@/routes/main.params'
 import { styleType } from '@/utils/styles'
 import { createUUID } from '@/utils/uuid'
@@ -37,6 +37,7 @@ type ComponentProps = Props & {
   onChangeTitle: (title: string) => void
   onChangeValue: (field: LayoutField, value: PrintDataValue) => void
   onPressPreview: () => void
+  onPressPrint: () => void
 }
 
 const textValueOf = (value: PrintDataValue | undefined) =>
@@ -48,6 +49,7 @@ const Component: React.FC<ComponentProps> = ({
   onChangeTitle,
   onChangeValue,
   onPressPreview,
+  onPressPrint,
 }) => {
   const styles = useStyles()
 
@@ -126,6 +128,7 @@ const Component: React.FC<ComponentProps> = ({
       )}
 
       <Section title="操作">
+        <Cell title="この内容で印刷する" onPress={onPressPrint} />
         <Cell
           title="印刷イメージを見る"
           onPress={onPressPreview}
@@ -185,10 +188,21 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('LayoutPreview', { layoutId, printDataId })
   }, [layoutId, navigation, printDataId])
 
+  const onPressPrint = useCallback(() => {
+    dispatch(printLayout({ layoutId, printDataId }))
+  }, [dispatch, layoutId, printDataId])
+
   return (
     <Component
       {...props}
-      {...{ layout, printData, onChangeTitle, onChangeValue, onPressPreview }}
+      {...{
+        layout,
+        printData,
+        onChangeTitle,
+        onChangeValue,
+        onPressPreview,
+        onPressPrint,
+      }}
     />
   )
 }

@@ -36,6 +36,7 @@ import {
   deletePrintData,
   duplicatePrintData,
   fetchPrintData,
+  printLayout,
   savePrintData,
 } from '@/redux/modules/printData/slice'
 import type { MainParams } from '@/routes/main.params'
@@ -166,10 +167,15 @@ const Container: React.FC<Props> = (props) => {
     async (value: PrintData) => {
       try {
         const action = await AlertAsync(value.title, '操作を選んでください', [
+          { text: '印刷する', onPress: () => 'print' },
           { text: '複製する', onPress: () => 'duplicate' },
           { text: '削除する', onPress: () => 'delete', style: 'destructive' },
-          { text: MESSAGE.CANCEL, onPress: () => undefined, style: 'cancel' },
         ])
+
+        if (action === 'print') {
+          dispatch(printLayout({ layoutId, printDataId: value.id }))
+          return
+        }
 
         if (action === 'duplicate') {
           dispatch(duplicatePrintData(value))
@@ -193,7 +199,7 @@ const Container: React.FC<Props> = (props) => {
         console.warn('onLongPressPrintData', e)
       }
     },
-    [dispatch],
+    [dispatch, layoutId],
   )
 
   const onPressAdd = useCallback(() => setIsDialogVisible(true), [])
