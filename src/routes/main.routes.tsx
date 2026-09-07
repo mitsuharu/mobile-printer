@@ -6,6 +6,7 @@ import { Home } from '@/screens/Home'
 import { LayoutEditor } from '@/screens/LayoutEditor'
 import { LayoutFields } from '@/screens/LayoutFields'
 import { LayoutList } from '@/screens/LayoutList'
+import { LayoutPreview } from '@/screens/LayoutPreview'
 import { Printer } from '@/screens/Printer'
 import { MainName } from './main.constraint'
 import type { MainParams } from './main.params'
@@ -27,6 +28,7 @@ const Routes: React.FC = () => {
       <Stack.Screen name={MainName.LayoutEditor} component={LayoutEditor} />
       <Stack.Screen name={MainName.ElementEditor} component={ElementEditor} />
       <Stack.Screen name={MainName.LayoutFields} component={LayoutFields} />
+      <Stack.Screen name={MainName.LayoutPreview} component={LayoutPreview} />
     </Stack.Navigator>
   )
 }

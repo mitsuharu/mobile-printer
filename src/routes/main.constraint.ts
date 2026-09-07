@@ -6,6 +6,7 @@ export const MainName = {
   LayoutEditor: 'LayoutEditor',
   ElementEditor: 'ElementEditor',
   LayoutFields: 'LayoutFields',
+  LayoutPreview: 'LayoutPreview',
 } as const
 
 export type MainName = (typeof MainName)[keyof typeof MainName]
