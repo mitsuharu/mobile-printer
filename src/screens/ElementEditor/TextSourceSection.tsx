@@ -14,7 +14,7 @@ type Props = {
 type SourceKind = TextSource['kind']
 
 /**
- * 文字の供給元（固定値か、印刷データからの差し込みか）を編集する
+ * 文字の供給元（レイアウトに固定するか、印刷データごとに入力するか）を編集する
  */
 export const TextSourceSection: React.FC<Props> = ({
   title,
@@ -49,7 +49,7 @@ export const TextSourceSection: React.FC<Props> = ({
           },
           {
             value: 'field' as SourceKind,
-            title: '印刷データから差し込む',
+            title: '印刷データごとに入力する',
             description: '印刷データごとに内容を変えられます',
           },
         ]}
@@ -63,13 +63,13 @@ export const TextSourceSection: React.FC<Props> = ({
         />
       ) : layout.fields.length === 0 ? (
         <Cell
-          title="差し込み口がありません"
-          description="レイアウトの「差し込み口」から追加してください"
+          title="入力項目がありません"
+          description="レイアウトの「入力項目」から追加してください"
           inactive={true}
         />
       ) : (
         <PickerCell
-          title="差し込み口"
+          title="入力項目"
           value={source.fieldId}
           items={layout.fields.map((field) => ({
             value: field.id,

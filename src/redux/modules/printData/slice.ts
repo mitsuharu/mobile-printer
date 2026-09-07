@@ -41,7 +41,7 @@ const printDataSlice = createSlice({
     /**
      * レイアウトを印刷する
      *
-     * `printDataId` を省略すると、差し込みのない要素だけが印刷される。
+     * `printDataId` を省略すると、入力項目を参照しない要素だけが印刷される。
      */
     printLayout(
       _state,

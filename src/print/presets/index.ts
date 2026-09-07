@@ -14,7 +14,7 @@ import { AVATAR_BASE64 } from './avatar'
 import { SAMPLE_AVATAR_BASE64 } from './sampleAvatar'
 
 /**
- * プリセットの名刺レイアウトが持つ差し込み口
+ * プリセットの名刺レイアウトが持つ入力項目
  */
 const FIELD_KEYS = [
   'name',
@@ -88,7 +88,7 @@ const divider = (): LayoutElement => ({
 })
 
 /**
- * 名刺レイアウトと、その差し込み口のIDを作る
+ * 名刺レイアウトと、その入力項目のIDを作る
  *
  * 従来のプロフィール印刷と同じ体裁を、要素の並びとして組み立てている。
  */

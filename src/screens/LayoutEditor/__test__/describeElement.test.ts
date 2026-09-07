@@ -56,7 +56,7 @@ describe('describeElement text', () => {
     expect(describe1(text({ kind: 'static', value: '  ' }))).toBe('（未入力）')
   })
 
-  it('差し込みはフィールド名を表示する', () => {
+  it('入力項目を参照するときは項目名を表示する', () => {
     expect(describe1(text({ kind: 'field', fieldId: 'field-1' }))).toBe(
       '［名前］',
     )

@@ -122,7 +122,7 @@ describe('buildPrintCommands text要素', () => {
     ])
   })
 
-  it('印刷データの値を差し込む', () => {
+  it('印刷データの値を入れる', () => {
     const commands = build(
       [textElement({ source: { kind: 'field', fieldId: 'field-1' } })],
       createPrintData({ 'field-1': { kind: 'text', value: '織田信長' } }),
@@ -207,7 +207,7 @@ describe('buildPrintCommands image要素', () => {
     ])
   })
 
-  it('印刷データの画像を差し込む', () => {
+  it('印刷データの画像を入れる', () => {
     const commands = build(
       [imageElement({ source: { kind: 'field', fieldId: 'field-1' } })],
       createPrintData({ 'field-1': { kind: 'image', asset } }),
@@ -319,7 +319,7 @@ describe('buildPrintCommands columns要素', () => {
     ])
   })
 
-  it('差し込んだ値がすべて空なら、固定のラベルが残っていても飛ばす', () => {
+  it('入力した値がすべて空なら、固定のラベルが残っていても飛ばす', () => {
     expect(build([columnsElement()], createPrintData({}))).toEqual([])
   })
 

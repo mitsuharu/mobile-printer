@@ -76,7 +76,7 @@ const Component: React.FC<ComponentProps> = ({
         <Section title="入力">
           <Cell
             title="入力する項目がありません"
-            description="レイアウトの「差し込み口」を追加すると、ここに入力欄が現れます"
+            description="レイアウトの「入力項目」を追加すると、ここに入力欄が現れます"
             inactive={true}
           />
         </Section>

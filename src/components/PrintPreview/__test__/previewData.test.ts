@@ -26,7 +26,7 @@ const layout: Layout = {
 }
 
 describe('createPreviewPrintData', () => {
-  it('文字の差し込み口へ表示名を仮の値として入れる', () => {
+  it('文字の入力項目へ表示名を仮の値として入れる', () => {
     expect(createPreviewPrintData(layout).values['field-1']).toEqual({
       kind: 'text',
       value: '［名前］',
@@ -41,16 +41,16 @@ describe('createPreviewPrintData', () => {
     expect(value).toEqual({ kind: 'text', value: '［company］' })
   })
 
-  it('画像の差し込み口には仮の値を入れない', () => {
+  it('画像の入力項目には仮の値を入れない', () => {
     expect(createPreviewPrintData(layout).values['field-2']).toBeUndefined()
   })
 
-  it('仮の値のおかげで、差し込みの要素もプレビューに現れる', () => {
+  it('仮の値のおかげで、入力項目を参照する要素もプレビューに現れる', () => {
     const commands = buildPrintCommands(layout, createPreviewPrintData(layout))
     expect(commands).toContainEqual({ type: 'printText', text: '［名前］' })
   })
 
-  it('印刷データがなければ差し込みの要素は消える', () => {
+  it('印刷データがなければ入力項目を参照する要素は消える', () => {
     expect(buildPrintCommands(layout)).toEqual([])
   })
 })

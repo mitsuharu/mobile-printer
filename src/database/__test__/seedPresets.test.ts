@@ -26,7 +26,7 @@ describe('seedPresets', () => {
     )
   })
 
-  it('読み戻したレイアウトの差し込み口と要素がそろっている', async () => {
+  it('読み戻したレイアウトの入力項目と要素がそろっている', async () => {
     await seedPresets(db)
 
     const [layout] = await findAllLayouts(db)

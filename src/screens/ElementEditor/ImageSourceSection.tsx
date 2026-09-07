@@ -70,7 +70,7 @@ export const ImageSourceSection: React.FC<Props> = ({
           },
           {
             value: 'field' as SourceKind,
-            title: '印刷データから差し込む',
+            title: '印刷データごとに入力する',
             description: '印刷データごとに画像を変えられます',
           },
         ]}
@@ -85,13 +85,13 @@ export const ImageSourceSection: React.FC<Props> = ({
         </View>
       ) : layout.fields.length === 0 ? (
         <Cell
-          title="差し込み口がありません"
-          description="レイアウトの「差し込み口」から追加してください"
+          title="入力項目がありません"
+          description="レイアウトの「入力項目」から追加してください"
           inactive={true}
         />
       ) : (
         <PickerCell
-          title="差し込み口"
+          title="入力項目"
           value={source.fieldId}
           items={layout.fields.map((field) => ({
             value: field.id,

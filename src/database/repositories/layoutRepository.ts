@@ -147,8 +147,8 @@ export const saveLayout = async (
       layout.id,
     ])
 
-    // 差し込み口は印刷データの値から参照されている。まとめて消すと、
-    // 残す差し込み口の値まで連鎖削除されるため、無くなったものだけを消す
+    // 入力項目は印刷データの値から参照されている。まとめて消すと、
+    // 残す入力項目の値まで連鎖削除されるため、無くなったものだけを消す
     const fieldIds = layout.fields.map(({ id }) => id)
     const placeholders = fieldIds.map(() => '?').join(', ')
     await tx.execute(

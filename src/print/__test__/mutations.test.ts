@@ -110,7 +110,7 @@ describe('moveElement', () => {
 })
 
 describe('upsertField', () => {
-  it('新しい差し込み口を足す', () => {
+  it('新しい入力項目を足す', () => {
     const next = upsertField(layout, {
       id: 'field-3',
       key: 'qr',
@@ -170,7 +170,7 @@ describe('removeField', () => {
     ],
   }
 
-  it('差し込み口を取り除く', () => {
+  it('入力項目を取り除く', () => {
     expect(
       removeField(withColumns, 'field-1').fields.map(({ id }) => id),
     ).toEqual(['field-2'])
@@ -202,7 +202,7 @@ describe('removeField', () => {
     })
   })
 
-  it('ほかの差し込み口への参照は残す', () => {
+  it('ほかの入力項目への参照は残す', () => {
     const next = removeField(withColumns, 'field-2')
     const element = next.elements[0]
     expect(element.type === 'text' && element.source).toEqual({

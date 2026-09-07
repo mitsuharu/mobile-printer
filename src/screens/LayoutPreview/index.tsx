@@ -66,9 +66,7 @@ const Component: React.FC<ComponentProps> = ({
     <View style={styles.container} onLayout={onLayout}>
       <Text style={styles.description}>
         用紙の幅 {paperPixelWidth}px で描いています。
-        {isPlaceholder
-          ? '差し込み口は表示名を仮の値として入れています。'
-          : null}
+        {isPlaceholder ? '入力項目は表示名を仮の値として入れています。' : null}
       </Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {commands.length === 0 ? (
@@ -121,7 +119,7 @@ const Container: React.FC<Props> = (props) => {
     if (!layout) {
       return []
     }
-    // 印刷データを指定されていなければ、差し込み口へ仮の値を入れて体裁を見せる
+    // 印刷データを指定されていなければ、入力項目へ仮の値を入れて体裁を見せる
     return buildPrintCommands(
       layout,
       printData ?? createPreviewPrintData(layout),

@@ -23,7 +23,7 @@ export type ImageAsset = {
 export type FieldValueType = 'text' | 'multilineText' | 'url' | 'image'
 
 /**
- * レイアウトが宣言する差し込み口
+ * レイアウトが宣言する入力項目
  */
 export type LayoutField = {
   id: string
@@ -154,7 +154,7 @@ export type PrintDataValue =
   | { kind: 'image'; asset: ImageAsset }
 
 /**
- * レイアウトへ差し込む値のひとまとまり
+ * レイアウトの入力項目へ入れる値のひとまとまり
  */
 export type PrintData = {
   id: string

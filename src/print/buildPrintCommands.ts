@@ -120,7 +120,7 @@ const columnsCommands = (
   )
 
   if (element.hideWhenEmpty) {
-    // ラベルなどの固定値は判定に含めず、差し込んだ値だけで空行か判断する
+    // ラベルなどの固定値は判定に含めず、入力した値だけで空行か判断する
     const filled = element.columns
       .map((column, index) => ({ column, text: texts[index] }))
       .filter(({ column }) => column.source.kind === 'field')

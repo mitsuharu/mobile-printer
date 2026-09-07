@@ -15,7 +15,7 @@
 
 - ユーザーがテキスト・画像などの**要素を追加・編集・並べ替え**してレイアウトを組める。
 - レイアウトは保存・複製・変更できる。
-- レイアウトとは別に、**印刷データ**（レイアウトへ差し込む値）を管理できる。
+- レイアウトとは別に、**印刷データ**（レイアウトの入力項目へ入れる値）を管理できる。
 - 保存先を SQLite へ移す。
 
 ## 決定事項
@@ -60,7 +60,7 @@
 各要素は内容の供給元を持ちます。
 
 - `{ kind: 'static', value }` … レイアウトに直接埋め込む固定値
-- `{ kind: 'field', fieldId }` … 印刷データから差し込む
+- `{ kind: 'field', fieldId }` … 印刷データごとに入力する
 
 また、現行の `if (alias)` 相当として `hideWhenEmpty`（既定 `true`）を持ち、値が空の要素は印刷時に読み飛ばします。
 
@@ -163,7 +163,7 @@ SQLite を唯一の情報源とし、Redux は画面へ供給するキャッシ�
 | 4 | `codex/layout-repository` | レイアウトのCRUD（リポジトリ + slice + saga + テスト、UIなし） | typecheck / lint / test |
 | 5 | `codex/layout-list-screen` | レイアウト一覧・新規作成・複製・削除のUI | typecheck / lint / test |
 | 6a | `codex/layout-element-reorder` | 要素の追加・削除とドラッグ並べ替え（Reanimated / RNGH 導入） | typecheck / lint / test / Android ビルド / 実機操作 |
-| 6b | `codex/layout-element-editor` | 要素の個別編集と、差し込み口（フィールド）の定義 | typecheck / lint / test / 実機操作 |
+| 6b | `codex/layout-element-editor` | 要素の個別編集と、入力項目（フィールド）の定義 | typecheck / lint / test / 実機操作 |
 | 6c | `codex/layout-preview` | レイアウト編集画面での印刷プレビュー | typecheck / lint / test / 実機で印刷結果と見比べる |
 | 7 | `codex/layout-print-data` | 印刷データのCRUDと、フィールド定義から生成する動的フォーム | typecheck / lint / test |
 | 8 | `codex/layout-print-execution` | 新レンダラでの実印刷 | typecheck / lint / test / 実機印刷 |

@@ -147,17 +147,17 @@ describe('レイアウトとの関係', () => {
     await expect(findAllPrintData(db)).resolves.toEqual([])
   })
 
-  it('レイアウトを保存し直しても、残した差し込み口の値は消えない', async () => {
+  it('レイアウトを保存し直しても、残した入力項目の値は消えない', async () => {
     await savePrintData(db, printData)
 
-    // 名前を変えただけで、差し込み口は消していない
+    // 名前を変えただけで、入力項目は消していない
     await saveLayout(db, { ...layout, name: '名刺2' })
 
     const [loaded] = await findAllPrintData(db)
     expect(loaded.values).toEqual(printData.values)
   })
 
-  it('差し込み口を編集しても値は消えない', async () => {
+  it('入力項目を編集しても値は消えない', async () => {
     await savePrintData(db, printData)
 
     await saveLayout(db, {
@@ -169,7 +169,7 @@ describe('レイアウトとの関係', () => {
     expect(loaded.values).toEqual(printData.values)
   })
 
-  it('差し込み口の並び順を入れ替えても値は消えない', async () => {
+  it('入力項目の並び順を入れ替えても値は消えない', async () => {
     await savePrintData(db, printData)
 
     await saveLayout(db, {
@@ -181,7 +181,7 @@ describe('レイアウトとの関係', () => {
     expect(loaded.values).toEqual(printData.values)
   })
 
-  it('差し込み口を消すと、その値も消える', async () => {
+  it('入力項目を消すと、その値も消える', async () => {
     await savePrintData(db, printData)
 
     await saveLayout(db, { ...layout, fields: [layout.fields[1]] })

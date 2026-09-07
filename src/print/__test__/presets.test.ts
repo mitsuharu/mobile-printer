@@ -35,12 +35,12 @@ describe('createPresets', () => {
     expect(printData.every((value) => value.layoutId === layout.id)).toBe(true)
   })
 
-  it('差し込み口のキーは重複しない', () => {
+  it('入力項目のキーは重複しない', () => {
     const keys = layout.fields.map(({ key }) => key)
     expect(new Set(keys).size).toBe(keys.length)
   })
 
-  it('要素が参照する差し込み口はすべて存在する', () => {
+  it('要素が参照する入力項目はすべて存在する', () => {
     const ids = new Set(layout.fields.map(({ id }) => id))
     const referenced = layout.elements.flatMap((element) => {
       if (element.type === 'columns') {

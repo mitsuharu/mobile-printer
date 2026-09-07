@@ -96,14 +96,14 @@ const Component: React.FC<ComponentProps> = ({
       <Section>
         <Cell title="要素を追加する" onPress={onPressAdd} />
         <Cell
-          title="差し込み口"
+          title="入力項目"
           description={`${layout.fields.length}個`}
           onPress={onPressFields}
           accessory="disclosure"
         />
         <Cell
           title="このレイアウトで印刷する"
-          description="差し込み口は空のまま印刷します"
+          description="入力項目は空のまま印刷します"
           onPress={onPressPrint}
         />
         <Cell

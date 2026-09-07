@@ -70,14 +70,14 @@ const Component: React.FC<ComponentProps> = ({
     <>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.description}>
-          差し込み口は、印刷データごとに内容を変えたい箇所です。要素の「内容の決め方」で
-          「印刷データから差し込む」を選ぶと、ここで作った差し込み口を指定できます。
+          入力項目は、印刷データごとに内容を変えたい箇所です。要素の「内容の決め方」で
+          「印刷データごとに入力する」を選ぶと、ここで作った入力項目を指定できます。
         </Text>
         {layout.fields.length === 0 ? (
-          <Section title="差し込み口">
+          <Section title="入力項目">
             <Cell
-              title="差し込み口がありません"
-              description="下の「差し込み口を追加する」から作成してください"
+              title="入力項目がありません"
+              description="下の「入力項目を追加する」から作成してください"
               inactive={true}
             />
           </Section>
@@ -102,19 +102,19 @@ const Component: React.FC<ComponentProps> = ({
                 onChange={(valueType) => onChangeField({ ...field, valueType })}
               />
               <Cell
-                title="この差し込み口を削除する"
+                title="この入力項目を削除する"
                 onPress={() => onDeleteField(field)}
               />
             </Section>
           ))
         )}
         <Section title="操作">
-          <Cell title="差し込み口を追加する" onPress={onPressAdd} />
+          <Cell title="入力項目を追加する" onPress={onPressAdd} />
         </Section>
       </ScrollView>
       <InputDialog
         isVisible={isDialogVisible}
-        title="差し込み口の追加"
+        title="入力項目の追加"
         description="表示名を入力してください"
         onPress={onSubmitLabel}
         onCancel={onCancelDialog}
@@ -137,7 +137,7 @@ const Container: React.FC<Props> = (props) => {
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: '差し込み口' })
+    navigation.setOptions({ title: '入力項目' })
   }, [navigation])
 
   const onChangeField = useCallback(
@@ -160,7 +160,7 @@ const Container: React.FC<Props> = (props) => {
         const confirmed = await AlertAsync(
           '確認',
           referenced
-            ? `「${field.label || field.key}」を削除しますか？\nこの差し込み口を使っている要素は、内容が空の固定値に戻ります。`
+            ? `「${field.label || field.key}」を削除しますか？\nこの入力項目を使っている要素は、内容が空の固定値に戻ります。`
             : `「${field.label || field.key}」を削除しますか？`,
           [
             { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
@@ -192,7 +192,7 @@ const Container: React.FC<Props> = (props) => {
           upsertField(
             layout,
             createLayoutField({
-              label: trimmed || '差し込み口',
+              label: trimmed || '入力項目',
               key: trimmed || `field${layout.fields.length + 1}`,
             }),
           ),

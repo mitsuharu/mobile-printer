@@ -105,7 +105,7 @@ const Component: React.FC<ComponentProps> = ({
             title="印刷データを追加する"
             description={
               layout.fields.length === 0
-                ? 'このレイアウトには差し込み口がないため、入力する項目はありません'
+                ? 'このレイアウトには入力項目がないため、入力する項目はありません'
                 : 'セルを長押しすると複製と削除ができます'
             }
             onPress={onPressAdd}

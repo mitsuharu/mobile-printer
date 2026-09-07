@@ -74,7 +74,7 @@ const clearImageSource = (source: ImageSource, fieldId: string): ImageSource =>
     : source
 
 /**
- * 差し込み口を足すか、同じIDのものを差し替える
+ * 入力項目を足すか、同じIDのものを差し替える
  */
 export const upsertField = (layout: Layout, field: LayoutField): Layout => {
   const exists = layout.fields.some(({ id }) => id === field.id)
@@ -87,7 +87,7 @@ export const upsertField = (layout: Layout, field: LayoutField): Layout => {
 }
 
 /**
- * 差し込み口を取り除く
+ * 入力項目を取り除く
  *
  * 参照している要素は参照先を失うため、あわせて固定値へ戻す。
  */
@@ -116,7 +116,7 @@ export const removeField = (layout: Layout, fieldId: string): Layout => ({
 })
 
 /**
- * 差し込み口を参照している要素があるか調べる
+ * 入力項目を参照している要素があるか調べる
  */
 export const isFieldReferenced = (layout: Layout, fieldId: string): boolean =>
   layout.elements.some((element) => {

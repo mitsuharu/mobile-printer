@@ -90,7 +90,7 @@ export const createLayoutElement = (type: LayoutElementType): LayoutElement => {
 }
 
 /**
- * 差し込み口を作る
+ * 入力項目を作る
  */
 export const createLayoutField = (
   values: Partial<Omit<LayoutField, 'id'>> = {},
