@@ -221,12 +221,20 @@ describe('buildPrintCommands image要素', () => {
     })
   })
 
-  it('画像がなければ hideWhenEmpty によらず飛ばす', () => {
+  it('参照するフィールドが空なら hideWhenEmpty によらず飛ばす', () => {
     const commands = build([
       imageElement({
         source: { kind: 'field', fieldId: 'field-1' },
         hideWhenEmpty: false,
       }),
+    ])
+
+    expect(commands).toEqual([])
+  })
+
+  it('画像を選んでいない固定の要素は飛ばす', () => {
+    const commands = build([
+      imageElement({ source: { kind: 'static' }, hideWhenEmpty: false }),
     ])
 
     expect(commands).toEqual([])

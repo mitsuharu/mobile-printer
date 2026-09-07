@@ -44,9 +44,11 @@ export type TextSource =
 
 /**
  * 画像要素の供給元
+ *
+ * 固定の画像は、要素を追加した直後など、まだ画像を選んでいない状態を取り得る。
  */
 export type ImageSource =
-  | { kind: 'static'; asset: ImageAsset }
+  | { kind: 'static'; asset?: ImageAsset }
   | { kind: 'field'; fieldId: string }
 
 type ElementBase = {

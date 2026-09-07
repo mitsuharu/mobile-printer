@@ -41,7 +41,7 @@ export const createLayoutElement = (type: LayoutElementType): LayoutElement => {
       return {
         id,
         type: 'image',
-        source: { kind: 'field', fieldId: '' },
+        source: { kind: 'static' },
         width: DEFAULT_IMAGE_WIDTH,
         imageType: 'binary',
         alignment: 'center',

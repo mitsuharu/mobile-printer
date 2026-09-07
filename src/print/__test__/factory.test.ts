@@ -32,6 +32,15 @@ describe('createLayoutElement', () => {
   })
 })
 
+describe('createLayoutElement image', () => {
+  it('画像を選んでいない固定の供給元から始まる', () => {
+    const element = createLayoutElement('image')
+    expect(element.type === 'image' && element.source).toEqual({
+      kind: 'static',
+    })
+  })
+})
+
 describe('createLayout', () => {
   it('テキスト要素ひとつから始まる', () => {
     const layout = createLayout('名刺')
