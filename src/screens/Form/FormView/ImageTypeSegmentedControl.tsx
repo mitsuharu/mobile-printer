@@ -1,6 +1,7 @@
 import type { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 import SegmentedControl, {
   type NativeSegmentedControlIOSChangeEvent,
+  type SegmentedControlProps,
 } from '@react-native-segmented-control/segmented-control'
 import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
@@ -19,6 +20,10 @@ type Props = {
   enabled?: boolean
   onChange?: (printImageType: PrintImageType) => void
 }
+
+// The library's NativeMethods class intersection is not recognized as JSX by React 19 types.
+const SegmentedControlView =
+  SegmentedControl as unknown as React.ComponentType<SegmentedControlProps>
 
 export const PrintImageTypeSegmentedControl: React.FC<Props> = ({
   initialPrintImageType,
@@ -42,7 +47,7 @@ export const PrintImageTypeSegmentedControl: React.FC<Props> = ({
   )
 
   return (
-    <SegmentedControl
+    <SegmentedControlView
       values={values}
       selectedIndex={selectedIndex}
       onChange={onChangeSegmentedControl}

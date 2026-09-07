@@ -36,6 +36,6 @@ const darkColor: ColorType = {
   },
 }
 
-export const COLOR = (colorScheme: ColorSchemeName = 'light') => {
+export const COLOR = (colorScheme: ColorSchemeName | null = 'light') => {
   return colorScheme === 'dark' ? darkColor : defaultColor
 }

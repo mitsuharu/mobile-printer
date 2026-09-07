@@ -1,4 +1,4 @@
-import type { Falsy } from 'react-native'
+type Falsy = false | null | undefined | 0 | ''
 
 /**
  * @example

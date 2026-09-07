@@ -12,7 +12,7 @@ const Routes: React.FC = () => {
       initialRouteName={RootName.MainRoute}
       screenOptions={{
         headerShown: false,
-        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: 'minimal',
       }}
     >
       <Stack.Screen
