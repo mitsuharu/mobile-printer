@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import type React from 'react'
 import { Form } from '@/screens/Form'
 import { Home } from '@/screens/Home'
+import { LayoutEditor } from '@/screens/LayoutEditor'
 import { LayoutList } from '@/screens/LayoutList'
 import { Printer } from '@/screens/Printer'
 import { MainName } from './main.constraint'
@@ -21,6 +22,7 @@ const Routes: React.FC = () => {
       <Stack.Screen name={MainName.Form} component={Form} />
       <Stack.Screen name={MainName.Printer} component={Printer} />
       <Stack.Screen name={MainName.LayoutList} component={LayoutList} />
+      <Stack.Screen name={MainName.LayoutEditor} component={LayoutEditor} />
     </Stack.Navigator>
   )
 }

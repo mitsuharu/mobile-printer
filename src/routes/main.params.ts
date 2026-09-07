@@ -5,4 +5,5 @@ export type MainParams = {
   Form: { submission: Submission }
   Printer: undefined
   LayoutList: undefined
+  LayoutEditor: { layoutId: string }
 }

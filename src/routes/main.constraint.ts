@@ -3,6 +3,7 @@ export const MainName = {
   Form: 'Form',
   Printer: 'Printer',
   LayoutList: 'LayoutList',
+  LayoutEditor: 'LayoutEditor',
 } as const
 
 export type MainName = (typeof MainName)[keyof typeof MainName]
