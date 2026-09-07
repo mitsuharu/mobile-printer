@@ -215,21 +215,6 @@ export const createPresets = (): {
   const { layout, fieldIds } = createProfileLayout()
 
   const printData: PrintData[] = [
-    createPrintDataFor(layout, fieldIds, '宣伝', {
-      name: text('江本光晴'),
-      alias: text('Mitsuharu Emoto'),
-      icon: image(AVATAR_BASE64),
-      description: text(
-        'この印刷アプリの話でも、iOSエンジニアのキャリアや採用の話でも、カジュアル面談はお気軽にどうぞ',
-      ),
-      company: text('株式会社ゆめみ'),
-      position: text('iOS テックリード'),
-      twitter: text('@mitsuharu_e'),
-      facebook: text('mitsuharu.emoto'),
-      github: text('mitsuharu'),
-      qrUrl: text('https://www.yumemi.co.jp/category/recruit'),
-      qrDescription: text('カジュアル面談はこちらから'),
-    }),
     createPrintDataFor(layout, fieldIds, '開発者紹介', {
       name: text('江本光晴'),
       alias: text('Mitsuharu Emoto'),

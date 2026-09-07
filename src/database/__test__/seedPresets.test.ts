@@ -22,7 +22,7 @@ describe('seedPresets', () => {
 
     expect(layouts.map(({ name }) => name)).toEqual(['名刺'])
     expect(printData.map(({ title }) => title).sort()).toEqual(
-      ['サンプル', '宣伝', '開発者紹介'].sort(),
+      ['サンプル', '開発者紹介'].sort(),
     )
   })
 
@@ -39,9 +39,9 @@ describe('seedPresets', () => {
     await seedPresets(db)
 
     const printData = await findAllPrintData(db)
-    const promotion = printData.find(({ title }) => title === '宣伝')
+    const sample = printData.find(({ title }) => title === 'サンプル')
 
-    expect(Object.keys(promotion?.values ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(sample?.values ?? {}).length).toBeGreaterThan(0)
   })
 
   it('画像を持つ印刷データを読み戻せる', async () => {
