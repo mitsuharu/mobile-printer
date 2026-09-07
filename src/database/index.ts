@@ -6,6 +6,7 @@ import type { SqliteConnection } from './types'
 export * from './constants'
 export * from './migrate'
 export * from './migrations'
+export * from './repositories'
 export * from './types'
 
 let connection: SqliteConnection | undefined
