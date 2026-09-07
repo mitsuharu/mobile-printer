@@ -8,10 +8,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout } from '@/print'
 import { createLayout } from '@/print'
-import { selectLayouts } from '@/redux/modules/layout/selectors'
+import {
+  selectLayoutIsLoading,
+  selectLayouts,
+} from '@/redux/modules/layout/selectors'
 import {
   deleteLayout,
   duplicateLayout,
@@ -22,6 +26,7 @@ import { styleType } from '@/utils/styles'
 
 type Props = {}
 type ComponentProps = Props & {
+  isLoading: boolean
   layouts: Layout[]
   isDialogVisible: boolean
   onPressLayout: (layout: Layout) => void
@@ -32,6 +37,7 @@ type ComponentProps = Props & {
 }
 
 const Component: React.FC<ComponentProps> = ({
+  isLoading,
   layouts,
   isDialogVisible,
   onPressLayout,
@@ -73,6 +79,7 @@ const Component: React.FC<ComponentProps> = ({
           />
         </Section>
       </SafeScrollView>
+      <LoadingSpinner isLoading={isLoading} />
       <InputDialog
         isVisible={isDialogVisible}
         title="レイアウトの追加"
@@ -88,6 +95,7 @@ const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
+  const isLoading = useSelector(selectLayoutIsLoading)
   const layouts = useSelector(selectLayouts)
 
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
@@ -157,6 +165,7 @@ const Container: React.FC<Props> = (props) => {
     <Component
       {...props}
       {...{
+        isLoading,
         layouts,
         isDialogVisible,
         onPressLayout,

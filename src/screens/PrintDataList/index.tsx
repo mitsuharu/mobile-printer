@@ -19,11 +19,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { COLOR, MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, PrintData } from '@/print'
 import { createPrintData } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
-import { selectPrintDataByLayoutId } from '@/redux/modules/printData/selectors'
+import {
+  selectPrintDataByLayoutId,
+  selectPrintDataIsLoading,
+} from '@/redux/modules/printData/selectors'
 import {
   deletePrintData,
   duplicatePrintData,
@@ -38,6 +42,7 @@ type ParamsProps = RouteProp<MainParams, 'PrintDataList'>
 
 type Props = {}
 type ComponentProps = Props & {
+  isLoading: boolean
   layout: Layout | undefined
   printData: PrintData[]
   isDialogVisible: boolean
@@ -49,6 +54,7 @@ type ComponentProps = Props & {
 }
 
 const Component: React.FC<ComponentProps> = ({
+  isLoading,
   layout,
   printData,
   isDialogVisible,
@@ -103,6 +109,7 @@ const Component: React.FC<ComponentProps> = ({
           />
         </Section>
       </SafeScrollView>
+      <LoadingSpinner isLoading={isLoading} />
       <InputDialog
         isVisible={isDialogVisible}
         title="印刷データの追加"
@@ -129,6 +136,7 @@ const Container: React.FC<Props> = (props) => {
   )
   const layout = useSelector(layoutSelector)
   const printData = useSelector(printDataSelector)
+  const isLoading = useSelector(selectPrintDataIsLoading)
 
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
 
@@ -208,6 +216,7 @@ const Container: React.FC<Props> = (props) => {
     <Component
       {...props}
       {...{
+        isLoading,
         layout,
         printData,
         isDialogVisible,
