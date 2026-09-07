@@ -162,9 +162,11 @@ SQLite を唯一の情報源とし、Redux は画面へ供給するキャッシ�
 | 3 | `codex/layout-domain-model` | 要素・レイアウト・印刷データの型、`buildPrintCommands` と単体テスト（既存の印刷経路は据え置き） | typecheck / lint / test |
 | 4 | `codex/layout-repository` | レイアウトのCRUD（リポジトリ + slice + saga + テスト、UIなし） | typecheck / lint / test |
 | 5 | `codex/layout-list-screen` | レイアウト一覧・新規作成・複製・削除のUI | typecheck / lint / test |
-| 6 | `codex/layout-element-editor` | 要素の追加・個別編集UI、ドラッグ並べ替え（Reanimated / RNGH 導入） | typecheck / lint / test / Android ビルド / 実機操作 |
+| 6a | `codex/layout-element-reorder` | 要素の追加・削除とドラッグ並べ替え（Reanimated / RNGH 導入） | typecheck / lint / test / Android ビルド / 実機操作 |
+| 6b | `codex/layout-element-editor` | 要素の個別編集と、差し込み口（フィールド）の定義 | typecheck / lint / test / 実機操作 |
+| 6c | `codex/layout-preview` | レイアウト編集画面での印刷プレビュー | typecheck / lint / test / 実機で印刷結果と見比べる |
 | 7 | `codex/layout-print-data` | 印刷データのCRUDと、フィールド定義から生成する動的フォーム | typecheck / lint / test |
-| 8 | `codex/layout-print-execution` | 新レンダラでの実印刷とプレビュー画面 | typecheck / lint / test / 実機印刷 |
+| 8 | `codex/layout-print-execution` | 新レンダラでの実印刷 | typecheck / lint / test / 実機印刷 |
 | 9 | `codex/layout-remove-profile` | 旧プロフィール印刷（`Profile` / `Submission` / `printProfile` / Formスクリーン）とランダム印刷の撤去、サンプルデータの新レイアウト移植 | typecheck / lint / test / 実機印刷 |
 | 10 | `codex/layout-docs` | README とドキュメントの更新 | lint |
 
@@ -177,14 +179,16 @@ SQLite を唯一の情報源とし、Redux は画面へ供給するキャッシ�
 - [ ] PR3 ドメインモデルと印刷レンダラ
 - [ ] PR4 レイアウトのCRUD
 - [ ] PR5 レイアウト一覧UI
-- [ ] PR6 要素編集とドラッグ並べ替え
+- [ ] PR6a 要素の追加・削除とドラッグ並べ替え
+- [ ] PR6b 要素の個別編集とフィールド定義
+- [ ] PR6c レイアウト編集画面のプレビュー
 - [ ] PR7 印刷データとフォーム
-- [ ] PR8 印刷実行とプレビュー
+- [ ] PR8 印刷実行
 - [ ] PR9 旧プロフィール印刷の撤去
 - [ ] PR10 ドキュメント更新
 
 ## 未確定・要検討
 
 - SUNMI 実機（Android 7 系）での Reanimated 4 / op-sqlite の動作は、PR2 と PR6 の実機確認で必ず検証する。問題が出た場合は並べ替えを上下ボタン方式へ、SQLite を別ライブラリへ切り替える判断を行う。
-- プレビューは印刷幅 384px（58mm）を前提とする。80mm 端末の扱いは PR8 で `PrinterInfo.pixelWidth` を参照して決める。
+- プレビューは `PrintCommand[]` を画面へ描き直す方式とし、レイアウト編集中に印刷結果を確かめられるようにする（PR6c）。印刷幅は 384px（58mm）を前提とし、80mm 端末の扱いは `PrinterInfo.pixelWidth` を参照して決める。
 - 画像要素の元データ管理（未参照アセットの掃除）は PR7 以降で検討する。
