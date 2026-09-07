@@ -6,7 +6,6 @@ import {
 import type React from 'react'
 import { useCallback, useLayoutEffect, useMemo } from 'react'
 import {
-  ScrollView,
   StyleSheet,
   Text,
   type TextStyle,
@@ -19,6 +18,7 @@ import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE64, COLOR, MESSAGE } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, LayoutElement } from '@/print'
 import { removeElement, replaceElement } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
@@ -79,7 +79,7 @@ const Component: React.FC<ComponentProps> = ({
   }
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <SafeScrollView style={styles.scrollView}>
       {element.type === 'text' && (
         <>
           <TextSourceSection
@@ -319,7 +319,7 @@ const Component: React.FC<ComponentProps> = ({
       <Section title="操作">
         <Cell title="この要素を削除する" onPress={onDelete} />
       </Section>
-    </ScrollView>
+    </SafeScrollView>
   )
 }
 

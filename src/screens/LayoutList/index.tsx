@@ -1,13 +1,14 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import type React from 'react'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { ScrollView, StyleSheet, type ViewStyle } from 'react-native'
+import { StyleSheet, type ViewStyle } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout } from '@/print'
 import { createLayout } from '@/print'
 import { selectDatabaseIsReady } from '@/redux/modules/database/selectors'
@@ -45,7 +46,7 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <>
-      <ScrollView style={styles.scrollView}>
+      <SafeScrollView style={styles.scrollView}>
         <Section title="レイアウト">
           {layouts.length === 0 ? (
             <Cell
@@ -73,7 +74,7 @@ const Component: React.FC<ComponentProps> = ({
             onPress={onPressAdd}
           />
         </Section>
-      </ScrollView>
+      </SafeScrollView>
       <InputDialog
         isVisible={isDialogVisible}
         title="レイアウトの追加"

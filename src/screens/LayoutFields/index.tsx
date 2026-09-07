@@ -6,7 +6,6 @@ import {
 import type React from 'react'
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import {
-  ScrollView,
   StyleSheet,
   Text,
   type TextStyle,
@@ -20,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { COLOR, MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, LayoutField } from '@/print'
 import {
   createLayoutField,
@@ -68,7 +68,7 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <>
-      <ScrollView style={styles.scrollView}>
+      <SafeScrollView style={styles.scrollView}>
         <Text style={styles.description}>
           入力項目は、印刷データごとに内容を変えたい箇所です。要素の「内容の決め方」で
           「印刷データごとに入力する」を選ぶと、ここで作った入力項目を指定できます。
@@ -111,7 +111,7 @@ const Component: React.FC<ComponentProps> = ({
         <Section title="操作">
           <Cell title="入力項目を追加する" onPress={onPressAdd} />
         </Section>
-      </ScrollView>
+      </SafeScrollView>
       <InputDialog
         isVisible={isDialogVisible}
         title="入力項目の追加"

@@ -15,6 +15,7 @@ import {
   View,
   type ViewStyle,
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { makeStyles } from 'react-native-swag-styles'
 import { useSelector } from 'react-redux'
 import { BASE64, COLOR } from '@/CONSTANTS'
@@ -63,7 +64,11 @@ const Component: React.FC<ComponentProps> = ({
   }
 
   return (
-    <View style={styles.container} onLayout={onLayout}>
+    <SafeAreaView
+      style={styles.container}
+      edges={['bottom']}
+      onLayout={onLayout}
+    >
       <Text style={styles.description}>
         用紙の幅 {paperPixelWidth}px で描いています。
         {isPlaceholder ? '入力項目は表示名を仮の値として入れています。' : null}
@@ -87,7 +92,7 @@ const Component: React.FC<ComponentProps> = ({
           </View>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 

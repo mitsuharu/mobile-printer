@@ -13,7 +13,6 @@ import {
   useState,
 } from 'react'
 import {
-  ScrollView,
   StyleSheet,
   Text,
   type TextStyle,
@@ -27,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { COLOR, MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
+import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, PrintData } from '@/print'
 import { createPrintData } from '@/print'
 import { selectDatabaseIsReady } from '@/redux/modules/database/selectors'
@@ -79,7 +79,7 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <>
-      <ScrollView style={styles.scrollView}>
+      <SafeScrollView style={styles.scrollView}>
         <Section title="印刷データ">
           {printData.length === 0 ? (
             <Cell
@@ -111,7 +111,7 @@ const Component: React.FC<ComponentProps> = ({
             onPress={onPressAdd}
           />
         </Section>
-      </ScrollView>
+      </SafeScrollView>
       <InputDialog
         isVisible={isDialogVisible}
         title="印刷データの追加"
