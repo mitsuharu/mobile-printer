@@ -1,17 +1,10 @@
 import {
   type RouteProp,
-  useIsFocused,
   useNavigation,
   useRoute,
 } from '@react-navigation/native'
 import type React from 'react'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -29,13 +22,11 @@ import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, PrintData } from '@/print'
 import { createPrintData } from '@/print'
-import { selectDatabaseIsReady } from '@/redux/modules/database/selectors'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { selectPrintDataByLayoutId } from '@/redux/modules/printData/selectors'
 import {
   deletePrintData,
   duplicatePrintData,
-  fetchPrintData,
   printLayout,
   savePrintData,
 } from '@/redux/modules/printData/slice'
@@ -126,7 +117,6 @@ const Component: React.FC<ComponentProps> = ({
 const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const isFocused = useIsFocused()
 
   const {
     params: { layoutId },
@@ -139,19 +129,12 @@ const Container: React.FC<Props> = (props) => {
   )
   const layout = useSelector(layoutSelector)
   const printData = useSelector(printDataSelector)
-  const isDatabaseReady = useSelector(selectDatabaseIsReady)
 
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: '印刷データ' })
   }, [navigation])
-
-  useEffect(() => {
-    if (isFocused && isDatabaseReady) {
-      dispatch(fetchPrintData())
-    }
-  }, [dispatch, isFocused, isDatabaseReady])
 
   const onPressPrintData = useCallback(
     (value: PrintData) => {

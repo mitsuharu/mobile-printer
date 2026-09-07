@@ -1,6 +1,6 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import type React from 'react'
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import { StyleSheet, type ViewStyle } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
@@ -11,12 +11,10 @@ import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout } from '@/print'
 import { createLayout } from '@/print'
-import { selectDatabaseIsReady } from '@/redux/modules/database/selectors'
 import { selectLayouts } from '@/redux/modules/layout/selectors'
 import {
   deleteLayout,
   duplicateLayout,
-  fetchLayouts,
   saveLayout,
 } from '@/redux/modules/layout/slice'
 import { formatDateTime } from '@/utils/day'
@@ -89,23 +87,14 @@ const Component: React.FC<ComponentProps> = ({
 const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const isFocused = useIsFocused()
 
   const layouts = useSelector(selectLayouts)
-  const isDatabaseReady = useSelector(selectDatabaseIsReady)
 
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: 'レイアウト' })
   }, [navigation])
-
-  // SQLite が情報源なので、表示するたびに読み直す
-  useEffect(() => {
-    if (isFocused && isDatabaseReady) {
-      dispatch(fetchLayouts())
-    }
-  }, [dispatch, isFocused, isDatabaseReady])
 
   const onPressLayout = useCallback(
     (layout: Layout) => {

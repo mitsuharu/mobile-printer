@@ -1,6 +1,6 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import type React from 'react'
-import { useCallback, useEffect, useLayoutEffect, useMemo } from 'react'
+import { useCallback, useLayoutEffect, useMemo } from 'react'
 import { StyleSheet, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,11 +8,9 @@ import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import { SeasonalAsciiArtSection } from '@/components/SeasonalAsciiArtSection'
 import type { Layout, PrintData } from '@/print'
-import { selectDatabaseIsReady } from '@/redux/modules/database/selectors'
 import { selectLayouts } from '@/redux/modules/layout/selectors'
-import { fetchLayouts } from '@/redux/modules/layout/slice'
 import { selectAllPrintData } from '@/redux/modules/printData/selectors'
-import { fetchPrintData, printLayout } from '@/redux/modules/printData/slice'
+import { printLayout } from '@/redux/modules/printData/slice'
 import { printText } from '@/redux/modules/printer/slice'
 import { styleType } from '@/utils/styles'
 import { InputDialogCell } from './InputDialogCell'
@@ -90,11 +88,9 @@ const Component: React.FC<ComponentProps> = ({
 const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const isFocused = useIsFocused()
 
   const layouts: Layout[] = useSelector(selectLayouts)
   const printData: PrintData[] = useSelector(selectAllPrintData)
-  const isDatabaseReady = useSelector(selectDatabaseIsReady)
 
   const layoutNames = useMemo(
     () => Object.fromEntries(layouts.map((layout) => [layout.id, layout.name])),
@@ -104,14 +100,6 @@ const Container: React.FC<Props> = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({ title: 'モバイル印刷 for SUNMI' })
   }, [navigation])
-
-  // SQLite が情報源なので、表示するたびに読み直す
-  useEffect(() => {
-    if (isFocused && isDatabaseReady) {
-      dispatch(fetchLayouts())
-      dispatch(fetchPrintData())
-    }
-  }, [dispatch, isFocused, isDatabaseReady])
 
   const onPressText = useCallback(
     (text: string) => {
