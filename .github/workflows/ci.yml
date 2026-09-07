@@ -35,6 +35,9 @@ jobs:
           corepack enable
           yarn install --immutable
 
+      - name: Lint
+        run: yarn lint
+
       - name: Test
         run: yarn test --runInBand
 
