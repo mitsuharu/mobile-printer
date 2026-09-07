@@ -3,7 +3,6 @@ import type { Store } from 'redux'
 import { persistStore } from 'redux-persist'
 import type { Persistor } from 'redux-persist/es/types'
 import { rootSaga } from '@/redux/saga'
-import { AsciiArtReducer } from './modules/asciiArt/slice'
 import { databaseReducer } from './modules/database/slice'
 import { layoutReducer } from './modules/layout/slice'
 import { NFCReducer } from './modules/nfc/slice'
@@ -32,7 +31,6 @@ export function initializeRedux() {
       snackbar: snackbarReducer,
       userSetting: userSettingReducer,
       nfc: NFCReducer,
-      asciiArt: AsciiArtReducer,
     })
 
     const sagaMiddleware = createSagaMiddleware({

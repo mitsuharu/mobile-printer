@@ -5,7 +5,6 @@ import { ScrollView, StyleSheet, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { Cell, Section } from '@/components/List'
-import { printAsciiArt } from '@/redux/modules/asciiArt/slice'
 import { selectNfcIsSupported } from '@/redux/modules/nfc/selectors'
 import { startReadingNfc } from '@/redux/modules/nfc/slice'
 import {
@@ -26,7 +25,6 @@ type ComponentProps = Props & {
   onPressDuplicateQRCode: () => void
   isNfcSupported: boolean
   onPressNfc: () => void
-  onPressAsciiArt: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
@@ -37,7 +35,6 @@ const Component: React.FC<ComponentProps> = ({
   onPressDuplicateQRCode,
   isNfcSupported,
   onPressNfc,
-  onPressAsciiArt,
 }) => {
   const styles = useStyles()
 
@@ -72,12 +69,6 @@ const Component: React.FC<ComponentProps> = ({
           <Cell title="NFCタグの内容を複製する" onPress={onPressNfc} />
         </Section>
       )}
-      <Section title="試験先行実装">
-        <Cell
-          title="アスキーアートをランダム印刷する"
-          onPress={onPressAsciiArt}
-        />
-      </Section>
     </ScrollView>
   )
 }
@@ -124,10 +115,6 @@ const Container: React.FC<Props> = (props) => {
     dispatch(startReadingNfc())
   }, [dispatch])
 
-  const onPressAsciiArt = useCallback(() => {
-    dispatch(printAsciiArt())
-  }, [dispatch])
-
   return (
     <Component
       {...props}
@@ -139,7 +126,6 @@ const Container: React.FC<Props> = (props) => {
         onPressDuplicateQRCode,
         isNfcSupported,
         onPressNfc,
-        onPressAsciiArt,
       }}
     />
   )

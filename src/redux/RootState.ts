@@ -1,4 +1,3 @@
-import type { AsciiArtState } from './modules/asciiArt/slice'
 import type { DatabaseState } from './modules/database/slice'
 import type { LayoutState } from './modules/layout/slice'
 import type { NfcState } from './modules/nfc/slice'
@@ -15,7 +14,6 @@ export interface RootState {
   snackbar: SnackbarState
   userSetting: UserSettingState
   nfc: NfcState
-  asciiArt: AsciiArtState
 }
 
 // typescript definition
