@@ -153,8 +153,17 @@ describe('createPresets の印刷内容', () => {
       command.type === 'lineWrap' ? [{ index, count: command.count }] : [],
     )
 
-    // 冒頭・画像の前後・QRコードの前・QRコードと印刷時刻の間・末尾の紙送り
-    expect(blanks.map(({ count }) => count)).toEqual([1, 1, 2, 1, 2, 3])
+    // 冒頭・画像の前後・各まとまりの前・QRコードの前後・末尾の紙送り
+    expect(blanks.map(({ count }) => count)).toEqual([
+      1, 1, 2, 1, 1, 1, 1, 2, 3,
+    ])
+  })
+
+  it('区切り線は入れない', () => {
+    // 区切り線は利用者がレイアウトで足すもので、初期状態では出さない
+    expect(
+      commandsFor('サンプル').some((command) => command.type === 'printHR'),
+    ).toBe(false)
   })
 
   it('アイコン画像とQRコードを出力する', () => {

@@ -81,12 +81,6 @@ const spacer = (lines: number): LayoutElement => ({
   lines,
 })
 
-const divider = (): LayoutElement => ({
-  id: createUUID(),
-  type: 'divider',
-  barType: 'line',
-})
-
 /**
  * 名刺レイアウトと、その入力項目のIDを作る
  *
@@ -125,18 +119,19 @@ const createProfileLayout = (): {
     spacer(2),
     centeredText(fieldIds.description, FONT_SIZE.DEFAULT),
 
-    divider(),
+    // 区切り線は利用者がレイアウトで足すものとし、ここでは行を空けるだけにする
+    spacer(1),
     centeredText(fieldIds.company, FONT_SIZE.DEFAULT),
     centeredText(fieldIds.position, FONT_SIZE.DEFAULT),
     centeredText(fieldIds.address, FONT_SIZE.DEFAULT),
 
-    divider(),
+    spacer(1),
     snsColumns('X:', fieldIds.twitter),
     snsColumns('Facebook:', fieldIds.facebook),
     snsColumns('GitHub:', fieldIds.github),
     snsColumns('Website:', fieldIds.website),
 
-    divider(),
+    spacer(1),
     centeredText(fieldIds.qrDescription, FONT_SIZE.DEFAULT),
     spacer(1),
     {
