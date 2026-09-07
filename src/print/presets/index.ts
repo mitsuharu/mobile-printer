@@ -121,7 +121,8 @@ const createProfileLayout = (): {
       alignment: 'center',
       hideWhenEmpty: true,
     },
-    spacer(1),
+    // 画像の下と本文の上でそれぞれ1行空けていた体裁に合わせる
+    spacer(2),
     centeredText(fieldIds.description, FONT_SIZE.DEFAULT),
 
     divider(),
@@ -137,6 +138,7 @@ const createProfileLayout = (): {
 
     divider(),
     centeredText(fieldIds.qrDescription, FONT_SIZE.DEFAULT),
+    spacer(1),
     {
       id: createUUID(),
       type: 'qrcode',
@@ -146,7 +148,8 @@ const createProfileLayout = (): {
       alignment: 'center',
       hideWhenEmpty: true,
     },
-    spacer(1),
+    // QRコードの下と印刷時刻の上でそれぞれ1行空けていた体裁に合わせる
+    spacer(2),
     {
       id: createUUID(),
       type: 'timestamp',

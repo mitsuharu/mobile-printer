@@ -105,6 +105,16 @@ describe('createPresets の印刷内容', () => {
     ])
   })
 
+  it('従来と同じ位置で行を空ける', () => {
+    const commands = commandsFor('宣伝')
+    const blanks = commands.flatMap((command) =>
+      command.type === 'lineWrap' ? [command.count] : [],
+    )
+
+    // 冒頭・画像の前後・QRコードの前・QRコードと印刷時刻の間・末尾の紙送り
+    expect(blanks).toEqual([1, 1, 2, 1, 2, 3])
+  })
+
   it('アイコン画像とQRコードを出力する', () => {
     const commands = commandsFor('サンプル')
 
