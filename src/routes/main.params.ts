@@ -4,4 +4,5 @@ export type MainParams = {
   Home: undefined
   Form: { submission: Submission }
   Printer: undefined
+  LayoutList: undefined
 }

@@ -31,6 +31,7 @@ type ComponentProps = Props & {
   onPressPrintProfileRandomly: () => void
   onPressNewSubmission: () => void
   onNavigateToPrinter: () => void
+  onNavigateToLayoutList: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
@@ -42,6 +43,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressPrintProfileRandomly,
   onPressNewSubmission,
   onNavigateToPrinter,
+  onNavigateToLayoutList,
 }) => {
   const styles = useStyles()
 
@@ -59,6 +61,14 @@ const Component: React.FC<ComponentProps> = ({
         <Cell
           title="その他"
           onPress={onNavigateToPrinter}
+          inactive={isEditable}
+          accessory="disclosure"
+        />
+      </Section>
+      <Section title="レイアウト印刷">
+        <Cell
+          title="レイアウトを管理する"
+          onPress={onNavigateToLayoutList}
           inactive={isEditable}
           accessory="disclosure"
         />
@@ -150,6 +160,10 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('Printer')
   }, [navigation])
 
+  const onNavigateToLayoutList = useCallback(() => {
+    navigation.navigate('LayoutList')
+  }, [navigation])
+
   return (
     <Component
       {...props}
@@ -162,6 +176,7 @@ const Container: React.FC<Props> = (props) => {
         onPressPrintProfileRandomly,
         onPressNewSubmission,
         onNavigateToPrinter,
+        onNavigateToLayoutList,
       }}
     />
   )
