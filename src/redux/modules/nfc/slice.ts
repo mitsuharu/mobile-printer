@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PersistConfig, persistReducer } from 'redux-persist'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { type PersistConfig, persistReducer } from 'redux-persist'
 
 export type NfcState = {
   isSupported: boolean
@@ -30,10 +30,8 @@ const slice = createSlice({
       state.isReading = payload
     },
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     startReadingNfc(_state, _action: PayloadAction<void>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     stopReadingNfc(_state, _action: PayloadAction<void>) {},
   },
 })

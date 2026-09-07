@@ -1,9 +1,10 @@
-import { createUUID } from '@/utils/uuid'
 import dayjs from 'dayjs'
-import { Submission } from './types'
-export * from './types'
-export * from './sample'
+import { createUUID } from '@/utils/uuid'
+import type { Submission } from './types'
+
 export * from './preset'
+export * from './sample'
+export * from './types'
 
 export const isEqualToSubmission = (a: Submission, b: Submission) =>
   a.uuid === b.uuid

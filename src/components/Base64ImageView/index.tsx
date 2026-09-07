@@ -1,17 +1,18 @@
-import { styleType } from '@/utils/styles'
-import React, { useCallback, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 import {
-  ViewStyle,
-  StyleSheet,
-  StyleProp,
   Image,
-  ImageSourcePropType,
-  ImageStyle,
+  type ImageSourcePropType,
+  type ImageStyle,
   Pressable,
+  type StyleProp,
+  StyleSheet,
+  type ViewStyle,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BASE64 } from '@/CONSTANTS'
 import { fetchBase64Image } from '@/utils/ImagePicker'
+import { styleType } from '@/utils/styles'
 
 type Props = {
   base64?: string
@@ -57,7 +58,7 @@ const Container: React.FC<Props> = (props) => {
   const onPress = useCallback(async () => {
     try {
       const base64Image = await fetchBase64Image(BASE64.PROFILE_ICON_SIZE)
-      if (!!base64Image) {
+      if (base64Image) {
         onChange?.(base64Image)
         setSource(makeBase64ImageSource(base64Image))
       }

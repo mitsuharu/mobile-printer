@@ -1,21 +1,22 @@
-import React, { ReactNode } from 'react'
+import type React from 'react'
+import type { ReactNode } from 'react'
 import {
-  StyleProp,
+  type StyleProp,
   StyleSheet,
   Switch,
   Text,
-  TextStyle,
+  type TextStyle,
   useColorScheme,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native'
+import { makeStyles } from 'react-native-swag-styles'
+import Icon from 'react-native-vector-icons/AntDesign'
+import { COLOR } from '@/CONSTANTS'
 import { Button } from '@/components/Button'
 import { contentInset } from '@/components/List/util'
-import { COLOR } from '@/CONSTANTS'
-import Icon from 'react-native-vector-icons/AntDesign'
-import { Size } from '@/utils/types'
-import { makeStyles } from 'react-native-swag-styles'
 import { styleType } from '@/utils/styles'
+import type { Size } from '@/utils/types'
 
 const AccessorySize: Size = { width: 20, height: 20 }
 type AccessoryType = undefined | 'disclosure' | 'link' | 'check' | 'switch'

@@ -1,6 +1,7 @@
-import React, { useMemo, Children } from 'react'
-import { ItemSeparator } from '@/components/List/Separator'
+import type React from 'react'
+import { Children, useMemo } from 'react'
 import { View } from 'react-native'
+import { ItemSeparator } from '@/components/List/Separator'
 
 type Props = {
   children?: React.ReactNode

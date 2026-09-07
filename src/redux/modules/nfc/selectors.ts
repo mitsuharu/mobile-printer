@@ -1,4 +1,4 @@
-import { RootState } from '@/redux/RootState'
+import type { RootState } from '@/redux/RootState'
 
 export const selectNfcIsSupported = (state: RootState): boolean =>
   state.nfc.isSupported

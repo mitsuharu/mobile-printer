@@ -1,4 +1,4 @@
-import { Falsy } from 'react-native'
+import type { Falsy } from 'react-native'
 
 /**
  * @example

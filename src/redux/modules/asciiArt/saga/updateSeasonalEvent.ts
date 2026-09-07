@@ -1,11 +1,11 @@
+import { put, select } from 'redux-saga/effects'
 import {
   isChristmasDuration,
   isMoreThanOneDay,
   isNewYearDuration,
 } from '@/utils/day'
-import { put, select } from 'redux-saga/effects'
-import { SeasonalEvent, assignSeasonalEvent } from '../slice'
 import { selectAsciiArtUpdatedAt } from '../selectors'
+import { assignSeasonalEvent, type SeasonalEvent } from '../slice'
 
 /**
  * @package

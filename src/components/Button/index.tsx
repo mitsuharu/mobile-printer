@@ -1,14 +1,15 @@
-import { styleType } from '@/utils/styles'
-import React, { ReactNode } from 'react'
+import type React from 'react'
+import type { ReactNode } from 'react'
 import {
+  type Insets,
   Pressable,
-  Text,
-  ViewStyle,
+  type StyleProp,
   StyleSheet,
-  TextStyle,
-  Insets,
-  StyleProp,
+  Text,
+  type TextStyle,
+  type ViewStyle,
 } from 'react-native'
+import { styleType } from '@/utils/styles'
 
 type ContentProps = {
   text?: string

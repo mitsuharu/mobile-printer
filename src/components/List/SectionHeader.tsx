@@ -1,15 +1,15 @@
-import React from 'react'
+import type React from 'react'
 import {
-  StyleProp,
+  type StyleProp,
   StyleSheet,
   Text,
-  TextStyle,
+  type TextStyle,
   useColorScheme,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native'
-import { COLOR } from '@/CONSTANTS'
 import { makeStyles } from 'react-native-swag-styles'
+import { COLOR } from '@/CONSTANTS'
 import { styleType } from '@/utils/styles'
 
 type Props = { title?: string; style?: StyleProp<ViewStyle> }

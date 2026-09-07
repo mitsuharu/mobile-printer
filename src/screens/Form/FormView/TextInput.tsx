@@ -1,14 +1,15 @@
-import React, { useCallback, forwardRef } from 'react'
+import type React from 'react'
+import { forwardRef, useCallback } from 'react'
 import {
-  View,
-  ViewStyle,
-  TextStyle,
-  TextInput,
-  useColorScheme,
   StyleSheet,
+  TextInput,
+  type TextStyle,
+  useColorScheme,
+  View,
+  type ViewStyle,
 } from 'react-native'
-import { COLOR } from '@/CONSTANTS'
 import { makeStyles } from 'react-native-swag-styles'
+import { COLOR } from '@/CONSTANTS'
 import { styleType } from '@/utils/styles'
 
 // reactjs - Typescript React: Access component property types - Stack Overflow
@@ -26,11 +27,8 @@ type ComponentProps = Omit<Props, 'ref'> & {
 
 type TextInputRefObject = React.RefObject<TextInput>
 
-const isTextInputRefObject = (arg: any): arg is TextInputRefObject => {
-  return (
-    typeof arg === 'object' &&
-    Object.prototype.hasOwnProperty.call(arg, 'current')
-  )
+const isTextInputRefObject = (arg: unknown): arg is TextInputRefObject => {
+  return typeof arg === 'object' && arg !== null && 'current' in arg
 }
 
 const Component: React.FC<ComponentProps> = (props) => {
@@ -87,11 +85,9 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       borderWidth: 1,
       borderRadius: 8,
     }),
-    // eslint-disable-next-line react-native/no-unused-styles
     textSelection: styleType<TextStyle>({
       color: COLOR(colorScheme).TEXT.PRIMARY,
     }),
-    // eslint-disable-next-line react-native/no-unused-styles
     textPlaceholder: styleType<TextStyle>({
       color: COLOR(colorScheme).TEXT.SECONDARY,
     }),

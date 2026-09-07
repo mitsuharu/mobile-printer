@@ -6,11 +6,11 @@ import {
   printAsciiArtSnow,
   updateSeasonalEvent,
 } from '../slice'
-import { updateSeasonalEventSaga } from './updateSeasonalEvent'
-import { printAsciiArtChristmasSage } from './printAsciiArtChristmas'
 import { printAsciiArtSage } from './printAsciiArt'
+import { printAsciiArtChristmasSage } from './printAsciiArtChristmas'
 import { printAsciiArtNewYearSage } from './printAsciiArtNewYear'
 import { printAsciiArtSnowSage } from './printAsciiArtSnow'
+import { updateSeasonalEventSaga } from './updateSeasonalEvent'
 
 export function* asciiArtSaga() {
   yield takeEvery(updateSeasonalEvent, updateSeasonalEventSaga)

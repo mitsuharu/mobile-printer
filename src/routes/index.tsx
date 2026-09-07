@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native'
-import React from 'react'
-import { MainParams } from './main.params'
-import { RootRoutes } from './root.routes'
+import type React from 'react'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { useAppTheme } from './theme/useAppTheme'
 import { GlobalSnackbar } from '@/components/GlobalSnackbar'
 import * as NavigationService from '@/utils/NavigationService'
+import type { MainParams } from './main.params'
+import { RootRoutes } from './root.routes'
+import { useAppTheme } from './theme/useAppTheme'
 
 /**
  * @see https://reactnavigation.org/docs/auth-flow/
@@ -29,7 +29,6 @@ const Routes: React.FC = () => {
 export { Routes }
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ReactNavigation {
     interface RootParamList extends MainParams {}
   }

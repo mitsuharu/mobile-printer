@@ -1,11 +1,11 @@
+import dayjs from 'dayjs'
 import MockDate from 'mockdate'
 import {
-  timeStamp,
-  isMoreThanOneDay,
   isChristmasDuration,
+  isMoreThanOneDay,
   isNewYearDuration,
+  timeStamp,
 } from '../day'
-import dayjs from 'dayjs'
 
 describe('timeStamp', () => {
   beforeEach(async () => {

@@ -1,6 +1,6 @@
-import { RootState } from '@/redux/RootState'
-import { Submission } from './utils'
-import { PrinterInfo } from '@mitsuharu/react-native-sunmi-printer-library'
+import type { PrinterInfo } from '@mitsuharu/react-native-sunmi-printer-library'
+import type { RootState } from '@/redux/RootState'
+import type { Submission } from './utils'
 
 export const selectIsPrintable = (state: RootState): boolean =>
   state.printer.isPrintable

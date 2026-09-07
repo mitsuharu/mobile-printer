@@ -1,19 +1,19 @@
+import type {
+  PrinterInfo,
+  PrintImageType,
+} from '@mitsuharu/react-native-sunmi-printer-library'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
+import { type PersistConfig, persistReducer } from 'redux-persist'
 import { createPresetSubmissions, isEqualToSubmission } from './utils'
-import {
+import type {
   ImageSource,
   Profile,
   QRCodeSource,
   Submission,
   TextSource,
 } from './utils/types'
-import { PersistConfig, persistReducer } from 'redux-persist'
-import {
-  PrinterInfo,
-  PrintImageType,
-} from '@mitsuharu/react-native-sunmi-printer-library'
 
 export type PrinterState = {
   isPrintable: boolean
@@ -45,29 +45,21 @@ const printerSlice = createSlice({
       state.printerInfo = payload
     },
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printProfile(_state, _action: PayloadAction<Profile>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printProfileRandomly(_state, _action: PayloadAction<void>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printText(_state, _action: PayloadAction<TextSource>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printImage(_state, _action: PayloadAction<ImageSource>) {},
 
     printImageFromImagePicker(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _state,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _action: PayloadAction<PrintImageType>,
     ) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     printQRCode(_state, _action: PayloadAction<QRCodeSource>) {},
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     duplicateQRCode(_state, _action: PayloadAction<void>) {},
 
     saveSubmission(state, { payload }: PayloadAction<Submission>) {

@@ -1,20 +1,21 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react'
-import { ViewStyle, ScrollView, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import type React from 'react'
+import { useCallback, useLayoutEffect } from 'react'
+import { ScrollView, StyleSheet, type ViewStyle } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
-import { styleType } from '@/utils/styles'
 import { useDispatch, useSelector } from 'react-redux'
+import { Cell, Section } from '@/components/List'
+import { printAsciiArt } from '@/redux/modules/asciiArt/slice'
+import { selectNfcIsSupported } from '@/redux/modules/nfc/selectors'
+import { startReadingNfc } from '@/redux/modules/nfc/slice'
 import {
   duplicateQRCode,
   printImageFromImagePicker,
   printQRCode,
   printText,
 } from '@/redux/modules/printer/slice'
-import { Cell, Section } from '@/components/List'
-import { useNavigation } from '@react-navigation/native'
+import { styleType } from '@/utils/styles'
 import { InputDialogCell } from './InputDialogCell'
-import { selectNfcIsSupported } from '@/redux/modules/nfc/selectors'
-import { startReadingNfc } from '@/redux/modules/nfc/slice'
-import { printAsciiArt } from '@/redux/modules/asciiArt/slice'
 
 type Props = {}
 type ComponentProps = Props & {
@@ -85,18 +86,13 @@ const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
 
-  const [isEditable, setIsEditable] = useState<boolean>(false)
   const isNfcSupported = useSelector(selectNfcIsSupported)
-
-  const toggle = useCallback(() => {
-    setIsEditable(!isEditable)
-  }, [isEditable, setIsEditable])
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: '汎用印刷',
     })
-  }, [navigation, isEditable, toggle])
+  }, [navigation])
 
   const onPressText = useCallback(
     (text: string) => {

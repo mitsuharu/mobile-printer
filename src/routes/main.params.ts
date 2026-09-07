@@ -1,4 +1,4 @@
-import { Submission } from '@/redux/modules/printer/utils'
+import type { Submission } from '@/redux/modules/printer/utils'
 
 export type MainParams = {
   Home: undefined

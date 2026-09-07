@@ -1,4 +1,8 @@
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
+import { Platform } from 'react-native'
+import { getBrand, isEmulator } from 'react-native-device-info'
 import { call, fork, put, takeEvery, takeLeading } from 'redux-saga/effects'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import {
   assignIsPrintable,
   duplicateQRCode,
@@ -9,19 +13,15 @@ import {
   printQRCode,
   printText,
 } from '../slice'
-import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
-import { Platform } from 'react-native'
-import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
-import { isEmulator, getBrand } from 'react-native-device-info'
-import { printProfileRandomlySaga, printProfileSaga } from './printProfile'
-import { printTextSaga } from './printText'
+import { getPrinterInfoSaga } from './printerSagaUtils'
 import { printImageFromImagePickerSaga, printImageSaga } from './printImage'
+import { printProfileRandomlySaga, printProfileSaga } from './printProfile'
 import {
   duplicateQRCodeSaga,
   monitorScanSuccessSaga,
   printQRCodeSaga,
 } from './printQRCode'
-import { getPrinterInfoSaga } from './printerSagaUtils'
+import { printTextSaga } from './printText'
 
 export function* printerSaga() {
   if (Platform.OS !== 'android') {

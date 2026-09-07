@@ -17,6 +17,7 @@
 - `.yarn/releases/` にコミットされたYarnを使用し、依存関係のインストールにnpmを使用しません。
 - ルートで `corepack enable`、続けて `yarn install --immutable` を実行します。
 - Node.js製の開発CLIはグローバルインストールや `npx` で取得せず、ルートの `devDependencies` にバージョンを固定して `yarn <command>` で実行します。既存の `clean:project` は `npx` を使用しているため、依存関係を整備するまでは実行しません。
+- JavaScript・TypeScript・JSONなど、Biomeが対応するファイルの検査と整形にはBiomeを使用します。確認は `yarn lint`、自動修正と整形は `yarn lint-force` で実行します。
 - Android開発にはJDK 17と、`android/build.gradle` に定義されたAndroid SDK・NDKを使用します。
 - Gradleはリポジトリの `android/gradlew` を使用します。
 
@@ -33,7 +34,7 @@ TZ=Asia/Tokyo yarn test --runInBand
 
 - JavaScript・TypeScriptの振る舞いを変更するときは、可能な限りJestテストを追加または更新します。
 - 依存関係やネイティブ実装、印刷動作を変更するときはAndroidビルドも実行します。
-- 現在のCIではtypecheckとlintが無効です。CI成功だけでこれらの検証が通ったと判断せず、失敗や未実施事項を報告します。
+- 現在のCIではtypecheckが無効です。CI成功だけで型検査が通ったと判断せず、失敗や未実施事項を報告します。
 - ドキュメントのみの変更では差分とリンクを、ワークフローの変更ではYAML構文・トリガー・権限・実行コマンドを確認します。
 - ビルド成功で確認できるのはコンパイルとリンクまでです。印刷・NFCなどのハードウェア依存機能は対応するSUNMI実機で操作結果を確認し、実施内容と結果、または確認できなかった事項をPRへ記載します。
 

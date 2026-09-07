@@ -1,4 +1,4 @@
-import { ColorSchemeName } from 'react-native'
+import type { ColorSchemeName } from 'react-native'
 
 type ColorType = {
   CLEAR: string

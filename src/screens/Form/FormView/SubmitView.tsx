@@ -1,9 +1,15 @@
-import React from 'react'
-import { View, ViewStyle, TextStyle, StyleProp, StyleSheet } from 'react-native'
+import type React from 'react'
+import {
+  type StyleProp,
+  StyleSheet,
+  type TextStyle,
+  View,
+  type ViewStyle,
+} from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
-import { styleType } from '@/utils/styles'
 import { Button } from '@/components/Button'
 import { Spacer } from '@/components/Spacer'
+import { styleType } from '@/utils/styles'
 
 type Props = {
   style?: StyleProp<ViewStyle>

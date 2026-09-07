@@ -1,28 +1,28 @@
-import React from 'react'
-import { COLOR } from '@/CONSTANTS'
+import type React from 'react'
 import {
-  View,
-  ViewStyle,
-  Text,
-  TextStyle,
-  TextInput,
-  StyleProp,
-  useColorScheme,
-  ReturnKeyTypeOptions,
-  StyleSheet,
-} from 'react-native'
-import {
+  type Control,
   Controller,
-  Control,
-  UseFormGetValues,
-  FieldPath,
-  FieldError,
+  type FieldError,
+  type FieldPath,
+  type UseFormGetValues,
 } from 'react-hook-form'
-import { Submission } from '@/redux/modules/printer/utils'
+import {
+  type ReturnKeyTypeOptions,
+  type StyleProp,
+  StyleSheet,
+  Text,
+  type TextInput,
+  type TextStyle,
+  useColorScheme,
+  View,
+  type ViewStyle,
+} from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
+import { COLOR } from '@/CONSTANTS'
+import type { Submission } from '@/redux/modules/printer/utils'
+import { styleType } from '@/utils/styles'
 import { MyTextInput } from './TextInput'
 import { getValidationMessage, isValidIfEmpty } from './validation'
-import { styleType } from '@/utils/styles'
 
 type Props = {
   style?: StyleProp<ViewStyle>

@@ -1,6 +1,6 @@
-import { COLOR } from '@/CONSTANTS'
+import type { ColorSchemeName } from 'react-native'
 import { DefaultTheme, MD3DarkTheme } from 'react-native-paper'
-import { ColorSchemeName } from 'react-native'
+import { COLOR } from '@/CONSTANTS'
 
 export type Theme = typeof DefaultTheme
 type Colors = Pick<Theme, 'colors'>['colors']

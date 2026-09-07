@@ -20,6 +20,7 @@ async function printSnow() {
     SunmiPrinterLibrary.lineWrap(2)
 
     // 33％で雪が積もる
+    // biome-ignore lint/correctness/noConstantCondition: Preserve the existing behavior that always prints accumulated snow.
     if (Math.floor(Math.random() * 9) % 3 === 0 || true) {
       SunmiPrinterLibrary.printText('︶︶︶︶︶︶︶︶︶︶︶︶︶︶')
       SunmiPrinterLibrary.printText('　*( 　 )*　')

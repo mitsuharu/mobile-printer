@@ -1,7 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 
 // 汎用的なナビゲーションであり、型指定が難しいため
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const navigationRef = createNavigationContainerRef<any>()
 
 export function navigate(name: string, params?: any) {

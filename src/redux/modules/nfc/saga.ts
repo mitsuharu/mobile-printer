@@ -1,15 +1,19 @@
+import { Linking } from 'react-native'
+import AlertAsync from 'react-native-alert-async'
+import NfcManager, {
+  Ndef,
+  NfcTech,
+  type TagEvent,
+} from 'react-native-nfc-manager'
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
-import NfcManager, { NfcTech, Ndef, TagEvent } from 'react-native-nfc-manager'
+import { MESSAGE } from '@/CONSTANTS'
+import { printText } from '../printer/slice'
 import {
   assignNfcIsReading,
   assignNfcIsSupported,
   startReadingNfc,
   stopReadingNfc,
 } from './slice'
-import { Linking } from 'react-native'
-import AlertAsync from 'react-native-alert-async'
-import { MESSAGE } from '@/CONSTANTS'
-import { printText } from '../printer/slice'
 
 export function* nfcSaga() {
   const isSupported: boolean = yield call(requestIsSupportedSaga)

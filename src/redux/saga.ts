@@ -1,8 +1,8 @@
 import { all, fork } from 'redux-saga/effects'
-import { inAppBrowserSaga } from './modules/inAppWebBrowser/saga'
-import { printerSaga } from './modules/printer/saga'
-import { nfcSaga } from './modules/nfc/saga'
 import { asciiArtSaga } from './modules/asciiArt/saga'
+import { inAppBrowserSaga } from './modules/inAppWebBrowser/saga'
+import { nfcSaga } from './modules/nfc/saga'
+import { printerSaga } from './modules/printer/saga'
 
 export function* rootSaga() {
   console.log('rootSaga start')

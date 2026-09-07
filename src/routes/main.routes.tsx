@@ -1,10 +1,10 @@
-import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { MainParams } from './main.params'
-import { MainName } from './main.constraint'
-import { Home } from '@/screens/Home'
+import type React from 'react'
 import { Form } from '@/screens/Form'
+import { Home } from '@/screens/Home'
 import { Printer } from '@/screens/Printer'
+import { MainName } from './main.constraint'
+import type { MainParams } from './main.params'
 
 const Stack = createNativeStackNavigator<MainParams>()
 

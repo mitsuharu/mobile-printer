@@ -1,8 +1,11 @@
+import type { Theme as NavigationTheme } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Theme as NavigationTheme } from '@react-navigation/native'
 import { makeTheme as makeNavigationTheme } from './navigationTheme'
-import { makeTheme as makePaperTheme, Theme as PaperTheme } from './paperTheme'
+import {
+  makeTheme as makePaperTheme,
+  type Theme as PaperTheme,
+} from './paperTheme'
 
 export const useAppTheme = () => {
   const colorScheme = useColorScheme()

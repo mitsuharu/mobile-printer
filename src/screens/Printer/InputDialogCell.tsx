@@ -1,6 +1,7 @@
+import type React from 'react'
+import { useCallback, useState } from 'react'
 import { InputDialog } from '@/components/Dialog'
 import { Cell } from '@/components/List'
-import React, { useCallback, useState } from 'react'
 
 type Props = {
   title: string
@@ -21,19 +22,19 @@ export const InputDialogCell: React.FC<Props> = ({
 
   const onPressCell = useCallback(() => {
     setIsVisible(true)
-  }, [setIsVisible])
+  }, [])
 
   const onPressDialog = useCallback(
     (text: string) => {
       setIsVisible(false)
       onSelectText?.(text)
     },
-    [onSelectText, setIsVisible],
+    [onSelectText],
   )
 
   const onCancelDialog = useCallback(() => {
     setIsVisible(false)
-  }, [setIsVisible])
+  }, [])
 
   return (
     <>
