@@ -2,6 +2,7 @@ import type { Theme as NavigationTheme } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { makeTheme as makeNavigationTheme } from './navigationTheme'
+import { makeStatusBarStyle } from './statusBarStyle'
 
 export const useAppTheme = () => {
   const colorScheme = useColorScheme()
@@ -13,5 +14,5 @@ export const useAppTheme = () => {
     setNavigationTheme(makeNavigationTheme(colorScheme))
   }, [colorScheme])
 
-  return { navigationTheme }
+  return { navigationTheme, statusBarStyle: makeStatusBarStyle(colorScheme) }
 }
