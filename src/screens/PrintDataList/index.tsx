@@ -20,6 +20,10 @@ import { COLOR, MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import {
+  type ListPickerItem,
+  ListPickerModal,
+} from '@/components/Modal/ListPickerModal'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, PrintData } from '@/print'
 import { createPrintData } from '@/print'
@@ -40,14 +44,28 @@ import { styleType } from '@/utils/styles'
 
 type ParamsProps = RouteProp<MainParams, 'PrintDataList'>
 
+/**
+ * 印刷データを長押ししたときに選べる操作
+ */
+type PrintDataAction = 'print' | 'duplicate' | 'delete'
+
+const printDataActions: ListPickerItem<PrintDataAction>[] = [
+  { value: 'print', title: '印刷する' },
+  { value: 'duplicate', title: '複製する' },
+  { value: 'delete', title: '削除する' },
+]
+
 type Props = {}
 type ComponentProps = Props & {
   isLoading: boolean
   layout: Layout | undefined
   printData: PrintData[]
   isDialogVisible: boolean
+  actionTarget: PrintData | undefined
   onPressPrintData: (value: PrintData) => void
   onLongPressPrintData: (value: PrintData) => void
+  onSelectAction: (action: PrintDataAction) => void
+  onCancelAction: () => void
   onPressAdd: () => void
   onSubmitTitle: (title: string) => void
   onCancelDialog: () => void
@@ -58,8 +76,11 @@ const Component: React.FC<ComponentProps> = ({
   layout,
   printData,
   isDialogVisible,
+  actionTarget,
   onPressPrintData,
   onLongPressPrintData,
+  onSelectAction,
+  onCancelAction,
   onPressAdd,
   onSubmitTitle,
   onCancelDialog,
@@ -117,6 +138,14 @@ const Component: React.FC<ComponentProps> = ({
         onPress={onSubmitTitle}
         onCancel={onCancelDialog}
       />
+      <ListPickerModal
+        visible={!!actionTarget}
+        title={actionTarget?.title ?? ''}
+        description="操作を選んでください"
+        items={printDataActions}
+        onSelect={onSelectAction}
+        onCancel={onCancelAction}
+      />
     </>
   )
 }
@@ -139,6 +168,9 @@ const Container: React.FC<Props> = (props) => {
   const isLoading = useSelector(selectPrintDataIsLoading)
 
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
+  const [actionTarget, setActionTarget] = useState<PrintData | undefined>(
+    undefined,
+  )
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: '印刷データ' })
@@ -154,15 +186,22 @@ const Container: React.FC<Props> = (props) => {
     [layoutId, navigation],
   )
 
-  const onLongPressPrintData = useCallback(
-    async (value: PrintData) => {
-      try {
-        const action = await AlertAsync(value.title, '操作を選んでください', [
-          { text: '印刷する', onPress: () => 'print' },
-          { text: '複製する', onPress: () => 'duplicate' },
-          { text: '削除する', onPress: () => 'delete', style: 'destructive' },
-        ])
+  const onLongPressPrintData = useCallback((value: PrintData) => {
+    setActionTarget(value)
+  }, [])
 
+  const onCancelAction = useCallback(() => {
+    setActionTarget(undefined)
+  }, [])
+
+  const onSelectAction = useCallback(
+    async (action: PrintDataAction) => {
+      const value = actionTarget
+      setActionTarget(undefined)
+      if (!value) {
+        return
+      }
+      try {
         if (action === 'print') {
           dispatch(printLayout({ layoutId, printDataId: value.id }))
           return
@@ -187,10 +226,10 @@ const Container: React.FC<Props> = (props) => {
           }
         }
       } catch (e: any) {
-        console.warn('onLongPressPrintData', e)
+        console.warn('onSelectAction', e)
       }
     },
-    [dispatch, layoutId],
+    [actionTarget, dispatch, layoutId],
   )
 
   const onPressAdd = useCallback(() => setIsDialogVisible(true), [])
@@ -220,8 +259,11 @@ const Container: React.FC<Props> = (props) => {
         layout,
         printData,
         isDialogVisible,
+        actionTarget,
         onPressPrintData,
         onLongPressPrintData,
+        onSelectAction,
+        onCancelAction,
         onPressAdd,
         onSubmitTitle,
         onCancelDialog,

@@ -87,7 +87,7 @@ export const ListPickerModal = <T,>({
                 title={item.title}
                 description={item.description}
                 onPress={() => onSelect(item.value)}
-                accessory={item.value === selected ? 'check' : 'disclosure'}
+                accessory={item.value === selected ? 'check' : undefined}
               />
             ))}
             {!!action && (

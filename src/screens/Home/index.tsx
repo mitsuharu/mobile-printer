@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import type React from 'react'
-import { useCallback, useLayoutEffect, useMemo } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { StyleSheet, type ViewStyle } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
@@ -8,6 +8,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { MESSAGE } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import {
+  type ListPickerItem,
+  ListPickerModal,
+} from '@/components/Modal/ListPickerModal'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, PrintData } from '@/print'
 import {
@@ -26,15 +30,28 @@ import { AppInfoButton } from './AppInfoButton'
 import { InputDialogCell } from './InputDialogCell'
 import { PrintDataCell } from './PrintDataCell'
 
+/**
+ * 印刷データを長押ししたときに選べる操作
+ */
+type PrintDataAction = 'duplicate' | 'delete'
+
+const printDataActions: ListPickerItem<PrintDataAction>[] = [
+  { value: 'duplicate', title: '複製する' },
+  { value: 'delete', title: '削除する' },
+]
+
 type Props = {}
 type ComponentProps = Props & {
   isLoading: boolean
   printData: PrintData[]
   layoutNames: Record<string, string>
+  actionTarget: PrintData | undefined
   onPressText: (text: string) => void
   onPressPrintData: (value: PrintData) => void
   onPressEditPrintData: (value: PrintData) => void
   onLongPressPrintData: (value: PrintData) => void
+  onSelectAction: (action: PrintDataAction) => void
+  onCancelAction: () => void
   onNavigateToPrinter: () => void
   onNavigateToLayoutList: () => void
 }
@@ -43,10 +60,13 @@ const Component: React.FC<ComponentProps> = ({
   isLoading,
   printData,
   layoutNames,
+  actionTarget,
   onPressText,
   onPressPrintData,
   onPressEditPrintData,
   onLongPressPrintData,
+  onSelectAction,
+  onCancelAction,
   onNavigateToPrinter,
   onNavigateToLayoutList,
 }) => {
@@ -98,6 +118,14 @@ const Component: React.FC<ComponentProps> = ({
         </Section>
       </SafeScrollView>
       <LoadingSpinner isLoading={isLoading} />
+      <ListPickerModal
+        visible={!!actionTarget}
+        title={actionTarget?.title ?? ''}
+        description="操作を選んでください"
+        items={printDataActions}
+        onSelect={onSelectAction}
+        onCancel={onCancelAction}
+      />
     </>
   )
 }
@@ -109,6 +137,10 @@ const Container: React.FC<Props> = (props) => {
   const isLoading = useSelector(selectLayoutIsLoading)
   const layouts: Layout[] = useSelector(selectLayouts)
   const printData: PrintData[] = useSelector(selectAllPrintData)
+
+  const [actionTarget, setActionTarget] = useState<PrintData | undefined>(
+    undefined,
+  )
 
   const layoutNames = useMemo(
     () => Object.fromEntries(layouts.map((layout) => [layout.id, layout.name])),
@@ -150,14 +182,22 @@ const Container: React.FC<Props> = (props) => {
     [navigation],
   )
 
-  const onLongPressPrintData = useCallback(
-    async (value: PrintData) => {
-      try {
-        const action = await AlertAsync(value.title, '操作を選んでください', [
-          { text: '複製する', onPress: () => 'duplicate' },
-          { text: '削除する', onPress: () => 'delete', style: 'destructive' },
-        ])
+  const onLongPressPrintData = useCallback((value: PrintData) => {
+    setActionTarget(value)
+  }, [])
 
+  const onCancelAction = useCallback(() => {
+    setActionTarget(undefined)
+  }, [])
+
+  const onSelectAction = useCallback(
+    async (action: PrintDataAction) => {
+      const value = actionTarget
+      setActionTarget(undefined)
+      if (!value) {
+        return
+      }
+      try {
         if (action === 'duplicate') {
           dispatch(duplicatePrintData(value))
           return
@@ -177,10 +217,10 @@ const Container: React.FC<Props> = (props) => {
           }
         }
       } catch (e: any) {
-        console.warn('onLongPressPrintData', e)
+        console.warn('onSelectAction', e)
       }
     },
-    [dispatch],
+    [actionTarget, dispatch],
   )
 
   const onNavigateToPrinter = useCallback(() => {
@@ -198,10 +238,13 @@ const Container: React.FC<Props> = (props) => {
         isLoading,
         printData,
         layoutNames,
+        actionTarget,
         onPressText,
         onPressPrintData,
         onPressEditPrintData,
         onLongPressPrintData,
+        onSelectAction,
+        onCancelAction,
         onNavigateToPrinter,
         onNavigateToLayoutList,
       }}
