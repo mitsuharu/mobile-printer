@@ -9,8 +9,6 @@ updates:
     directory: '/'
     target-branch: 'main'
     open-pull-requests-limit: 10
-    commit-message:
-      prefix: '[skip ci] '
     schedule:
       interval: 'weekly'
     groups:
@@ -43,5 +41,3 @@ updates:
     target-branch: 'main'
     schedule:
       interval: 'monthly'
-    commit-message:
-      prefix: '[skip ci] '
