@@ -9,6 +9,7 @@ export type MainParams = {
   PrintDataList: { layoutId: string }
   PrintDataForm: { layoutId: string; printDataId: string }
   AppInfo: undefined
+  Guide: undefined
   Licenses: undefined
   LicenseDetail: { licenseId: string }
 }

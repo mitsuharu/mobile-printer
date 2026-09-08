@@ -22,6 +22,7 @@ type ComponentProps = Props & {
   appName: string
   version: string
   licenseCount: number
+  onPressGuide: () => void
   onPressLicenses: () => void
   onPressRepository: () => void
 }
@@ -30,6 +31,7 @@ const Component: React.FC<ComponentProps> = ({
   appName,
   version,
   licenseCount,
+  onPressGuide,
   onPressLicenses,
   onPressRepository,
 }) => {
@@ -37,6 +39,14 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <SafeScrollView style={styles.scrollView}>
+      <Section title="使い方">
+        <Cell
+          title="このアプリの使い方"
+          description="汎用印刷とレイアウト印刷の違い、レイアウトの作り方"
+          accessory="disclosure"
+          onPress={onPressGuide}
+        />
+      </Section>
       <Section title="アプリ">
         <Cell title="名前" description={appName} />
         <Cell title="バージョン" description={version} />
@@ -73,6 +83,10 @@ const Container: React.FC<Props> = (props) => {
     navigation.setOptions({ title: 'このアプリについて' })
   }, [navigation])
 
+  const onPressGuide = useCallback(() => {
+    navigation.navigate('Guide')
+  }, [navigation])
+
   const onPressLicenses = useCallback(() => {
     navigation.navigate('Licenses')
   }, [navigation])
@@ -88,6 +102,7 @@ const Container: React.FC<Props> = (props) => {
         appName,
         version,
         licenseCount,
+        onPressGuide,
         onPressLicenses,
         onPressRepository,
       }}
