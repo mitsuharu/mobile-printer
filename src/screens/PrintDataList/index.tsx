@@ -125,7 +125,7 @@ const Component: React.FC<ComponentProps> = ({
             description={
               layout.fields.length === 0
                 ? 'このレイアウトには入力項目がないため、入力する項目はありません'
-                : 'セルを長押しすると複製と削除ができます'
+                : 'セルを長押しすると印刷・複製・削除ができます'
             }
             onPress={onPressAdd}
           />

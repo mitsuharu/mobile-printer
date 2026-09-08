@@ -108,6 +108,8 @@ SUNMI端末のプリンターで印刷するアプリです。この文書は 1.
 
 <img src="images/print-data-list.png" width="320" alt="印刷データ一覧" />
 
+一覧のセルを長押しすると、印刷・複製・削除ができます。
+
 印刷データを開くと、入力項目が並びます。
 
 <img src="images/print-data-form.png" width="320" alt="印刷データの入力" />
