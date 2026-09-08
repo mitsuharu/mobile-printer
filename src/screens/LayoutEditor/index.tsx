@@ -22,7 +22,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { COLOR } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import type { Layout, LayoutElement, LayoutElementType } from '@/print'
-import { addElement, createLayoutElement, moveElement } from '@/print'
+import {
+  addElement,
+  createLayoutElement,
+  moveElement,
+  unusedFields,
+} from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { saveLayout } from '@/redux/modules/layout/slice'
 import { printLayout } from '@/redux/modules/printData/slice'
@@ -36,6 +41,11 @@ type ParamsProps = RouteProp<MainParams, 'LayoutEditor'>
 type Props = {}
 type ComponentProps = Props & {
   layout: Layout | undefined
+
+  /**
+   * どの要素からも参照されていない入力項目の数
+   */
+  unusedFieldCount: number
   onReorder: (event: ReorderableListReorderEvent) => void
   onPressElement: (element: LayoutElement) => void
   onPressAdd: () => void
@@ -50,6 +60,7 @@ type ComponentProps = Props & {
 
 const Component: React.FC<ComponentProps> = ({
   layout,
+  unusedFieldCount,
   onReorder,
   onPressElement,
   onPressAdd,
@@ -97,7 +108,11 @@ const Component: React.FC<ComponentProps> = ({
         <Cell title="要素を追加する" onPress={onPressAdd} />
         <Cell
           title="入力項目"
-          description={`${layout.fields.length}個`}
+          description={
+            unusedFieldCount > 0
+              ? `${layout.fields.length}個（うち未使用${unusedFieldCount}個）`
+              : `${layout.fields.length}個`
+          }
           onPress={onPressFields}
           accessory="disclosure"
         />
@@ -136,6 +151,11 @@ const Container: React.FC<Props> = (props) => {
 
   const selector = useMemo(() => selectLayoutById(layoutId), [layoutId])
   const layout = useSelector(selector)
+
+  const unusedFieldCount = useMemo(
+    () => (layout ? unusedFields(layout).length : 0),
+    [layout],
+  )
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: layout?.name ?? 'レイアウト' })
@@ -203,6 +223,7 @@ const Container: React.FC<Props> = (props) => {
       {...props}
       {...{
         layout,
+        unusedFieldCount,
         onReorder,
         onPressElement,
         onPressAdd,
