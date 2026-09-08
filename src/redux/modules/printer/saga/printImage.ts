@@ -50,17 +50,18 @@ export function* printImageFromImagePickerSaga({
 }
 
 type GetImageBase64Result = { base64: string | undefined; width: number }
+
+/**
+ * @note
+ * 失敗は投げて、呼び出し側で知らせる。握り潰すと「選ばずに閉じた」と同じ
+ * 扱いになり、何も起きないまま終わってしまう。
+ */
 async function getImageBase64(): Promise<GetImageBase64Result> {
-  try {
-    const path = await fetchResizedImagePath(BASE64.MAX_SIZE)
-    if (!path) {
-      return { base64: undefined, width: 0 }
-    }
-    return { base64: await readImageFile(path), width: BASE64.MAX_SIZE }
-  } catch (e: any) {
-    console.warn(e)
+  const path = await fetchResizedImagePath(BASE64.MAX_SIZE)
+  if (!path) {
     return { base64: undefined, width: 0 }
   }
+  return { base64: await readImageFile(path), width: BASE64.MAX_SIZE }
 }
 
 async function print({ base64, type, width }: ImageSource) {

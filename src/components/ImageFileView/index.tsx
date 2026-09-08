@@ -10,7 +10,9 @@ import {
   type ViewStyle,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { useDispatch } from 'react-redux'
 import { BASE64 } from '@/CONSTANTS'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { fetchResizedImagePath } from '@/utils/ImagePicker'
 import { styleType } from '@/utils/styles'
 
@@ -59,6 +61,7 @@ const Component: React.FC<ComponentProps> = ({ style, source, onPress }) => {
 
 const Container: React.FC<Props> = (props) => {
   const { path, onChange } = props
+  const dispatch = useDispatch()
 
   const [source, setSource] = useState<ImageSourcePropType | undefined>(
     makeImageSource(path),
@@ -72,9 +75,10 @@ const Container: React.FC<Props> = (props) => {
         setSource(makeImageSource(nextPath))
       }
     } catch (e: any) {
-      console.warn(e)
+      console.warn('ImageFileView', e)
+      dispatch(enqueueSnackbar({ message: `画像を選べませんでした` }))
     }
-  }, [onChange])
+  }, [dispatch, onChange])
 
   return <Component {...props} {...{ source, onPress }} />
 }

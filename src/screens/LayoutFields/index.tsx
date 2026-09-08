@@ -29,6 +29,7 @@ import {
 } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { saveLayout } from '@/redux/modules/layout/slice'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import type { MainParams } from '@/routes/main.params'
 import { styleType } from '@/utils/styles'
 import { fieldValueTypeItems } from '../ElementEditor/options'
@@ -194,6 +195,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onDeleteField', e)
+        dispatch(enqueueSnackbar({ message: `入力項目を削除できませんでした` }))
       }
     },
     [dispatch, layout],

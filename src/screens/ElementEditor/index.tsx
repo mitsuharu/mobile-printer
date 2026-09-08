@@ -23,6 +23,7 @@ import type { Layout, LayoutElement, LayoutField } from '@/print'
 import { removeElement, replaceElement, upsertField } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { saveLayout } from '@/redux/modules/layout/slice'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import type { MainParams } from '@/routes/main.params'
 import { styleType } from '@/utils/styles'
 import { describeElementType } from '../LayoutEditor/describeElement'
@@ -386,6 +387,7 @@ const Container: React.FC<Props> = (props) => {
       }
     } catch (e: any) {
       console.warn('onDelete', e)
+      dispatch(enqueueSnackbar({ message: `要素を削除できませんでした` }))
     }
   }, [dispatch, element, layout, navigation])
 

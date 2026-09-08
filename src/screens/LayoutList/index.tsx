@@ -21,6 +21,7 @@ import {
   duplicateLayout,
   saveLayout,
 } from '@/redux/modules/layout/slice'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { formatDateTime } from '@/utils/day'
 import { styleType } from '@/utils/styles'
 
@@ -141,6 +142,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onLongPressLayout', e)
+        dispatch(enqueueSnackbar({ message: `操作できませんでした` }))
       }
     },
     [dispatch],
