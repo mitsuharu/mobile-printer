@@ -57,7 +57,7 @@ TZ=Asia/Tokyo yarn test --runInBand
 - スキーマを変更するときは `src/database/migrations/` に新しい版を追加します。一度入れたマイグレーションの内容は書き換えません。
 - リポジトリ層のテストは Node 同梱の `node:sqlite` に対して実際のスキーマで実行します（`src/database/__test__/testConnection.ts`）。SQLや外部キーの挙動もここで検証できます。
 - AndroidのAlertは3つまでしかボタンを表示できません。選択肢が4つ以上になり得るものは `ListPickerModal` を使います。
-- AndroidのModalは別ウィンドウのため、開いた時点で中の `TextInput` へOSがフォーカスを当てます。React Nativeはフォーカスを得た瞬間にしかキーボードを出さないため、当たったままでは `focus()` もタップも効きません。`src/components/Dialog/` は一度 `blur()` してから当て直してキーボードを出しています。
+- AndroidのModalは別ウィンドウのため、開いた時点で中の `TextInput` へOSがフォーカスを当てます。React Nativeは、すでにフォーカスを持っている入力欄への `focus()` をJS側で捨てる（`TextInputState.focusTextInput`）ため、ネイティブへ命令が届かず、キーボードを出す要求も送られません。`src/components/Dialog/` は一度 `blur()` で手放してから当て直しています。当て直しさえすれば、ネイティブ側（`ReactEditText.requestFocusProgrammatically`）が自分で `showSoftInput` を呼ぶので、キーボードは自動で開きます。
 - 大きな改修をPRへ分割するときは `gh stack`（`gh extension install github/gh-stack`）でスタックPRとして積み上げます。
 
 ## アプリ情報とOSSライセンス表示

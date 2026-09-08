@@ -75,10 +75,11 @@ const Component: React.FC<ComponentProps> = ({
    * 入力欄をタップしたときにキーボードを出す
    *
    * @note
-   * Android の Modal は別ウィンドウのため、開いた時点で入力欄へ勝手に
-   * フォーカスが当たっている。React Native はフォーカスを得た瞬間にしか
-   * キーボードを出さないので、当たったままではタップしても出てこない。
-   * 一度外してから当て直して、フォーカスを得た状態を作る。
+   * Android の Modal は別ウィンドウのため、開いた時点で OS が入力欄へ
+   * フォーカスを当てる。React Native は、すでにフォーカスを持っている
+   * 入力欄への focus() を JS 側で捨てるため（TextInputState.focusTextInput）、
+   * ネイティブへ命令が届かず、キーボードを出す要求も送られない。
+   * 一度 blur() で手放してから当て直すと、命令が届いてキーボードが出る。
    */
   const onPressIn = useCallback(() => {
     const input = inputRef.current
