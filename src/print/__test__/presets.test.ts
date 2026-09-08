@@ -153,10 +153,9 @@ describe('createPresets の印刷内容', () => {
       command.type === 'lineWrap' ? [{ index, count: command.count }] : [],
     )
 
-    // 冒頭・画像の前後・各まとまりの前・QRコードの前後・末尾の紙送り
-    expect(blanks.map(({ count }) => count)).toEqual([
-      1, 1, 2, 1, 1, 1, 1, 2, 3,
-    ])
+    // 冒頭・画像の前後・所属の前・QRコードの前後・末尾の紙送り
+    // 罫線の前後には空けない。罫線そのものが区切りになる。
+    expect(blanks.map(({ count }) => count)).toEqual([1, 1, 2, 1, 1, 2, 3])
   })
 
   it('所属の上とSNSの上下に罫線を入れる', () => {

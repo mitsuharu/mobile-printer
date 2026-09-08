@@ -132,7 +132,6 @@ const createProfileLayout = (): {
     centeredText(fieldIds.position, FONT_SIZE.DEFAULT),
     centeredText(fieldIds.address, FONT_SIZE.DEFAULT),
 
-    spacer(1),
     divider(),
     snsColumns('X:', fieldIds.twitter),
     snsColumns('Facebook:', fieldIds.facebook),
@@ -140,7 +139,6 @@ const createProfileLayout = (): {
     snsColumns('Website:', fieldIds.website),
 
     divider(),
-    spacer(1),
     centeredText(fieldIds.qrDescription, FONT_SIZE.DEFAULT),
     spacer(1),
     {
