@@ -38,6 +38,7 @@ import {
   printLayout,
   savePrintData,
 } from '@/redux/modules/printData/slice'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import type { MainParams } from '@/routes/main.params'
 import { formatDateTime } from '@/utils/day'
 import { styleType } from '@/utils/styles'
@@ -228,6 +229,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onSelectAction', e)
+        dispatch(enqueueSnackbar({ message: `操作できませんでした` }))
       }
     },
     [actionTarget, dispatch, layoutId],

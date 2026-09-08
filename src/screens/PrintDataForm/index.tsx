@@ -29,6 +29,7 @@ import {
   printLayout,
   savePrintData,
 } from '@/redux/modules/printData/slice'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import type { MainParams } from '@/routes/main.params'
 import { copyImageFile } from '@/utils/imageStore'
 import { styleType } from '@/utils/styles'
@@ -273,9 +274,10 @@ const Container: React.FC<Props> = (props) => {
         })
       } catch (e: any) {
         console.warn('onChangeImage', e)
+        dispatch(enqueueSnackbar({ message: `画像を取り込めませんでした` }))
       }
     },
-    [onChangeValue],
+    [dispatch, onChangeValue],
   )
 
   const onPressPreview = useCallback(() => {
@@ -309,6 +311,7 @@ const Container: React.FC<Props> = (props) => {
       }
     } catch (e: any) {
       console.warn('onPressDelete', e)
+      dispatch(enqueueSnackbar({ message: `削除できませんでした` }))
     }
   }, [dispatch, navigation, printData])
 

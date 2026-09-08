@@ -25,6 +25,7 @@ import {
   printLayout,
 } from '@/redux/modules/printData/slice'
 import { printText } from '@/redux/modules/printer/slice'
+import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { styleType } from '@/utils/styles'
 import { AppInfoButton } from './AppInfoButton'
 import { InputDialogCell } from './InputDialogCell'
@@ -219,6 +220,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onSelectAction', e)
+        dispatch(enqueueSnackbar({ message: `操作できませんでした` }))
       }
     },
     [actionTarget, dispatch],
