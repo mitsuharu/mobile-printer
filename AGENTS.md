@@ -56,7 +56,9 @@ TZ=Asia/Tokyo yarn test --runInBand
 - レイアウトの解釈は `src/print/buildPrintCommands.ts` が `PrintCommand[]` を組み立て、`src/print/executePrintCommands.ts` がプリンターへ送ります。印刷の見た目を変えるときは、この純粋関数のテストを更新します。プレビューも同じ `PrintCommand[]` を描き直すため、印刷とプレビューで解釈が分かれません。
 - スキーマを変更するときは `src/database/migrations/` に新しい版を追加します。一度入れたマイグレーションの内容は書き換えません。
 - リポジトリ層のテストは Node 同梱の `node:sqlite` に対して実際のスキーマで実行します（`src/database/__test__/testConnection.ts`）。SQLや外部キーの挙動もここで検証できます。
-- AndroidのAlertは3つまでしかボタンを表示できません。選択肢が4つ以上になり得るものは `ListPickerModal` を使います。
+- 操作や選択肢をユーザーに選ばせるAlert・ダイアログには、**選択肢の数にかかわらず必ずキャンセル（そのダイアログを閉じる手段）を用意します。** AndroidのAlertは戻るボタンでも画面外タップでも閉じられないため、キャンセルがないと、どれかを選ぶまで利用者が抜け出せません。
+- AndroidのAlertは3つまでしかボタンを表示できません。キャンセルを含めて4つ以上になるものは `ListPickerModal` を使います。このモーダルはキャンセルを常に表示し、戻るボタンでも閉じられます。
+- 選択肢がAlertに収まらないほど増えたときは、モーダルへ移す前に画面設計そのものを疑います。ダイアログを重ねて選ばせ続ける形は、一覧画面やセルの操作へ逃がせる場合が多く、増え続ける選択肢はUI/UXの問題を示す兆候です。**まず画面で表現できないかを検討してから、ダイアログを選びます。**
 - AndroidのModalは別ウィンドウのため、開いた時点で中の `TextInput` へOSがフォーカスを当てます。React Nativeは、すでにフォーカスを持っている入力欄への `focus()` をJS側で捨てる（`TextInputState.focusTextInput`）ため、ネイティブへ命令が届かず、キーボードを出す要求も送られません。`src/components/Dialog/` は一度 `blur()` で手放してから当て直しています。当て直しさえすれば、ネイティブ側（`ReactEditText.requestFocusProgrammatically`）が自分で `showSoftInput` を呼ぶので、キーボードは自動で開きます。
 - 大きな改修をPRへ分割するときは `gh stack`（`gh extension install github/gh-stack`）でスタックPRとして積み上げます。
 
