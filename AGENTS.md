@@ -78,6 +78,22 @@ git add src/assets/licenses.json
 - `src/assets/licenses.json` は生成物のため、Biomeの対象から外しています（`biome.json` の `files.includes`）。
 - アプリ内の「使い方」は `src/screens/Guide/sections.ts` の文言だけで作っています。同じ内容を画像つきで [`docs/usage.md`](./docs/usage.md) にも置いているため、画面の操作を変えたら両方を直します。片方だけ古くなると利用者が迷います。
 
+## アプリアイコン
+
+- 元画像は [`docs/images/app-icon-source.png`](./docs/images/app-icon-source.png)（1254×1254）です。差し替えるときはこれを置き換えてから、各解像度を作り直します。
+- 生成物は `android/app/src/main/res/mipmap-*/`（通常・丸）と `mipmap-*-v26/ic_foreground.png`（アダプティブの前景）です。背景は `values/colors-icon.xml` の `iconBackground`（現在は白）を使います。
+- 大きさは用途ごとに変えています。**同じ画像をそのまま入れると、丸くくり抜く端末で絵柄が欠けます。**
+
+| 用途 | 絵柄の占有率 | 理由 |
+| --- | --- | --- |
+| `ic_launcher.png` | 約85% | 四角のまま表示されるため、余白は控えめにする |
+| `ic_launcher_round.png` | 約70% | 円で切り抜かれるため、四隅が落ちても欠けない大きさにする |
+| `ic_foreground.png` | 約53% | 見える領域の8割に収め、絵柄の周りに余白を残す |
+
+- 生成には macOS 同梱の `sips` を使います（`ImageMagick` は不要）。前景は 108/72 倍の解像度（mdpi 108px 〜 xxxhdpi 432px）で作ります。
+- 前景を安全領域いっぱい（約65%）にすると、角丸マスクでは絵柄が縁に触れて窮屈に見え、円マスクでは左右が2割ほど欠けます。余白を残す方を採っています。
+- 作り直したら実機のランチャーで見た目を確認します。Android 7 以前は通常アイコン、Android 8 以降はアダプティブアイコンが使われるため、**両方の世代で確認できると確実です。**
+
 ## 画像選択の互換性
 
 - Android 7〜12では、`react-native-image-picker` のPhoto PickerがGoogle Play servicesへ委譲され、SUNMI端末で選択画面を表示せずキャンセルされる場合があります。現在は `patches/react-native-image-picker+8.2.1.patch` により、これらのOSでシステムのDocuments UIを使用します。
