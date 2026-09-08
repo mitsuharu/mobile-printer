@@ -86,7 +86,10 @@ const textsOf = (title: string) =>
 
 describe('createPresets', () => {
   it('名刺レイアウトを2つ用意する', () => {
-    expect(layouts.map(({ name }) => name)).toEqual(['名刺', '名刺（シンプル）'])
+    expect(layouts.map(({ name }) => name)).toEqual([
+      '名刺',
+      '名刺（シンプル）',
+    ])
   })
 
   it('印刷データを2つ用意する', () => {
