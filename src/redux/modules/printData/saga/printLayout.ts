@@ -1,4 +1,4 @@
-import { call, put, select } from 'redux-saga/effects'
+import { call, delay, put, race, select } from 'redux-saga/effects'
 import type { Layout, PrintCommand, PrintData } from '@/print'
 import { buildPrintCommands, executePrintCommands } from '@/print'
 import { selectLayouts } from '@/redux/modules/layout/selectors'
@@ -6,6 +6,17 @@ import { validatePrinterSaga } from '@/redux/modules/printer/saga/printerSagaUti
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
 import { selectAllPrintData } from '../selectors'
 import type { printLayout } from '../slice'
+
+/**
+ * 印刷の実行を待つ上限（ミリ秒）
+ *
+ * @note
+ * プリンターは、バッファへ入ったあとに応答が返らないと固まることがある
+ * （`executePrintCommands` の注記を参照）。`printLayout` は `takeLeading`
+ * で受けているため、このサーガが終わらないと以後の印刷が黙って捨てられ、
+ * アプリを再起動するまで印刷できなくなる。時間で切り上げて次を受け付ける。
+ */
+const PRINT_TIMEOUT = 15000
 
 /**
  * @package
@@ -48,7 +59,17 @@ export function* printLayoutSaga({ payload }: ReturnType<typeof printLayout>) {
       return
     }
 
-    yield call(executePrintCommands, commands)
+    const { isTimeout }: { isTimeout?: true } = yield race({
+      done: call(executePrintCommands, commands),
+      isTimeout: delay(PRINT_TIMEOUT),
+    })
+    if (isTimeout) {
+      yield put(
+        enqueueSnackbar({
+          message: `印刷が終わりませんでした。プリンターの状態を確認してください`,
+        }),
+      )
+    }
   } catch (e: any) {
     console.warn('printLayoutSaga', e)
     yield put(enqueueSnackbar({ message: `印刷に失敗しました` }))
