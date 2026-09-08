@@ -135,3 +135,13 @@ export const isFieldReferenced = (layout: Layout, fieldId: string): boolean =>
         return false
     }
   })
+
+/**
+ * どの要素からも参照されていない入力項目
+ *
+ * 参照されていない項目は、印刷データへ値を入れても読まれない。
+ * 入力欄として並べると、入力したのに印刷が変わらない状態になるため、
+ * 画面側で使用中の項目と分けて扱う。
+ */
+export const unusedFields = (layout: Layout): LayoutField[] =>
+  layout.fields.filter((field) => !isFieldReferenced(layout, field.id))
