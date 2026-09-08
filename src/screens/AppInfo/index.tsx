@@ -16,6 +16,7 @@ import { openWeb } from '@/redux/modules/inAppWebBrowser/slice'
 import { styleType } from '@/utils/styles'
 
 const REPOSITORY_URL = 'https://github.com/mitsuharu/mobile-printer'
+const ISSUES_URL = `${REPOSITORY_URL}/issues`
 
 type Props = {}
 type ComponentProps = Props & {
@@ -25,6 +26,7 @@ type ComponentProps = Props & {
   onPressGuide: () => void
   onPressLicenses: () => void
   onPressRepository: () => void
+  onPressIssues: () => void
 }
 
 const Component: React.FC<ComponentProps> = ({
@@ -34,6 +36,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressGuide,
   onPressLicenses,
   onPressRepository,
+  onPressIssues,
 }) => {
   const styles = useStyles()
 
@@ -66,6 +69,12 @@ const Component: React.FC<ComponentProps> = ({
           accessory="link"
           onPress={onPressRepository}
         />
+        <Cell
+          title="不具合を報告する"
+          description="エラーの表示や、うまく動かないところがあれば、GitHubのIssueでお知らせください"
+          accessory="link"
+          onPress={onPressIssues}
+        />
       </Section>
     </SafeScrollView>
   )
@@ -95,6 +104,10 @@ const Container: React.FC<Props> = (props) => {
     dispatch(openWeb(REPOSITORY_URL))
   }, [dispatch])
 
+  const onPressIssues = useCallback(() => {
+    dispatch(openWeb(ISSUES_URL))
+  }, [dispatch])
+
   return (
     <Component
       {...props}
@@ -105,6 +118,7 @@ const Container: React.FC<Props> = (props) => {
         onPressGuide,
         onPressLicenses,
         onPressRepository,
+        onPressIssues,
       }}
     />
   )
