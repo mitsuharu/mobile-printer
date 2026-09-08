@@ -30,6 +30,14 @@ updates:
           - 'babel'
           - '@babel/*'
           - 'babel-*'
+    # React Native 0.87 は Babel 8 に対応していない。
+    # @react-native/babel-preset が @babel/core ^7 を前提としており、8系にすると
+    # テストが動かず、リリースのJSバンドルも作れなくなる。
+    # React Native 側が対応するまで、メジャー更新は取り込まない。
+    ignore:
+      - dependency-name: '@babel/*'
+        update-types:
+          - 'version-update:semver-major'
   - package-ecosystem: 'github-actions'
     directory: '/'
     target-branch: 'main'
