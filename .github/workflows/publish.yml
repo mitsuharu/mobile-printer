@@ -102,7 +102,7 @@ jobs:
 
       - name: Upload release APK to GitHub Releases
         if: env.RELEASE_TAG != ''
-        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           tag_name: ${{ env.RELEASE_TAG }}
           prerelease: ${{ env.IS_PRERELEASE == 'true' }}
