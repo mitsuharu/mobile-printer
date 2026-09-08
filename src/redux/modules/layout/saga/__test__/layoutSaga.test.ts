@@ -3,8 +3,10 @@ import { call } from 'redux-saga/effects'
 import { expectSaga } from 'redux-saga-test-plan'
 import type { StaticProvider } from 'redux-saga-test-plan/providers'
 import * as database from '@/database'
-import type { Layout } from '@/print'
+import type { Layout, LayoutField } from '@/print'
+import { assignPrintData } from '@/redux/modules/printData/slice'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import type { RootState } from '@/redux/RootState'
 import {
   assignIsLoading,
   assignLayouts,
@@ -37,6 +39,19 @@ const layout: Layout = {
 }
 
 const connection = {} as database.SqliteConnection
+
+const field: LayoutField = {
+  id: 'field-1',
+  key: 'name',
+  label: '名前',
+  valueType: 'text',
+}
+
+/**
+ * `saveLayoutSaga` は保存前のレイアウトを Redux から読む
+ */
+const stateWith = (layouts: Layout[]): RootState =>
+  ({ layout: { layouts, isLoading: false } }) as RootState
 
 const provideDatabase = (layouts: Layout[] = [layout]): StaticProvider[] => [
   [call(database.getDatabase), connection],
@@ -85,6 +100,7 @@ describe('layoutSaga saveLayout', () => {
   it('保存してから読み直す', () => {
     const save = jest.fn()
     return expectSaga(layoutSaga)
+      .withState(stateWith([layout]))
       .provide([
         [call(database.getDatabase), connection],
         {
@@ -170,6 +186,9 @@ describe('layoutSaga deleteLayout', () => {
             if (fn === database.findAllLayouts) {
               return []
             }
+            if (fn === database.findAllPrintData) {
+              return []
+            }
             return next()
           },
         },
@@ -181,4 +200,79 @@ describe('layoutSaga deleteLayout', () => {
         expect(remove).toHaveBeenCalledWith(layout.id)
       })
   })
+
+  it('印刷データも読み直す', () =>
+    expectSaga(layoutSaga)
+      .provide([
+        [call(database.getDatabase), connection],
+        {
+          call({ fn }, next) {
+            if (fn === database.deleteLayout) {
+              return undefined
+            }
+            if (fn === database.findAllLayouts) {
+              return []
+            }
+            if (fn === database.findAllPrintData) {
+              return []
+            }
+            return next()
+          },
+        },
+      ])
+      .put(assignPrintData([]))
+      .dispatch(deleteLayout(layout))
+      .silentRun())
+})
+
+describe('layoutSaga saveLayout と印刷データ', () => {
+  const withField: Layout = { ...layout, fields: [field] }
+
+  it('入力項目が減ったら印刷データを読み直す', () =>
+    expectSaga(layoutSaga)
+      .withState(stateWith([withField]))
+      .provide([
+        [call(database.getDatabase), connection],
+        {
+          call({ fn }, next) {
+            if (fn === database.saveLayout) {
+              return undefined
+            }
+            if (fn === database.findAllLayouts) {
+              return []
+            }
+            if (fn === database.findAllPrintData) {
+              return []
+            }
+            return next()
+          },
+        },
+      ])
+      .put(assignPrintData([]))
+      .dispatch(saveLayout({ ...withField, fields: [] }))
+      .silentRun())
+
+  it('入力項目が減らなければ印刷データは読み直さない', () =>
+    expectSaga(layoutSaga)
+      .withState(stateWith([withField]))
+      .provide([
+        [call(database.getDatabase), connection],
+        {
+          call({ fn }, next) {
+            if (fn === database.saveLayout) {
+              return undefined
+            }
+            if (fn === database.findAllLayouts) {
+              return []
+            }
+            if (fn === database.findAllPrintData) {
+              return []
+            }
+            return next()
+          },
+        },
+      ])
+      .not.put(assignPrintData([]))
+      .dispatch(saveLayout({ ...withField, name: '名刺2' }))
+      .silentRun())
 })

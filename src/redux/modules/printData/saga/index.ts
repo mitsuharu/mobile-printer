@@ -30,8 +30,13 @@ export function* printDataSaga() {
 
 /**
  * SQLite を情報源として、Redux の写しを作り直す
+ *
+ * レイアウト側の操作でも印刷データが消えることがあるため、
+ * `@package` として layoutSaga からも呼ぶ。
+ *
+ * @package
  */
-function* reloadPrintDataSaga() {
+export function* reloadPrintDataSaga() {
   const db: SqliteConnection = yield call(getDatabase)
   const values: PrintData[] = yield call(findAllPrintData, db)
   yield put(assignPrintData(values))
