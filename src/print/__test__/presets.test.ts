@@ -159,11 +159,44 @@ describe('createPresets の印刷内容', () => {
     ])
   })
 
-  it('区切り線は入れない', () => {
-    // 区切り線は利用者がレイアウトで足すもので、初期状態では出さない
+  it('所属の上とSNSの上下に罫線を入れる', () => {
+    const commands = commandsFor('サンプル')
+    const marks = commands.flatMap((command) => {
+      if (command.type === 'printHR') {
+        return ['---']
+      }
+      if (command.type === 'printText') {
+        return [command.text]
+      }
+      if (command.type === 'printColumns') {
+        return [command.texts.join(' ')]
+      }
+      return []
+    })
+
+    expect(marks).toEqual([
+      '織田信長',
+      'Nobunaga Oda',
+      '人間五十年、下天の内をくらぶれば、夢幻の如くなり',
+      '---',
+      '株式会社 織田軍',
+      '代表取締役大名',
+      '尾張国',
+      '---',
+      'X: tw',
+      'Facebook: fb',
+      'GitHub: gh',
+      'Website: https://example.com/',
+      '---',
+      'go to Wikipedia',
+      '1970/01/01 09:00',
+    ])
+  })
+
+  it('罫線は3本だけにする', () => {
     expect(
-      commandsFor('サンプル').some((command) => command.type === 'printHR'),
-    ).toBe(false)
+      commandsFor('サンプル').filter((command) => command.type === 'printHR'),
+    ).toHaveLength(3)
   })
 
   it('アイコン画像とQRコードを出力する', () => {
