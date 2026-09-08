@@ -25,7 +25,9 @@ describe('seedPresets', () => {
     const layouts = await findAllLayouts(db)
     const printData = await findAllPrintData(db)
 
-    expect(layouts.map(({ name }) => name)).toEqual(['名刺'])
+    expect(layouts.map(({ name }) => name).sort()).toEqual(
+      ['名刺', '名刺（シンプル）'].sort(),
+    )
     expect(printData.map(({ title }) => title).sort()).toEqual(
       ['サンプル', '開発者紹介'].sort(),
     )

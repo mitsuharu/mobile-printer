@@ -1,3 +1,4 @@
+import type { PrintImageType } from '@mitsuharu/react-native-sunmi-printer-library'
 import dayjs from 'dayjs'
 import { BASE64, FONT_SIZE } from '@/CONSTANTS'
 import { createUUID } from '@/utils/uuid'
@@ -88,63 +89,109 @@ const divider = (): LayoutElement => ({
 })
 
 /**
+ * 所属のまとまりを作る入力項目
+ *
+ * 勤め先のない名刺では、この3つと、それを挟む罫線ごと外す。
+ */
+const ORGANIZATION_KEYS: FieldKey[] = ['company', 'position', 'address']
+
+type LayoutFieldIds = Partial<Record<FieldKey, string>>
+
+type ProfileLayoutOptions = {
+  name: string
+
+  /**
+   * 所属のまとまりと罫線を入れるか
+   */
+  withOrganization: boolean
+
+  /**
+   * アイコン画像の印刷のしかた
+   */
+  imageType: PrintImageType
+}
+
+/**
  * 名刺レイアウトと、その入力項目のIDを作る
  *
  * 従来のプロフィール印刷と同じ体裁を、要素の並びとして組み立てている。
  */
-const createProfileLayout = (): {
+const createProfileLayout = ({
+  name,
+  withOrganization,
+  imageType,
+}: ProfileLayoutOptions): {
   layout: Layout
-  fieldIds: Record<FieldKey, string>
+  fieldIds: LayoutFieldIds
 } => {
   const now = dayjs().valueOf()
 
-  const fields: LayoutField[] = fieldDefinitions.map((definition) => ({
+  const definitions = withOrganization
+    ? fieldDefinitions
+    : fieldDefinitions.filter(({ key }) => !ORGANIZATION_KEYS.includes(key))
+
+  const fields: LayoutField[] = definitions.map((definition) => ({
     id: createUUID(),
     ...definition,
   }))
 
-  const fieldIds = Object.fromEntries(
+  const fieldIds: LayoutFieldIds = Object.fromEntries(
     fields.map((field) => [field.key, field.id]),
-  ) as Record<FieldKey, string>
+  )
+
+  const requireFieldId = (key: FieldKey): string => {
+    const id = fieldIds[key]
+    if (!id) {
+      throw new Error(`preset field not found: ${key}`)
+    }
+    return id
+  }
+
+  // 所属のまとまり。上を罫線で区切る
+  const organization: LayoutElement[] = withOrganization
+    ? [
+        spacer(1),
+        divider(),
+        centeredText(requireFieldId('company'), FONT_SIZE.DEFAULT),
+        centeredText(requireFieldId('position'), FONT_SIZE.DEFAULT),
+        centeredText(requireFieldId('address'), FONT_SIZE.DEFAULT),
+      ]
+    : [spacer(1)]
 
   const elements: LayoutElement[] = [
     spacer(1),
-    centeredText(fieldIds.name, FONT_SIZE.LARGE),
-    centeredText(fieldIds.alias, FONT_SIZE.DEFAULT),
+    centeredText(requireFieldId('name'), FONT_SIZE.LARGE),
+    centeredText(requireFieldId('alias'), FONT_SIZE.DEFAULT),
     spacer(1),
     {
       id: createUUID(),
       type: 'image',
-      source: { kind: 'field', fieldId: fieldIds.icon },
+      source: { kind: 'field', fieldId: requireFieldId('icon') },
       width: BASE64.PROFILE_ICON_SIZE,
-      imageType: 'binary',
+      imageType,
       alignment: 'center',
       hideWhenEmpty: true,
     },
     // 画像の下と本文の上でそれぞれ1行空けていた体裁に合わせる
     spacer(2),
-    centeredText(fieldIds.description, FONT_SIZE.DEFAULT),
+    centeredText(requireFieldId('description'), FONT_SIZE.DEFAULT),
 
-    // 所属の上と、SNSの上下を罫線で区切る
-    spacer(1),
-    divider(),
-    centeredText(fieldIds.company, FONT_SIZE.DEFAULT),
-    centeredText(fieldIds.position, FONT_SIZE.DEFAULT),
-    centeredText(fieldIds.address, FONT_SIZE.DEFAULT),
+    ...organization,
 
+    // SNSの上下は罫線で区切る
     divider(),
-    snsColumns('X:', fieldIds.twitter),
-    snsColumns('Facebook:', fieldIds.facebook),
-    snsColumns('GitHub:', fieldIds.github),
-    snsColumns('Website:', fieldIds.website),
+    snsColumns('X:', requireFieldId('twitter')),
+    snsColumns('Facebook:', requireFieldId('facebook')),
+    snsColumns('GitHub:', requireFieldId('github')),
+    snsColumns('Website:', requireFieldId('website')),
+    divider(),
 
-    divider(),
-    centeredText(fieldIds.qrDescription, FONT_SIZE.DEFAULT),
+    centeredText(requireFieldId('qrDescription'), FONT_SIZE.DEFAULT),
     spacer(1),
     {
       id: createUUID(),
       type: 'qrcode',
-      source: { kind: 'field', fieldId: fieldIds.qrUrl },
+      source: { kind: 'field', fieldId: requireFieldId('qrUrl') },
       moduleSize: 8,
       errorLevel: 'low',
       alignment: 'center',
@@ -163,7 +210,7 @@ const createProfileLayout = (): {
   return {
     layout: {
       id: createUUID(),
-      name: '名刺',
+      name,
       fields,
       elements,
       createdAt: now,
@@ -199,7 +246,7 @@ const createImage = (base64: string, images: PresetImage[]): PrintDataValue => {
 
 const createPrintDataFor = (
   layout: Layout,
-  fieldIds: Record<FieldKey, string>,
+  fieldIds: LayoutFieldIds,
   title: string,
   values: Partial<Record<FieldKey, PrintDataValue>>,
 ): PrintData => {
@@ -209,10 +256,14 @@ const createPrintDataFor = (
     layoutId: layout.id,
     title,
     values: Object.fromEntries(
-      Object.entries(values).map(([key, value]) => [
-        fieldIds[key as FieldKey],
-        value,
-      ]),
+      Object.entries(values).map(([key, value]) => {
+        const fieldId = fieldIds[key as FieldKey]
+        if (!fieldId) {
+          // レイアウトが持たない項目へ値を入れようとしている
+          throw new Error(`preset field not found: ${key}`)
+        }
+        return [fieldId, value]
+      }),
     ),
     createdAt: now,
     updatedAt: now,
@@ -227,11 +278,21 @@ export const createPresets = (): {
   printData: PrintData[]
   images: PresetImage[]
 } => {
-  const { layout, fieldIds } = createProfileLayout()
+  const card = createProfileLayout({
+    name: '名刺',
+    withOrganization: true,
+    // 写真や絵をそのまま載せることを想定して、濃淡を残す
+    imageType: 'grayscale',
+  })
+  const simpleCard = createProfileLayout({
+    name: '名刺（シンプル）',
+    withOrganization: false,
+    imageType: 'binary',
+  })
   const images: PresetImage[] = []
 
   const printData: PrintData[] = [
-    createPrintDataFor(layout, fieldIds, '開発者紹介', {
+    createPrintDataFor(simpleCard.layout, simpleCard.fieldIds, '開発者紹介', {
       name: text('江本光晴'),
       alias: text('Mitsuharu Emoto'),
       icon: createImage(AVATAR_BASE64, images),
@@ -243,7 +304,7 @@ export const createPresets = (): {
       qrUrl: text('https://twitter.com/mitsuharu_e'),
       qrDescription: text('follow me'),
     }),
-    createPrintDataFor(layout, fieldIds, 'サンプル', {
+    createPrintDataFor(card.layout, card.fieldIds, 'サンプル', {
       name: text('織田信長'),
       alias: text('Nobunaga Oda'),
       icon: createImage(SAMPLE_AVATAR_BASE64, images),
@@ -262,5 +323,5 @@ export const createPresets = (): {
     }),
   ]
 
-  return { layouts: [layout], printData, images }
+  return { layouts: [card.layout, simpleCard.layout], printData, images }
 }

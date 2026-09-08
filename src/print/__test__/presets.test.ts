@@ -3,16 +3,40 @@ import { buildPrintCommands } from '../buildPrintCommands'
 import { createPresets } from '../presets'
 
 const { layouts, printData, images } = createPresets()
-const [layout] = layouts
+
+const layoutNamed = (name: string) => {
+  const value = layouts.find((layout) => layout.name === name)
+  if (!value) {
+    throw new Error(`layout not found: ${name}`)
+  }
+  return value
+}
+
+const printDataTitled = (title: string) => {
+  const value = printData.find((data) => data.title === title)
+  if (!value) {
+    throw new Error(`print data not found: ${title}`)
+  }
+  return value
+}
+
+/**
+ * 印刷データが紐づくレイアウト
+ */
+const layoutOf = (title: string) => {
+  const { layoutId } = printDataTitled(title)
+  const value = layouts.find(({ id }) => id === layoutId)
+  if (!value) {
+    throw new Error(`layout not found for: ${title}`)
+  }
+  return value
+}
 
 /**
  * 保存時に画像ファイルへ書き出してパスが埋まった状態にする
  */
 const withImagePaths = (title: string) => {
-  const value = printData.find((data) => data.title === title)
-  if (!value) {
-    throw new Error(`print data not found: ${title}`)
-  }
+  const value = printDataTitled(title)
   return {
     ...value,
     values: Object.fromEntries(
@@ -32,13 +56,28 @@ const withImagePaths = (title: string) => {
   }
 }
 
-const commandsFor = (title: string) => {
-  const value = printData.find((data) => data.title === title)
-  if (!value) {
-    throw new Error(`print data not found: ${title}`)
-  }
-  return buildPrintCommands(layout, value, { printedAt: 0 })
-}
+const commandsFor = (title: string) =>
+  buildPrintCommands(layoutOf(title), printDataTitled(title), { printedAt: 0 })
+
+/**
+ * 要素が参照している入力項目のID
+ */
+const referencedFieldIds = (layout: (typeof layouts)[number]) =>
+  layout.elements.flatMap((element) => {
+    if (element.type === 'columns') {
+      return element.columns.flatMap(({ source }) =>
+        source.kind === 'field' ? [source.fieldId] : [],
+      )
+    }
+    if (
+      element.type === 'text' ||
+      element.type === 'qrcode' ||
+      element.type === 'image'
+    ) {
+      return element.source.kind === 'field' ? [element.source.fieldId] : []
+    }
+    return []
+  })
 
 const textsOf = (title: string) =>
   commandsFor(title).flatMap((command) =>
@@ -46,9 +85,11 @@ const textsOf = (title: string) =>
   )
 
 describe('createPresets', () => {
-  it('名刺レイアウトを1つ用意する', () => {
-    expect(layouts).toHaveLength(1)
-    expect(layout.name).toBe('名刺')
+  it('名刺レイアウトを2つ用意する', () => {
+    expect(layouts.map(({ name }) => name)).toEqual([
+      '名刺',
+      '名刺（シンプル）',
+    ])
   })
 
   it('印刷データを2つ用意する', () => {
@@ -72,44 +113,58 @@ describe('createPresets', () => {
     expect(assetIds.sort()).toEqual(images.map(({ id }) => id).sort())
   })
 
-  it('印刷データはすべて名刺レイアウトに紐づく', () => {
-    expect(printData.every((value) => value.layoutId === layout.id)).toBe(true)
+  it('印刷データは別々のレイアウトに紐づく', () => {
+    expect(layoutOf('サンプル').name).toBe('名刺')
+    expect(layoutOf('開発者紹介').name).toBe('名刺（シンプル）')
   })
 
   it('入力項目のキーは重複しない', () => {
-    const keys = layout.fields.map(({ key }) => key)
-    expect(new Set(keys).size).toBe(keys.length)
+    for (const layout of layouts) {
+      const keys = layout.fields.map(({ key }) => key)
+      expect(new Set(keys).size).toBe(keys.length)
+    }
   })
 
   it('要素が参照する入力項目はすべて存在する', () => {
-    const ids = new Set(layout.fields.map(({ id }) => id))
-    const referenced = layout.elements.flatMap((element) => {
-      if (element.type === 'columns') {
-        return element.columns.flatMap(({ source }) =>
-          source.kind === 'field' ? [source.fieldId] : [],
-        )
-      }
-      if (
-        element.type === 'text' ||
-        element.type === 'qrcode' ||
-        element.type === 'image'
-      ) {
-        return element.source.kind === 'field' ? [element.source.fieldId] : []
-      }
-      return []
-    })
+    for (const layout of layouts) {
+      const ids = new Set(layout.fields.map(({ id }) => id))
+      const referenced = referencedFieldIds(layout)
 
-    expect(referenced.length).toBeGreaterThan(0)
-    expect(referenced.every((id) => ids.has(id))).toBe(true)
+      expect(referenced.length).toBeGreaterThan(0)
+      expect(referenced.every((id) => ids.has(id))).toBe(true)
+    }
   })
 
   it('印刷データが入れる値のキーもすべて存在する', () => {
-    const ids = new Set(layout.fields.map(({ id }) => id))
     for (const value of printData) {
+      const ids = new Set(layoutOf(value.title).fields.map(({ id }) => id))
       for (const fieldId of Object.keys(value.values)) {
         expect(ids.has(fieldId)).toBe(true)
       }
     }
+  })
+
+  it('シンプルな名刺は所属の入力項目を持たない', () => {
+    // 入力欄に使わない項目が並ぶと、何を入れればよいのか分からなくなる
+    const keys = layoutNamed('名刺（シンプル）').fields.map(({ key }) => key)
+    expect(keys).not.toContain('company')
+    expect(keys).not.toContain('position')
+    expect(keys).not.toContain('address')
+  })
+
+  it('シンプルな名刺はSNSの上下だけ罫線を引く', () => {
+    // 所属がないので、所属の上に引いていた1本だけがなくなる
+    const elements = layoutNamed('名刺（シンプル）').elements
+    expect(elements.filter(({ type }) => type === 'divider')).toHaveLength(2)
+  })
+
+  it('通常の名刺は所属も罫線も持つ', () => {
+    const layout = layoutNamed('名刺')
+    const keys = layout.fields.map(({ key }) => key)
+    expect(keys).toContain('company')
+    expect(
+      layout.elements.filter(({ type }) => type === 'divider'),
+    ).toHaveLength(3)
   })
 })
 
@@ -192,6 +247,35 @@ describe('createPresets の印刷内容', () => {
     ])
   })
 
+  it('開発者紹介は所属なしで、SNSの上下に罫線を出力する', () => {
+    const marks = commandsFor('開発者紹介').flatMap((command) => {
+      if (command.type === 'printHR') {
+        return ['---']
+      }
+      if (command.type === 'printText') {
+        return [command.text]
+      }
+      if (command.type === 'printColumns') {
+        return [command.texts.join(' ')]
+      }
+      return []
+    })
+
+    expect(marks).toEqual([
+      '江本光晴',
+      'Mitsuharu Emoto',
+      'iOSアプリの開発が好き',
+      '---',
+      'X: @mitsuharu_e',
+      'Facebook: mitsuharu.emoto',
+      'GitHub: mitsuharu',
+      'Website: https://mitsuharu.github.io/',
+      '---',
+      'follow me',
+      '1970/01/01 09:00',
+    ])
+  })
+
   it('罫線は3本だけにする', () => {
     expect(
       commandsFor('サンプル').filter((command) => command.type === 'printHR'),
@@ -199,9 +283,11 @@ describe('createPresets の印刷内容', () => {
   })
 
   it('アイコン画像とQRコードを出力する', () => {
-    const commands = buildPrintCommands(layout, withImagePaths('サンプル'), {
-      printedAt: 0,
-    })
+    const commands = buildPrintCommands(
+      layoutOf('サンプル'),
+      withImagePaths('サンプル'),
+      { printedAt: 0 },
+    )
 
     expect(commands.some((command) => command.type === 'printImage')).toBe(true)
     expect(commands.find((command) => command.type === 'printQRCode')).toEqual({
@@ -212,10 +298,22 @@ describe('createPresets の印刷内容', () => {
     })
   })
 
-  it('画像は印刷用の幅で出力する', () => {
-    const image = buildPrintCommands(layout, withImagePaths('サンプル'), {
-      printedAt: 0,
-    }).find((command) => command.type === 'printImage')
+  it('名刺の画像はグレースケールで出力する', () => {
+    // 写真や絵をそのまま載せることを想定して、濃淡を残す
+    const image = buildPrintCommands(
+      layoutOf('サンプル'),
+      withImagePaths('サンプル'),
+      { printedAt: 0 },
+    ).find((command) => command.type === 'printImage')
+    expect(image).toMatchObject({ width: 200, imageType: 'grayscale' })
+  })
+
+  it('シンプルな名刺の画像は白黒で出力する', () => {
+    const image = buildPrintCommands(
+      layoutOf('開発者紹介'),
+      withImagePaths('開発者紹介'),
+      { printedAt: 0 },
+    ).find((command) => command.type === 'printImage')
     expect(image).toMatchObject({ width: 200, imageType: 'binary' })
   })
 
