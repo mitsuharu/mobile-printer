@@ -73,11 +73,18 @@ const Component: React.FC<ComponentProps> = ({
           入力項目は、印刷データごとに内容を変えたい箇所です。要素の「内容の決め方」で
           「印刷データごとに入力する」を選ぶと、ここで作った入力項目を指定できます。
         </Text>
+        <Section>
+          <Cell
+            title="入力項目を追加する"
+            description="表示名・キー・入力の種類は、追加したあとに変更できます"
+            onPress={onPressAdd}
+          />
+        </Section>
         {layout.fields.length === 0 ? (
           <Section title="入力項目">
             <Cell
               title="入力項目がありません"
-              description="下の「入力項目を追加する」から作成してください"
+              description="上の「入力項目を追加する」から作成してください"
               inactive={true}
             />
           </Section>
@@ -108,9 +115,6 @@ const Component: React.FC<ComponentProps> = ({
             </Section>
           ))
         )}
-        <Section title="操作">
-          <Cell title="入力項目を追加する" onPress={onPressAdd} />
-        </Section>
       </SafeScrollView>
       <InputDialog
         isVisible={isDialogVisible}

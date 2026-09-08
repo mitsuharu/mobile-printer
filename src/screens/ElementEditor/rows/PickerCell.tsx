@@ -2,14 +2,22 @@ import type React from 'react'
 import { useCallback, useState } from 'react'
 import { Cell } from '@/components/List'
 import {
+  type ListPickerAction,
   type ListPickerItem,
   ListPickerModal,
 } from '@/components/Modal/ListPickerModal'
 
 type Props<T> = {
   title: string
+  description?: string
   value: T
   items: ListPickerItem<T>[]
+
+  /**
+   * 一覧の末尾に置く操作
+   */
+  action?: ListPickerAction
+
   onChange: (value: T) => void
 }
 
@@ -18,8 +26,10 @@ type Props<T> = {
  */
 export const PickerCell = <T,>({
   title,
+  description,
   value,
   items,
+  action,
   onChange,
 }: Props<T>): React.ReactElement => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -44,8 +54,18 @@ export const PickerCell = <T,>({
       <ListPickerModal
         visible={isVisible}
         title={title}
+        description={description}
         items={items}
         selected={value}
+        action={
+          action && {
+            ...action,
+            onPress: () => {
+              setIsVisible(false)
+              action.onPress()
+            },
+          }
+        }
         onSelect={onSelect}
         onCancel={() => setIsVisible(false)}
       />

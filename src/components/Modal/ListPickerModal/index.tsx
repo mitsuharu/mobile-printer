@@ -21,11 +21,29 @@ export type ListPickerItem<T> = {
   description?: string
 }
 
+/**
+ * 一覧の末尾に置く操作
+ *
+ * 選択肢そのものを増やしたいときに使う。
+ */
+export type ListPickerAction = {
+  title: string
+  description?: string
+  onPress: () => void
+}
+
 type Props<T> = {
   visible: boolean
   title: string
+
+  /**
+   * 一覧の上に添える説明
+   */
+  description?: string
+
   items: ListPickerItem<T>[]
   selected?: T
+  action?: ListPickerAction
   onSelect: (value: T) => void
   onCancel: () => void
 }
@@ -40,8 +58,10 @@ type Props<T> = {
 export const ListPickerModal = <T,>({
   visible,
   title,
+  description,
   items,
   selected,
+  action,
   onSelect,
   onCancel,
 }: Props<T>): React.ReactElement => {
@@ -57,6 +77,9 @@ export const ListPickerModal = <T,>({
       <View style={styles.container}>
         <View style={styles.modal}>
           <Text style={styles.title}>{title}</Text>
+          {!!description && (
+            <Text style={styles.description}>{description}</Text>
+          )}
           <ScrollView style={styles.list}>
             {items.map((item) => (
               <Cell
@@ -67,6 +90,13 @@ export const ListPickerModal = <T,>({
                 accessory={item.value === selected ? 'check' : 'disclosure'}
               />
             ))}
+            {!!action && (
+              <Cell
+                title={action.title}
+                description={action.description}
+                onPress={action.onPress}
+              />
+            )}
           </ScrollView>
           <Button
             onPress={onCancel}
@@ -97,10 +127,17 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
     }),
     title: styleType<TextStyle>({
       paddingHorizontal: 16,
-      paddingVertical: 16,
+      paddingTop: 16,
+      paddingBottom: 8,
       fontSize: 18,
       fontWeight: 'bold',
       color: COLOR(colorScheme).TEXT.PRIMARY,
+    }),
+    description: styleType<TextStyle>({
+      paddingHorizontal: 16,
+      paddingBottom: 8,
+      fontSize: 12,
+      color: COLOR(colorScheme).TEXT.SECONDARY,
     }),
     list: styleType<ViewStyle>({
       flexGrow: 0,

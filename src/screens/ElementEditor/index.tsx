@@ -19,8 +19,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BASE64, COLOR, MESSAGE } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
-import type { Layout, LayoutElement } from '@/print'
-import { removeElement, replaceElement } from '@/print'
+import type { Layout, LayoutElement, LayoutField } from '@/print'
+import { removeElement, replaceElement, upsertField } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { saveLayout } from '@/redux/modules/layout/slice'
 import type { MainParams } from '@/routes/main.params'
@@ -44,7 +44,13 @@ type Props = {}
 type ComponentProps = Props & {
   layout: Layout | undefined
   element: LayoutElement | undefined
-  onChange: (element: LayoutElement) => void
+  /**
+   * 要素を差し替える
+   *
+   * 供給元の編集でその場で作った入力項目は `field` で受け取り、
+   * 要素の変更と同じ保存へまとめる。別々に保存すると片方が失われる。
+   */
+  onChange: (element: LayoutElement, field?: LayoutField) => void
   onDelete: () => void
 }
 
@@ -86,7 +92,9 @@ const Component: React.FC<ComponentProps> = ({
             title="内容"
             layout={layout}
             source={element.source}
-            onChange={(source) => onChange({ ...element, source })}
+            onChange={(source, field) =>
+              onChange({ ...element, source }, field)
+            }
           />
           <Section title="体裁">
             <PickerCell
@@ -126,7 +134,9 @@ const Component: React.FC<ComponentProps> = ({
             layout={layout}
             source={element.source}
             width={element.width}
-            onChange={(source) => onChange({ ...element, source })}
+            onChange={(source, field) =>
+              onChange({ ...element, source }, field)
+            }
           />
           <Section title="体裁">
             <NumberValueCell
@@ -160,7 +170,9 @@ const Component: React.FC<ComponentProps> = ({
             title="内容"
             layout={layout}
             source={element.source}
-            onChange={(source) => onChange({ ...element, source })}
+            onChange={(source, field) =>
+              onChange({ ...element, source }, field)
+            }
           />
           <Section title="体裁">
             <NumberValueCell
@@ -194,13 +206,16 @@ const Component: React.FC<ComponentProps> = ({
               title={`${index + 1}列目`}
               layout={layout}
               source={column.source}
-              onChange={(source) =>
-                onChange({
-                  ...element,
-                  columns: element.columns.map((value, i) =>
-                    i === index ? { ...value, source } : value,
-                  ),
-                })
+              onChange={(source, field) =>
+                onChange(
+                  {
+                    ...element,
+                    columns: element.columns.map((value, i) =>
+                      i === index ? { ...value, source } : value,
+                    ),
+                  },
+                  field,
+                )
               }
             />
             <Section>
@@ -342,11 +357,12 @@ const Container: React.FC<Props> = (props) => {
   }, [navigation, element])
 
   const onChange = useCallback(
-    (next: LayoutElement) => {
+    (next: LayoutElement, field?: LayoutField) => {
       if (!layout) {
         return
       }
-      dispatch(saveLayout(replaceElement(layout, next)))
+      const base = field ? upsertField(layout, field) : layout
+      dispatch(saveLayout(replaceElement(base, next)))
     },
     [dispatch, layout],
   )
