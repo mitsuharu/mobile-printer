@@ -113,7 +113,7 @@ const Component: React.FC<ComponentProps> = ({
       <InputDialog
         isVisible={isDialogVisible}
         title="印刷データの追加"
-        description="名前を入力してください"
+        description="印刷データ名を入力してください"
         onPress={onSubmitTitle}
         onCancel={onCancelDialog}
       />
