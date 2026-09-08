@@ -21,6 +21,7 @@ import { ImageFileView } from '@/components/ImageFileView'
 import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, LayoutField, PrintData, PrintDataValue } from '@/print'
+import { unusedFields as findUnusedFields } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { selectPrintDataById } from '@/redux/modules/printData/selectors'
 import {
@@ -40,6 +41,16 @@ type Props = {}
 type ComponentProps = Props & {
   layout: Layout | undefined
   printData: PrintData | undefined
+
+  /**
+   * 要素から参照されている入力項目。ここへの入力だけが印刷に出る
+   */
+  usedFields: LayoutField[]
+
+  /**
+   * どの要素からも参照されていない入力項目
+   */
+  unusedFields: LayoutField[]
   onChangeTitle: (title: string) => void
   onChangeValue: (field: LayoutField, value: PrintDataValue) => void
   onChangeImage: (field: LayoutField, path: string) => Promise<void>
@@ -55,9 +66,21 @@ const textValueOf = (value: PrintDataValue | undefined) =>
 const imagePathOf = (value: PrintDataValue | undefined) =>
   value?.kind === 'image' ? value.asset.path : undefined
 
+/**
+ * 未使用の項目に入っている値を、入力させずに見せる
+ */
+const describeValue = (value: PrintDataValue | undefined) => {
+  if (value?.kind === 'image') {
+    return '画像あり'
+  }
+  return value?.value || '未入力'
+}
+
 const Component: React.FC<ComponentProps> = ({
   layout,
   printData,
+  usedFields,
+  unusedFields,
   onChangeTitle,
   onChangeValue,
   onChangeImage,
@@ -90,17 +113,21 @@ const Component: React.FC<ComponentProps> = ({
         />
       </Section>
 
-      {layout.fields.length === 0 ? (
+      {usedFields.length === 0 ? (
         <Section title="入力">
           <Cell
             title="入力する項目がありません"
-            description="レイアウトの「入力項目」を追加すると、ここに入力欄が現れます"
+            description={
+              layout.fields.length === 0
+                ? 'レイアウトの「入力項目」を追加すると、ここに入力欄が現れます'
+                : '入力項目はありますが、どの要素からも指定されていません'
+            }
             inactive={true}
           />
         </Section>
       ) : (
         <Section title="入力">
-          {layout.fields.map((field) =>
+          {usedFields.map((field) =>
             field.valueType === 'image' ? (
               <View key={field.id} style={styles.imageRow}>
                 <Text style={styles.imageLabel}>
@@ -124,6 +151,29 @@ const Component: React.FC<ComponentProps> = ({
               />
             ),
           )}
+        </Section>
+      )}
+
+      {unusedFields.length > 0 && (
+        <Section title="このレイアウトで使っていない項目">
+          {/*
+            要素の「内容の決め方」を「レイアウトに直接書く」へ変えても、入力項目は
+            レイアウトに残る。そのまま入力欄として並べると、入力したのに印刷が
+            変わらない。値は消さずに残したまま、入力させずに理由を添える。
+          */}
+          <Cell
+            title="入力しても印刷には出ません"
+            description="レイアウトの要素で「内容の決め方」を「印刷データごとに入力する」にして、この項目を指定すると反映されます"
+            inactive={true}
+          />
+          {unusedFields.map((field) => (
+            <Cell
+              key={field.id}
+              title={field.label || field.key}
+              description={describeValue(printData.values[field.id])}
+              inactive={true}
+            />
+          ))}
         </Section>
       )}
 
@@ -161,6 +211,20 @@ const Container: React.FC<Props> = (props) => {
   )
   const layout = useSelector(layoutSelector)
   const printData = useSelector(printDataSelector)
+
+  const unusedFields = useMemo(
+    () => (layout ? findUnusedFields(layout) : []),
+    [layout],
+  )
+  const usedFields = useMemo(
+    () =>
+      layout
+        ? layout.fields.filter(
+            (field) => !unusedFields.some(({ id }) => id === field.id),
+          )
+        : [],
+    [layout, unusedFields],
+  )
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: printData?.title ?? '印刷データ' })
@@ -253,6 +317,8 @@ const Container: React.FC<Props> = (props) => {
       {...{
         layout,
         printData,
+        usedFields,
+        unusedFields,
         onChangeTitle,
         onChangeValue,
         onChangeImage,

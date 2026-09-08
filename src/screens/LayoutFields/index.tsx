@@ -90,7 +90,25 @@ const Component: React.FC<ComponentProps> = ({
           </Section>
         ) : (
           layout.fields.map((field) => (
-            <Section key={field.id} title={field.label || field.key}>
+            <Section
+              key={field.id}
+              title={
+                isFieldReferenced(layout, field.id)
+                  ? field.label || field.key
+                  : `${field.label || field.key}（未使用）`
+              }
+            >
+              {/*
+                どの要素からも指定されていない項目は、印刷データへ入力しても
+                読まれない。作った直後に気づけるよう、ここで理由を出す。
+              */}
+              {!isFieldReferenced(layout, field.id) && (
+                <Cell
+                  title="どの要素からも指定されていません"
+                  description="要素の「内容の決め方」で「印刷データごとに入力する」を選び、この項目を指定すると印刷に反映されます"
+                  inactive={true}
+                />
+              )}
               <TextValueCell
                 title="表示名"
                 value={field.label}

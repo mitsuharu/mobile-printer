@@ -6,6 +6,7 @@ import {
   removeElement,
   removeField,
   replaceElement,
+  unusedFields,
   upsertField,
 } from '../mutations'
 import type { Layout, LayoutElement } from '../types'
@@ -228,5 +229,34 @@ describe('isFieldReferenced', () => {
 
   it('参照している要素がなければ false', () => {
     expect(isFieldReferenced(layout, 'field-2')).toBe(false)
+  })
+})
+
+describe('unusedFields', () => {
+  it('どの要素からも参照されていない項目だけを返す', () => {
+    expect(unusedFields(layout).map(({ id }) => id)).toEqual(['field-2'])
+  })
+
+  it('すべて参照されていれば空になる', () => {
+    const next: Layout = { ...layout, fields: [layout.fields[0]] }
+    expect(unusedFields(next)).toEqual([])
+  })
+
+  it('要素の供給元をレイアウト固定へ変えると未使用になる', () => {
+    const staticText: LayoutElement = {
+      id: 'a',
+      type: 'text',
+      source: { kind: 'static', value: '織田信長' },
+      fontSize: 24,
+      bold: false,
+      underline: false,
+      alignment: 'center',
+      hideWhenEmpty: true,
+    }
+    const next = replaceElement(layout, staticText)
+    expect(unusedFields(next).map(({ id }) => id)).toEqual([
+      'field-1',
+      'field-2',
+    ])
   })
 })
