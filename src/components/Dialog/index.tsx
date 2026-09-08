@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  type TextInputInstance,
   type TextStyle,
   useColorScheme,
   View,
@@ -16,6 +17,19 @@ import { makeStyles } from 'react-native-swag-styles'
 import { COLOR, MESSAGE } from '@/CONSTANTS'
 import { Button } from '@/components/Button'
 import { styleType } from '@/utils/styles'
+
+/**
+ * Modal が表示され切ってから入力欄へフォーカスするまでの待ち時間
+ */
+const FOCUS_DELAY = 100
+
+/**
+ * キーボードが出なかったときに、フォーカスを当て直す間隔と回数
+ *
+ * 1回では出ないことがあるため、出るまで数回試す。
+ */
+const FOCUS_INTERVAL = 200
+const FOCUS_MAX_ATTEMPTS = 5
 
 type Props = {
   title?: string
@@ -59,12 +73,49 @@ const Component: React.FC<ComponentProps> = ({
 }) => {
   const styles = useStyles()
 
+  const inputRef = useRef<TextInputInstance>(null)
+  const focusTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  )
+
+  /**
+   * Modal が前に出てから入力欄へフォーカスする
+   *
+   * @note
+   * Android の Modal は別ウィンドウのため、autoFocus では入力欄が
+   * 現れた時点でウィンドウにフォーカスが移っておらず、キーボードが
+   * 出ないことがある。表示され切ってから当てる。
+   */
+  const onShow = useCallback(() => {
+    let attempt = 0
+
+    const tryFocus = () => {
+      inputRef.current?.focus()
+      attempt += 1
+      if (attempt < FOCUS_MAX_ATTEMPTS) {
+        focusTimer.current = setTimeout(tryFocus, FOCUS_INTERVAL)
+      }
+    }
+
+    focusTimer.current = setTimeout(tryFocus, FOCUS_DELAY)
+  }, [])
+
+  useEffect(
+    () => () => {
+      if (focusTimer.current) {
+        clearTimeout(focusTimer.current)
+      }
+    },
+    [],
+  )
+
   return (
     <Modal
       visible={isVisible}
       animationType="fade"
       transparent={true}
       onRequestClose={onCancel}
+      onShow={onShow}
     >
       {/*
         Android の Modal は別ウィンドウのため adjustResize が効かず、
@@ -78,12 +129,12 @@ const Component: React.FC<ComponentProps> = ({
             <Text style={styles.description}>{description}</Text>
           )}
           <TextInput
+            ref={inputRef}
             style={[styles.input, multiline && styles.multilineInput]}
             defaultValue={defaultValue}
             onChangeText={onChangeText}
             keyboardType={keyboardType ?? 'default'}
             autoCapitalize="none"
-            autoFocus={true}
             underlineColorAndroid="transparent"
             multiline={multiline}
             textAlignVertical={multiline ? 'top' : 'center'}
@@ -120,6 +171,13 @@ const Container: React.FC<Props> = (props) => {
       textRef.current = defaultValue ?? ''
     }
   }, [isVisible, defaultValue])
+
+  // 閉じたあとに余白が残らないようにする
+  useEffect(() => {
+    if (!isVisible) {
+      setKeyboardHeight(0)
+    }
+  }, [isVisible])
 
   useEffect(() => {
     const onShow = Keyboard.addListener('keyboardDidShow', (event) => {
