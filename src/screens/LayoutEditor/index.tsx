@@ -19,7 +19,7 @@ import ReorderableList, {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { COLOR } from '@/CONSTANTS'
+import { COLOR, ICON } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import type { Layout, LayoutElement, LayoutElementType } from '@/print'
 import {
@@ -128,6 +128,7 @@ const Component: React.FC<ComponentProps> = ({
         />
         <Cell
           title="印刷データ"
+          icon={ICON.PRINT_DATA}
           onPress={onPressPrintData}
           accessory="disclosure"
         />

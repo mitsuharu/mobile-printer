@@ -5,7 +5,7 @@ import { StyleSheet, type ViewStyle } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { MESSAGE } from '@/CONSTANTS'
+import { ICON, MESSAGE } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import {
@@ -112,6 +112,7 @@ const Component: React.FC<ComponentProps> = ({
           <Cell
             title="レイアウトを管理する"
             description="レイアウトの作成・編集と、印刷データの入力"
+            icon={ICON.LAYOUT}
             onPress={onNavigateToLayoutList}
             accessory="disclosure"
           />
