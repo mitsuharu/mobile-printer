@@ -9,6 +9,7 @@ export const MainName = {
   PrintDataList: 'PrintDataList',
   PrintDataForm: 'PrintDataForm',
   AppInfo: 'AppInfo',
+  Guide: 'Guide',
   Licenses: 'Licenses',
   LicenseDetail: 'LicenseDetail',
 } as const
