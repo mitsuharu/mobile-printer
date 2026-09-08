@@ -78,6 +78,11 @@ cd ./android
 
 - PR を作成すると、Android apk (debug) のビルドが実行されます
 - リリースタグをつけて push すると、リリースビルドが作られて、リリース処理および DeployGate に apk がアップロードされます
+  - タグ名に `-` を含めると（`v1.2.0-beta.1` など）プレリリースとして公開します
+- GitHub Actions の Publish は手動実行（workflow_dispatch）もできます
+  - タグ名を入れると GitHub Releases を作ります。空のままなら DeployGate への配布と、実行結果からの apk ダウンロードのみです
+  - プレリリースにするかどうかを選べます（既定はリリース）
+- リリースビルドもコミット済みの `debug.keystore` で署名します。ストア配布を想定していない野良アプリのためです
 
 ## レイアウト印刷
 

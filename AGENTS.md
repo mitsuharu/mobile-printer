@@ -84,3 +84,6 @@ TZ=Asia/Tokyo yarn test --runInBand
 - PR本文には変更概要、検証コマンドと結果、未実施の端末テストを記載します。
 - 作業ツリーに既に存在する無関係な変更を書き換えたり、破棄したり、コミットへ含めたりしません。
 - リリースとバージョン管理はメンテナーが行います。明示的な依頼なしにアプリのバージョン更新、タグ作成、配布、`.github/workflows/publish.yml` の変更を行いません。
+- リリースは `.github/workflows/publish.yml` で行います。タグを push すると GitHub Releases と DeployGate へ配布し、`workflow_dispatch` でも実行できます。
+- タグ名に `-` を含めると（`v1.2.0-beta.1` など）プレリリースとして公開します。含めなければ通常のリリースです。`workflow_dispatch` では入力で選びます。
+- 製品版ではないため、リリースビルドもコミット済みの `android/app/debug.keystore` で署名します。ストア配布用の鍵は用意していません。
