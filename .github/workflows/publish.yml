@@ -1,19 +1,42 @@
 name: Publish
 
 on:
+  # 確認用のビルドや、タグを打たずに配布したいときに手で実行する
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'GitHub Release を作るタグ名（空ならDeployGateへの配布のみ）'
+        required: false
+        type: string
+      prerelease:
+        description: 'プレリリース（確認用のベータ版）として公開する'
+        required: false
+        type: boolean
+        default: false
+
+  # タグを打つとリリースする。末尾に -beta.1 などが付いたタグはプレリリースになる
   push:
     tags:
       - '*'
 
 permissions:
   contents: write
-  pull-requests: write
+
+# 同じタグや手動実行が重なったときに、後から始めたものだけを走らせる
+concurrency:
+  group: publish-${{ github.event.inputs.tag || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
-    name: Publish to DeployGate
+    name: Publish
     runs-on: ubuntu-latest
+
+    env:
+      # タグを打った場合はそのタグ、手動実行では入力されたタグ（空になり得る）
+      RELEASE_TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || inputs.tag }}
+      # 基本はリリース。手動実行で選んだとき、またはタグに接尾辞が付くときだけプレリリース
+      IS_PRERELEASE: ${{ (github.event_name == 'workflow_dispatch' && inputs.prerelease == true) || (startsWith(github.ref, 'refs/tags/') && contains(github.ref_name, '-')) }}
 
     steps:
       - name: Checkout repository
@@ -70,22 +93,48 @@ jobs:
       # - name: Run Android Unit Tests
       #   run: cd android && ./gradlew test
 
-      - name: Build Debug APK
+      # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
+      - name: Build Release APK
         run: cd android && ./gradlew assembleRelease
 
-      # 条件付きで GitHub Releases にアップロード（タグがある場合のみ）
+      # タグを打たない手動実行でも、成果物を取り出せるようにする
+      - name: Upload APK as a workflow artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: app-release
+          path: android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+
       - name: Upload release APK to GitHub Releases
-        if: startsWith(github.ref, 'refs/tags/')
+        if: env.RELEASE_TAG != ''
         uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
         with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          prerelease: ${{ env.IS_PRERELEASE == 'true' }}
           generate_release_notes: true
-          fail_on_unmatched_files: false
+          fail_on_unmatched_files: true
           files: android/app/build/outputs/apk/release/app-release.apk
 
       - name: Upload to DeployGate
+        env:
+          DEPLOYGATE_API_KEY: ${{ secrets.DEPLOYGATE_API_KEY }}
+          DEPLOYGATE_USER: ${{ secrets.DEPLOYGATE_USER }}
         run: |
-          curl \
-            -H "Authorization: token ${{ secrets.DEPLOYGATE_API_KEY }}" \
+          if [ -z "${DEPLOYGATE_API_KEY}" ] || [ -z "${DEPLOYGATE_USER}" ]; then
+            echo "DeployGate の設定がないため、アップロードを飛ばします"
+            exit 0
+          fi
+
+          if [ "${IS_PRERELEASE}" = "true" ]; then
+            kind="beta"
+          else
+            kind="release"
+          fi
+          message="${kind} ${RELEASE_TAG:-${GITHUB_REF_NAME}} (${GITHUB_SHA})"
+
+          # HTTP エラーでも curl は成功で終わるため、--fail で失敗させる
+          curl --fail-with-body \
+            -H "Authorization: token ${DEPLOYGATE_API_KEY}" \
             -F "file=@android/app/build/outputs/apk/release/app-release.apk" \
-            -F "message=Uploaded from GitHub Actions" \
-            https://deploygate.com/api/users/${{ secrets.DEPLOYGATE_USER }}/apps
+            -F "message=${message}" \
+            "https://deploygate.com/api/users/${DEPLOYGATE_USER}/apps"
