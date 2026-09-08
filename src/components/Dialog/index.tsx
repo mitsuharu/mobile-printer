@@ -19,17 +19,12 @@ import { Button } from '@/components/Button'
 import { styleType } from '@/utils/styles'
 
 /**
- * Modal が表示され切ってから入力欄へフォーカスするまでの待ち時間
- */
-const FOCUS_DELAY = 100
-
-/**
- * キーボードが出なかったときに、フォーカスを当て直す間隔と回数
+ * 入力欄が空のときに出す案内
  *
- * 1回では出ないことがあるため、出るまで数回試す。
+ * @note
+ * 自動でフォーカスを当てないので、入力欄をタップしてもらう必要がある。
  */
-const FOCUS_INTERVAL = 200
-const FOCUS_MAX_ATTEMPTS = 5
+const PLACEHOLDER = 'タップして入力'
 
 type Props = {
   title?: string
@@ -72,42 +67,33 @@ const Component: React.FC<ComponentProps> = ({
   onCancel,
 }) => {
   const styles = useStyles()
+  const colorScheme = useColorScheme()
 
   const inputRef = useRef<TextInputInstance>(null)
-  const focusTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  )
 
   /**
-   * Modal が前に出てから入力欄へフォーカスする
+   * 入力欄をタップしたときにキーボードを出す
    *
    * @note
-   * Android の Modal は別ウィンドウのため、autoFocus では入力欄が
-   * 現れた時点でウィンドウにフォーカスが移っておらず、キーボードが
-   * 出ないことがある。表示され切ってから当てる。
+   * Android の Modal は別ウィンドウのため、開いた時点で入力欄へ勝手に
+   * フォーカスが当たっている。React Native はフォーカスを得た瞬間にしか
+   * キーボードを出さないので、当たったままではタップしても出てこない。
+   * 一度外してから当て直して、フォーカスを得た状態を作る。
    */
-  const onShow = useCallback(() => {
-    let attempt = 0
-
-    const tryFocus = () => {
-      inputRef.current?.focus()
-      attempt += 1
-      if (attempt < FOCUS_MAX_ATTEMPTS) {
-        focusTimer.current = setTimeout(tryFocus, FOCUS_INTERVAL)
-      }
+  const onPressIn = useCallback(() => {
+    const input = inputRef.current
+    if (!input) {
+      return
     }
-
-    focusTimer.current = setTimeout(tryFocus, FOCUS_DELAY)
+    if (!input.isFocused()) {
+      input.focus()
+      return
+    }
+    input.blur()
+    requestAnimationFrame(() => {
+      inputRef.current?.focus()
+    })
   }, [])
-
-  useEffect(
-    () => () => {
-      if (focusTimer.current) {
-        clearTimeout(focusTimer.current)
-      }
-    },
-    [],
-  )
 
   return (
     <Modal
@@ -115,7 +101,6 @@ const Component: React.FC<ComponentProps> = ({
       animationType="fade"
       transparent={true}
       onRequestClose={onCancel}
-      onShow={onShow}
     >
       {/*
         Android の Modal は別ウィンドウのため adjustResize が効かず、
@@ -128,10 +113,17 @@ const Component: React.FC<ComponentProps> = ({
           {!!description && (
             <Text style={styles.description}>{description}</Text>
           )}
+          {/*
+            Android の Modal は別ウィンドウのため、開いた直後にキーボードを
+            出すのは安定しない。自動では出さず、入力欄をタップしてもらう。
+          */}
           <TextInput
             ref={inputRef}
+            onPressIn={onPressIn}
             style={[styles.input, multiline && styles.multilineInput]}
             defaultValue={defaultValue}
+            placeholder={PLACEHOLDER}
+            placeholderTextColor={COLOR(colorScheme).TEXT.SECONDARY}
             onChangeText={onChangeText}
             keyboardType={keyboardType ?? 'default'}
             autoCapitalize="none"
@@ -238,14 +230,18 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       fontSize: 14,
       color: COLOR(colorScheme).TEXT.SECONDARY,
     }),
+    // タップして入力する場所だと分かるように、線で囲って余白を広めに取る
     input: styleType<TextStyle>({
       marginTop: 16,
-      paddingVertical: 8,
-      paddingHorizontal: 0,
+      minHeight: 48,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
       fontSize: 16,
       color: COLOR(colorScheme).TEXT.PRIMARY,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: COLOR(colorScheme).TEXT.SECONDARY,
+      backgroundColor: COLOR(colorScheme).BACKGROUND.SECONDARY,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: COLOR(colorScheme).TEXT.SECONDARY,
+      borderRadius: 4,
     }),
     multilineInput: styleType<TextStyle>({
       minHeight: 96,
