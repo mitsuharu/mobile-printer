@@ -72,8 +72,11 @@ const Component: React.FC<ComponentProps> = ({
   return (
     <SafeScrollView style={styles.scrollView}>
       <Section title="印刷データ">
+        {/*
+          入力項目にも「名前」が並ぶため、ここは「印刷データ名」と呼び分ける
+        */}
         <TextValueCell
-          title="名前"
+          title="印刷データ名"
           value={printData.title}
           dialogDescription="一覧に表示する名前です"
           onChange={onChangeTitle}
