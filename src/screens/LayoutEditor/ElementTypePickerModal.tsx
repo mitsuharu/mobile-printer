@@ -53,7 +53,6 @@ export const ElementTypePickerModal: React.FC<Props> = ({
                 key={type}
                 title={describeElementType(type)}
                 onPress={() => onSelect(type)}
-                accessory="disclosure"
               />
             ))}
           </ScrollView>
