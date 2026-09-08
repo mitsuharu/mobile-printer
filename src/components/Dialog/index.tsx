@@ -19,12 +19,12 @@ import { Button } from '@/components/Button'
 import { styleType } from '@/utils/styles'
 
 /**
- * 入力欄が空のときに出す案内
+ * Modal が表示され切ってからキーボードを出すまでの待ち時間
  *
  * @note
- * 自動でフォーカスを当てないので、入力欄をタップしてもらう必要がある。
+ * 表示の途中で要求してもキーボードは出ない。
  */
-const PLACEHOLDER = 'タップして入力'
+const KEYBOARD_DELAY = 100
 
 type Props = {
   title?: string
@@ -67,12 +67,14 @@ const Component: React.FC<ComponentProps> = ({
   onCancel,
 }) => {
   const styles = useStyles()
-  const colorScheme = useColorScheme()
 
   const inputRef = useRef<TextInputInstance>(null)
+  const keyboardTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  )
 
   /**
-   * 入力欄をタップしたときにキーボードを出す
+   * 入力欄へフォーカスを当て直してキーボードを出す
    *
    * @note
    * Android の Modal は別ウィンドウのため、開いた時点で OS が入力欄へ
@@ -81,7 +83,7 @@ const Component: React.FC<ComponentProps> = ({
    * ネイティブへ命令が届かず、キーボードを出す要求も送られない。
    * 一度 blur() で手放してから当て直すと、命令が届いてキーボードが出る。
    */
-  const onPressIn = useCallback(() => {
+  const showKeyboard = useCallback(() => {
     const input = inputRef.current
     if (!input) {
       return
@@ -96,12 +98,29 @@ const Component: React.FC<ComponentProps> = ({
     })
   }, [])
 
+  /**
+   * ダイアログが表示され切ってからキーボードを出す
+   */
+  const onShow = useCallback(() => {
+    keyboardTimer.current = setTimeout(showKeyboard, KEYBOARD_DELAY)
+  }, [showKeyboard])
+
+  useEffect(
+    () => () => {
+      if (keyboardTimer.current) {
+        clearTimeout(keyboardTimer.current)
+      }
+    },
+    [],
+  )
+
   return (
     <Modal
       visible={isVisible}
       animationType="fade"
       transparent={true}
       onRequestClose={onCancel}
+      onShow={onShow}
     >
       {/*
         Android の Modal は別ウィンドウのため adjustResize が効かず、
@@ -114,17 +133,12 @@ const Component: React.FC<ComponentProps> = ({
           {!!description && (
             <Text style={styles.description}>{description}</Text>
           )}
-          {/*
-            Android の Modal は別ウィンドウのため、開いた直後にキーボードを
-            出すのは安定しない。自動では出さず、入力欄をタップしてもらう。
-          */}
+          {/* キーボードを閉じたあとでも、タップすれば出し直せるようにする */}
           <TextInput
             ref={inputRef}
-            onPressIn={onPressIn}
+            onPressIn={showKeyboard}
             style={[styles.input, multiline && styles.multilineInput]}
             defaultValue={defaultValue}
-            placeholder={PLACEHOLDER}
-            placeholderTextColor={COLOR(colorScheme).TEXT.SECONDARY}
             onChangeText={onChangeText}
             keyboardType={keyboardType ?? 'default'}
             autoCapitalize="none"
@@ -231,7 +245,7 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       fontSize: 14,
       color: COLOR(colorScheme).TEXT.SECONDARY,
     }),
-    // タップして入力する場所だと分かるように、線で囲って余白を広めに取る
+    // 入力する場所だと分かるように、線で囲って余白を広めに取る
     input: styleType<TextStyle>({
       marginTop: 16,
       minHeight: 48,
