@@ -26,6 +26,16 @@ const createPrinter = () => {
       calls.push(['readImage', path])
       return 'AAAA'
     },
+    buildHR: async (barType: string) => {
+      calls.push(['buildHR', barType])
+      return `<${barType}>`
+    },
+    enterBuffer: async () => {
+      calls.push(['enterBuffer'])
+    },
+    exitBuffer: async () => {
+      calls.push(['exitBuffer'])
+    },
   } as unknown as Printer
 
   return { printer, calls }
@@ -70,6 +80,8 @@ describe('executePrintCommands', () => {
     await executePrintCommands(commands, printer)
 
     expect(calls).toEqual([
+      ['buildHR', 'wave'],
+      ['enterBuffer'],
       ['setAlignment', 'center'],
       ['setFontSize', 32],
       ['setTextStyle', 'bold', true],
@@ -83,8 +95,9 @@ describe('executePrintCommands', () => {
         [10, 22],
         ['left', 'left'],
       ],
-      ['printHR', 'wave'],
+      ['printHR', '<wave>'],
       ['lineWrap', 3],
+      ['exitBuffer'],
     ])
   })
 
@@ -100,13 +113,15 @@ describe('executePrintCommands', () => {
     )
 
     expect(calls.map(([name]) => name)).toEqual([
+      'enterBuffer',
       'printText',
       'setFontSize',
       'printText',
+      'exitBuffer',
     ])
   })
 
-  it('途中で失敗したらそこで止める', async () => {
+  it('途中で失敗したらそこで止め、バッファから出る', async () => {
     const { printer, calls } = createPrinter()
     const failing: Printer = {
       ...printer,
@@ -126,6 +141,55 @@ describe('executePrintCommands', () => {
       ),
     ).rejects.toThrow('printer error')
 
-    expect(calls.map(([name]) => name)).toEqual(['setFontSize'])
+    // バッファから出ないままだと、次の印刷が溜まったまま出てこない
+    expect(calls.map(([name]) => name)).toEqual([
+      'enterBuffer',
+      'setFontSize',
+      'exitBuffer',
+    ])
+  })
+})
+
+describe('executePrintCommands の区切り線', () => {
+  it('区切り線の文字列は、バッファへ入る前に作る', async () => {
+    // 用紙幅の問い合わせはバッファ中に応答が返らず、印刷ごと止まってしまう
+    const { printer, calls } = createPrinter()
+    const commands: PrintCommand[] = [
+      { type: 'printText', text: '所属の前' },
+      { type: 'printHR', barType: 'line' },
+      { type: 'printText', text: '株式会社 織田軍' },
+      { type: 'printHR', barType: 'line' },
+      { type: 'lineWrap', count: 3 },
+    ]
+
+    await executePrintCommands(commands, printer)
+
+    expect(calls).toEqual([
+      ['buildHR', 'line'],
+      ['enterBuffer'],
+      ['printText', '所属の前'],
+      ['printHR', '<line>'],
+      ['printText', '株式会社 織田軍'],
+      ['printHR', '<line>'],
+      ['lineWrap', 3],
+      ['exitBuffer'],
+    ])
+  })
+
+  it('同じ種類の区切り線は一度だけ作る', async () => {
+    const { printer, calls } = createPrinter()
+    await executePrintCommands(
+      [
+        { type: 'printHR', barType: 'line' },
+        { type: 'printHR', barType: 'wave' },
+        { type: 'printHR', barType: 'line' },
+      ],
+      printer,
+    )
+
+    expect(calls.filter(([name]) => name === 'buildHR')).toEqual([
+      ['buildHR', 'line'],
+      ['buildHR', 'wave'],
+    ])
   })
 })
