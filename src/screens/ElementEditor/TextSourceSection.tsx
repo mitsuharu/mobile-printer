@@ -50,6 +50,12 @@ export const TextSourceSection: React.FC<Props> = ({
       if (kind === source.kind) {
         return
       }
+      // 入力項目が1つも無いまま選ぶと、どこも指す先のない参照ができてしまう。
+      // 先に入力項目を作らせてから結びつける。
+      if (kind === 'field' && layout.fields.length === 0) {
+        setIsDialogVisible(true)
+        return
+      }
       onChange(
         kind === 'static'
           ? { kind: 'static', value: '' }
