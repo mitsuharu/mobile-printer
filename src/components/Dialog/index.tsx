@@ -29,6 +29,11 @@ type Props = {
 
   keyboardType?: KeyboardTypeOptions
 
+  /**
+   * 改行を入れられるようにするか
+   */
+  multiline?: boolean
+
   onCancel?: () => void
   onPress?: (text: string) => void
 }
@@ -46,6 +51,7 @@ const Component: React.FC<ComponentProps> = ({
   description,
   defaultValue,
   keyboardType,
+  multiline,
   keyboardHeight,
   onChangeText,
   onSubmit,
@@ -72,13 +78,15 @@ const Component: React.FC<ComponentProps> = ({
             <Text style={styles.description}>{description}</Text>
           )}
           <TextInput
-            style={styles.input}
+            style={[styles.input, multiline && styles.multilineInput]}
             defaultValue={defaultValue}
             onChangeText={onChangeText}
             keyboardType={keyboardType ?? 'default'}
             autoCapitalize="none"
             autoFocus={true}
             underlineColorAndroid="transparent"
+            multiline={multiline}
+            textAlignVertical={multiline ? 'top' : 'center'}
           />
           <View style={styles.footer}>
             <Button
@@ -180,6 +188,10 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       color: COLOR(colorScheme).TEXT.PRIMARY,
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderBottomColor: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    multilineInput: styleType<TextStyle>({
+      minHeight: 96,
+      maxHeight: 160,
     }),
     footer: styleType<ViewStyle>({
       flexDirection: 'row',

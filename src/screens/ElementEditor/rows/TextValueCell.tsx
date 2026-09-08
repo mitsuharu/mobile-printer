@@ -22,6 +22,12 @@ type Props = {
   placeholder?: string
   dialogDescription?: string
   keyboardType?: KeyboardTypeOptions
+
+  /**
+   * 改行を入れられるようにするか
+   */
+  multiline?: boolean
+
   onChange: (value: string) => void
 }
 
@@ -35,6 +41,7 @@ export const TextValueCell: React.FC<Props> = ({
   placeholder,
   dialogDescription,
   keyboardType,
+  multiline,
   onChange,
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -64,6 +71,7 @@ export const TextValueCell: React.FC<Props> = ({
         description={dialogDescription}
         defaultValue={value}
         keyboardType={keyboardType}
+        multiline={multiline}
         onPress={onSubmit}
         onCancel={onCancel}
       />
