@@ -33,6 +33,11 @@ export type Props = ContentProps &
   AccessoryProps & {
     subtitle?: string
     description?: string
+
+    /**
+     * タイトルの左に置くアイコン（`react-native-vector-icons/AntDesign` の名前）
+     */
+    icon?: string
     onPress?: () => void
     onLongPress?: () => void
 
@@ -79,6 +84,7 @@ const Component: React.FC<Props> = ({
   children,
   subtitle,
   description,
+  icon,
   onPress,
   onLongPress,
   style,
@@ -102,6 +108,7 @@ const Component: React.FC<Props> = ({
     >
       {!!children && children}
       <View style={styles.row}>
+        {!!icon && <Icon name={icon} size={18} style={styles.icon} />}
         {!!title && (
           <View style={isRowDirection ? styles.innerRow : styles.innerColumn}>
             {!!subtitle && (
@@ -158,6 +165,10 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       alignItems: 'center',
     }),
     accessoryStyle: styleType<TextStyle>({
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    icon: styleType<TextStyle>({
+      width: 22,
       color: COLOR(colorScheme).TEXT.SECONDARY,
     }),
     text: styleType<TextStyle>({

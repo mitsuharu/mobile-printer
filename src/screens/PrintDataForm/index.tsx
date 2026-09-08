@@ -16,7 +16,7 @@ import {
 import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASE64, COLOR, MESSAGE } from '@/CONSTANTS'
+import { BASE64, COLOR, ICON, MESSAGE } from '@/CONSTANTS'
 import { ImageFileView } from '@/components/ImageFileView'
 import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
@@ -187,6 +187,7 @@ const Component: React.FC<ComponentProps> = ({
         <Cell
           title="レイアウトを編集する"
           description={layout.name}
+          icon={ICON.LAYOUT}
           onPress={onPressLayout}
           accessory="disclosure"
         />

@@ -5,7 +5,7 @@ import { StyleSheet, type ViewStyle } from 'react-native'
 import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { MESSAGE } from '@/CONSTANTS'
+import { ICON, MESSAGE } from '@/CONSTANTS'
 import { InputDialog } from '@/components/Dialog'
 import { Cell, Section } from '@/components/List'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
@@ -64,6 +64,7 @@ const Component: React.FC<ComponentProps> = ({
                 key={layout.id}
                 title={layout.name}
                 description={`要素${layout.elements.length}個・${formatDateTime(layout.updatedAt)}`}
+                icon={ICON.LAYOUT}
                 accessory="disclosure"
                 onPress={() => onPressLayout(layout)}
                 onLongPress={() => onLongPressLayout(layout)}

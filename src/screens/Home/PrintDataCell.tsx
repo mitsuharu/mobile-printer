@@ -9,8 +9,9 @@ import {
   type ViewStyle,
 } from 'react-native'
 import { makeStyles } from 'react-native-swag-styles'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { COLOR } from '@/CONSTANTS'
+import { COLOR, ICON } from '@/CONSTANTS'
 import { Button } from '@/components/Button'
 import { contentInset } from '@/components/List/util'
 import type { PrintData } from '@/print'
@@ -47,8 +48,19 @@ export const PrintDataCell: React.FC<Props> = ({
         onPress={() => onPressPrint(printData)}
         onLongPress={() => onLongPress(printData)}
       >
-        <Text style={styles.title}>{printData.title}</Text>
-        {!!layoutName && <Text style={styles.subtitle}>{layoutName}</Text>}
+        {/*
+          レイアウトの一覧と行の形が同じため、印刷データであることを
+          アイコンで示す。一覧のセル（`List/Cell`）と同じ位置・大きさに置く。
+        */}
+        <AntDesignIcon
+          name={ICON.PRINT_DATA}
+          size={18}
+          style={styles.typeIcon}
+        />
+        <View style={styles.text}>
+          <Text style={styles.title}>{printData.title}</Text>
+          {!!layoutName && <Text style={styles.subtitle}>{layoutName}</Text>}
+        </View>
       </Button>
       <Pressable
         style={styles.edit}
@@ -75,8 +87,17 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
     }),
     content: styleType<ViewStyle>({
       flex: 1,
-      justifyContent: 'center',
+      flexDirection: 'row',
+      alignItems: 'center',
       paddingVertical: contentInset.top,
+    }),
+    typeIcon: styleType<TextStyle>({
+      width: 22,
+      color: COLOR(colorScheme).TEXT.SECONDARY,
+    }),
+    text: styleType<ViewStyle>({
+      flex: 1,
+      justifyContent: 'center',
     }),
     title: styleType<TextStyle>({
       fontSize: 16,
