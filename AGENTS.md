@@ -20,6 +20,20 @@
 - JavaScript・TypeScript・JSONなど、Biomeが対応するファイルの検査と整形にはBiomeを使用します。確認は `yarn lint`、自動修正と整形は `yarn lint-force` で実行します。
 - Android開発にはJDK 17と、`android/build.gradle` に定義されたAndroid SDK・NDKを使用します。
 - Gradleはリポジトリの `android/gradlew` を使用します。
+- `clean` と `assembleDebug`・`assembleRelease` を1回の実行にまとめません。**`clean` はオートリンクで参加している `node_modules` 内のライブラリのビルド出力まで消すため、prefab が消えたままのディレクトリを読みに行って失敗します。** ネイティブを持つライブラリ（`react-native-reanimated` など）で起きます。
+
+```
+Error: invalid value for <package_path>: directory
+".../node_modules/react-native-reanimated/android/build/intermediates/prefab_package/release/prefab"
+is not readable.
+```
+
+- 作り直すときは2回に分けて実行します。
+
+```sh
+(cd android && ./gradlew clean)
+(cd android && ./gradlew assembleRelease)
+```
 
 ## 必須の検証
 
