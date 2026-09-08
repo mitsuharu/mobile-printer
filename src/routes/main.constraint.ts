@@ -8,6 +8,9 @@ export const MainName = {
   LayoutPreview: 'LayoutPreview',
   PrintDataList: 'PrintDataList',
   PrintDataForm: 'PrintDataForm',
+  AppInfo: 'AppInfo',
+  Licenses: 'Licenses',
+  LicenseDetail: 'LicenseDetail',
 } as const
 
 export type MainName = (typeof MainName)[keyof typeof MainName]

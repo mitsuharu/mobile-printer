@@ -16,6 +16,7 @@ import { selectAllPrintData } from '@/redux/modules/printData/selectors'
 import { printLayout } from '@/redux/modules/printData/slice'
 import { printText } from '@/redux/modules/printer/slice'
 import { styleType } from '@/utils/styles'
+import { AppInfoButton } from './AppInfoButton'
 import { InputDialogCell } from './InputDialogCell'
 import { PrintDataCell } from './PrintDataCell'
 
@@ -105,9 +106,16 @@ const Container: React.FC<Props> = (props) => {
     [layouts],
   )
 
-  useLayoutEffect(() => {
-    navigation.setOptions({ title: 'モバイル印刷 for SUNMI' })
+  const onNavigateToAppInfo = useCallback(() => {
+    navigation.navigate('AppInfo')
   }, [navigation])
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'モバイル印刷 for SUNMI',
+      headerRight: () => <AppInfoButton onPress={onNavigateToAppInfo} />,
+    })
+  }, [navigation, onNavigateToAppInfo])
 
   const onPressText = useCallback(
     (text: string) => {

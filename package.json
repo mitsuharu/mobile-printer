@@ -14,6 +14,7 @@
     "clean:jest": "jest --clearCache",
     "test": "jest",
     "lint": "biome check",
+    "licenses:generate": "node scripts/generateLicenses.mjs",
     "lint-force": "biome check --write",
     "pod": "cd ios; pod install; cd -;",
     "postinstall": "patch-package"

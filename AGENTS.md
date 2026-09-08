@@ -57,7 +57,25 @@ TZ=Asia/Tokyo yarn test --runInBand
 - スキーマを変更するときは `src/database/migrations/` に新しい版を追加します。一度入れたマイグレーションの内容は書き換えません。
 - リポジトリ層のテストは Node 同梱の `node:sqlite` に対して実際のスキーマで実行します（`src/database/__test__/testConnection.ts`）。SQLや外部キーの挙動もここで検証できます。
 - AndroidのAlertは3つまでしかボタンを表示できません。選択肢が4つ以上になり得るものは `ListPickerModal` を使います。
+- AndroidのModalは別ウィンドウのため、開いた時点で中の `TextInput` へOSがフォーカスを当てます。React Nativeは、すでにフォーカスを持っている入力欄への `focus()` をJS側で捨てる（`TextInputState.focusTextInput`）ため、ネイティブへ命令が届かず、キーボードを出す要求も送られません。`src/components/Dialog/` は一度 `blur()` で手放してから当て直しています。当て直しさえすれば、ネイティブ側（`ReactEditText.requestFocusProgrammatically`）が自分で `showSoftInput` を呼ぶので、キーボードは自動で開きます。
 - 大きな改修をPRへ分割するときは `gh stack`（`gh extension install github/gh-stack`）でスタックPRとして積み上げます。
+
+## アプリ情報とOSSライセンス表示
+
+- ホームのナビゲーションバー右上の (i) から「このアプリについて」（`src/screens/AppInfo/`）を開きます。アプリ名とバージョンは `react-native-device-info` から取得するため、表示を変えるのではなく `android/app/build.gradle` の `versionName`・`versionCode` を直します。
+- ライセンス一覧は `src/screens/Licenses/`、本文は `src/screens/LicenseDetail/` が表示します。一覧の元データは `src/assets/licenses.json` で、`scripts/generateLicenses.mjs` が生成してコミットします。**手で編集しません。**
+- 生成対象は `package.json` の `dependencies` から辿った実行時の依存のみで、`devDependencies` は含めません。アプリに同梱しないものを並べると、利用者に誤った情報を見せることになります。
+- 依存パッケージを足す・外す・更新したときの手順です。
+
+```sh
+yarn install
+yarn licenses:generate
+git add src/assets/licenses.json
+```
+
+- `yarn licenses:generate` は、ライセンス本文を同梱していないパッケージと、`node_modules` に見つからないパッケージを標準出力へ並べます。本文がないものは詳細画面でホームページを案内するため、そのままで構いません。
+- 作り直し忘れは2か所で検出します。CIの `Check OSS licenses` が生成し直して差分が出ると失敗し、`src/licenses/__test__/licenses.test.ts` が `dependencies` の取りこぼしとライセンス名の欠落を検出します。
+- `src/assets/licenses.json` は生成物のため、Biomeの対象から外しています（`biome.json` の `files.includes`）。
 
 ## 画像選択の互換性
 
@@ -82,6 +100,16 @@ TZ=Asia/Tokyo yarn test --runInBand
 - コミットメッセージは `feat:`、`fix:`、`test:`、`docs:`、`refactor:`、`chore:` などのConventional Commits形式を使用します。
 - コミット粒度は責務の観点で決め、機能や目的ごとに分けます。1コミットは1つのまとまった責務を担うレビュー可能な粒度とし、独立した機能・目的や無関係な変更を混在させません。
 - PR本文には変更概要、検証コマンドと結果、未実施の端末テストを記載します。
+- 画面の見た目や操作を変えたときは、実機で撮った対応前後のスクリーンショットをPRへ添付します。文章だけでは、意図した見た目になっているかをレビューで判断できません。
+- 添付には `gh` の `--attach` を使います（`gh` 2.99.0 以降）。`#` の後ろが代替テキストになり、本文の `![alt](./after.png)` は自動でアップロード先へ書き換わります。
+
+```sh
+gh pr create --attach './before.png#変更前' --attach './after.png#変更後'
+gh pr comment <番号> --attach './after.png#変更後'
+```
+
+- 対応前の画面は、変更前のコミット（多くは `main`）をビルドして実機で撮ります。撮り忘れると後から用意できません。
+- 撮影したファイルはリポジトリにコミットせず、作業用の一時ディレクトリへ置きます。
 - 作業ツリーに既に存在する無関係な変更を書き換えたり、破棄したり、コミットへ含めたりしません。
 - リリースとバージョン管理はメンテナーが行います。明示的な依頼なしにアプリのバージョン更新、タグ作成、配布、`.github/workflows/publish.yml` の変更を行いません。
 - リリースは `.github/workflows/publish.yml` で行います。タグを push すると GitHub Releases と DeployGate へ配布し、`workflow_dispatch` でも実行できます。

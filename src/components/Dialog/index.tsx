@@ -19,17 +19,12 @@ import { Button } from '@/components/Button'
 import { styleType } from '@/utils/styles'
 
 /**
- * Modal が表示され切ってから入力欄へフォーカスするまでの待ち時間
- */
-const FOCUS_DELAY = 100
-
-/**
- * キーボードが出なかったときに、フォーカスを当て直す間隔と回数
+ * Modal が表示され切ってからキーボードを出すまでの待ち時間
  *
- * 1回では出ないことがあるため、出るまで数回試す。
+ * @note
+ * 表示の途中で要求してもキーボードは出ない。
  */
-const FOCUS_INTERVAL = 200
-const FOCUS_MAX_ATTEMPTS = 5
+const KEYBOARD_DELAY = 100
 
 type Props = {
   title?: string
@@ -74,36 +69,46 @@ const Component: React.FC<ComponentProps> = ({
   const styles = useStyles()
 
   const inputRef = useRef<TextInputInstance>(null)
-  const focusTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+  const keyboardTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   )
 
   /**
-   * Modal が前に出てから入力欄へフォーカスする
+   * 入力欄へフォーカスを当て直してキーボードを出す
    *
    * @note
-   * Android の Modal は別ウィンドウのため、autoFocus では入力欄が
-   * 現れた時点でウィンドウにフォーカスが移っておらず、キーボードが
-   * 出ないことがある。表示され切ってから当てる。
+   * Android の Modal は別ウィンドウのため、開いた時点で OS が入力欄へ
+   * フォーカスを当てる。React Native は、すでにフォーカスを持っている
+   * 入力欄への focus() を JS 側で捨てるため（TextInputState.focusTextInput）、
+   * ネイティブへ命令が届かず、キーボードを出す要求も送られない。
+   * 一度 blur() で手放してから当て直すと、命令が届いてキーボードが出る。
+   */
+  const showKeyboard = useCallback(() => {
+    const input = inputRef.current
+    if (!input) {
+      return
+    }
+    if (!input.isFocused()) {
+      input.focus()
+      return
+    }
+    input.blur()
+    requestAnimationFrame(() => {
+      inputRef.current?.focus()
+    })
+  }, [])
+
+  /**
+   * ダイアログが表示され切ってからキーボードを出す
    */
   const onShow = useCallback(() => {
-    let attempt = 0
-
-    const tryFocus = () => {
-      inputRef.current?.focus()
-      attempt += 1
-      if (attempt < FOCUS_MAX_ATTEMPTS) {
-        focusTimer.current = setTimeout(tryFocus, FOCUS_INTERVAL)
-      }
-    }
-
-    focusTimer.current = setTimeout(tryFocus, FOCUS_DELAY)
-  }, [])
+    keyboardTimer.current = setTimeout(showKeyboard, KEYBOARD_DELAY)
+  }, [showKeyboard])
 
   useEffect(
     () => () => {
-      if (focusTimer.current) {
-        clearTimeout(focusTimer.current)
+      if (keyboardTimer.current) {
+        clearTimeout(keyboardTimer.current)
       }
     },
     [],
@@ -128,8 +133,10 @@ const Component: React.FC<ComponentProps> = ({
           {!!description && (
             <Text style={styles.description}>{description}</Text>
           )}
+          {/* キーボードを閉じたあとでも、タップすれば出し直せるようにする */}
           <TextInput
             ref={inputRef}
+            onPressIn={showKeyboard}
             style={[styles.input, multiline && styles.multilineInput]}
             defaultValue={defaultValue}
             onChangeText={onChangeText}
@@ -238,14 +245,18 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       fontSize: 14,
       color: COLOR(colorScheme).TEXT.SECONDARY,
     }),
+    // 入力する場所だと分かるように、線で囲って余白を広めに取る
     input: styleType<TextStyle>({
       marginTop: 16,
-      paddingVertical: 8,
-      paddingHorizontal: 0,
+      minHeight: 48,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
       fontSize: 16,
       color: COLOR(colorScheme).TEXT.PRIMARY,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: COLOR(colorScheme).TEXT.SECONDARY,
+      backgroundColor: COLOR(colorScheme).BACKGROUND.SECONDARY,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: COLOR(colorScheme).TEXT.SECONDARY,
+      borderRadius: 4,
     }),
     multilineInput: styleType<TextStyle>({
       minHeight: 96,

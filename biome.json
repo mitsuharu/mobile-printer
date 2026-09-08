@@ -10,6 +10,7 @@
     "includes": [
       "**/*.md",
       "**/*.js",
+      "**/*.mjs",
       "**/*.ts",
       "**/*.tsx",
       "**/*.json",
@@ -19,7 +20,8 @@
       "!android",
       "!ios",
       "!build",
-      "!coverage"
+      "!coverage",
+      "!src/assets/licenses.json"
     ]
   },
   "formatter": {
