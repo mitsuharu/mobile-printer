@@ -107,6 +107,7 @@ const Component: React.FC<ComponentProps> = ({
                 title={field.label || field.key}
                 value={textValueOf(printData.values[field.id])}
                 keyboardType={field.valueType === 'url' ? 'url' : 'default'}
+                multiline={field.valueType === 'multilineText'}
                 onChange={(value) =>
                   onChangeValue(field, { kind: 'text', value })
                 }

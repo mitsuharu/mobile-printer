@@ -59,6 +59,8 @@ export const TextSourceSection: React.FC<Props> = ({
         <TextValueCell
           title="内容"
           value={source.value}
+          dialogDescription="改行して複数行にできます"
+          multiline={true}
           onChange={(value) => onChange({ kind: 'static', value })}
         />
       ) : layout.fields.length === 0 ? (
