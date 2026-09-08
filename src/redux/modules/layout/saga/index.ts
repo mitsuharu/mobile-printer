@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLeading } from 'redux-saga/effects'
+import { call, put, select, takeEvery, takeLeading } from 'redux-saga/effects'
 import {
   deleteLayout as deleteLayoutFromDatabase,
   findAllLayouts,
@@ -7,7 +7,9 @@ import {
   saveLayout as saveLayoutToDatabase,
 } from '@/database'
 import { duplicateLayout as duplicateLayoutValue, type Layout } from '@/print'
+import { reloadPrintDataSaga } from '@/redux/modules/printData/saga'
 import { enqueueSnackbar } from '@/redux/modules/snackbar/slice'
+import { selectLayoutById } from '../selectors'
 import {
   assignIsLoading,
   assignLayouts,
@@ -49,9 +51,21 @@ function* fetchLayoutsSaga() {
 
 function* saveLayoutSaga({ payload }: ReturnType<typeof saveLayout>) {
   try {
+    const previous: Layout | undefined = yield select(
+      selectLayoutById(payload.id),
+    )
     const db: SqliteConnection = yield call(getDatabase)
     yield call(saveLayoutToDatabase, db, payload)
     yield call(reloadLayoutsSaga)
+
+    // 入力項目を消すと、その値は印刷データから連鎖削除される。
+    // Redux の写しが古いままだと、消えた値が入力欄に残る。
+    const removedField = previous?.fields.some(
+      (field) => !payload.fields.some(({ id }) => id === field.id),
+    )
+    if (removedField) {
+      yield call(reloadPrintDataSaga)
+    }
   } catch (e: any) {
     console.warn('saveLayoutSaga', e)
     yield put(enqueueSnackbar({ message: `レイアウトの保存に失敗しました` }))
@@ -79,6 +93,10 @@ function* deleteLayoutSaga({ payload }: ReturnType<typeof deleteLayout>) {
     const db: SqliteConnection = yield call(getDatabase)
     yield call(deleteLayoutFromDatabase, db, payload.id)
     yield call(reloadLayoutsSaga)
+
+    // レイアウトを消すと、その印刷データも連鎖削除される。
+    // 読み直さないと、消えたはずの印刷データがホームに残る。
+    yield call(reloadPrintDataSaga)
   } catch (e: any) {
     console.warn('deleteLayoutSaga', e)
     yield put(enqueueSnackbar({ message: `レイアウトの削除に失敗しました` }))
