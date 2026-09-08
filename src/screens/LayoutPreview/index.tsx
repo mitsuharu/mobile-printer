@@ -69,6 +69,10 @@ const Component: React.FC<ComponentProps> = ({
       edges={['bottom']}
       onLayout={onLayout}
     >
+      <Text style={styles.notice}>
+        これは画面上のイメージです。実際の印刷結果とは、文字の形や行の詰まり方が
+        異なることがあります。
+      </Text>
       <Text style={styles.description}>
         用紙の幅 {paperPixelWidth}px で描いています。
         {isPlaceholder ? '入力項目は表示名を仮の値として入れています。' : null}
@@ -169,9 +173,16 @@ const useStyles = makeStyles(useColorScheme, (colorScheme) => {
       padding: HORIZONTAL_PADDING,
       alignItems: 'flex-start',
     }),
-    description: styleType<TextStyle>({
+    notice: styleType<TextStyle>({
       paddingHorizontal: HORIZONTAL_PADDING,
       paddingTop: 12,
+      fontSize: 12,
+      fontWeight: 'bold',
+      color: COLOR(colorScheme).TEXT.PRIMARY,
+    }),
+    description: styleType<TextStyle>({
+      paddingHorizontal: HORIZONTAL_PADDING,
+      paddingTop: 4,
       fontSize: 12,
       color: COLOR(colorScheme).TEXT.SECONDARY,
     }),
