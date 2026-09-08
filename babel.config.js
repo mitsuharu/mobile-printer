@@ -12,12 +12,6 @@ module.exports = {
         extensions: ['.js'],
       },
     ],
-    [
-      '@babel/plugin-proposal-decorators',
-      {
-        legacy: true,
-      },
-    ],
     'optional-require',
     'lodash',
     // react-native-reanimated が使う worklets のプラグインは最後に置く
