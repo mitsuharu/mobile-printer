@@ -21,6 +21,7 @@ type Props = {
   layoutName?: string
   onPressPrint: (printData: PrintData) => void
   onPressEdit: (printData: PrintData) => void
+  onLongPress: (printData: PrintData) => void
 }
 
 /**
@@ -28,18 +29,24 @@ type Props = {
  *
  * 本体をタップすると印刷し、右のボタンから内容の編集へ進む。
  * 編集を階層の奥に置くと、印刷内容を直すたびに何度もたどることになる。
+ * 長押しすると複製と削除ができる。レイアウトの一覧と同じ操作にしている。
  */
 export const PrintDataCell: React.FC<Props> = ({
   printData,
   layoutName,
   onPressPrint,
   onPressEdit,
+  onLongPress,
 }) => {
   const styles = useStyles()
 
   return (
     <View style={styles.container}>
-      <Button style={styles.content} onPress={() => onPressPrint(printData)}>
+      <Button
+        style={styles.content}
+        onPress={() => onPressPrint(printData)}
+        onLongPress={() => onLongPress(printData)}
+      >
         <Text style={styles.title}>{printData.title}</Text>
         {!!layoutName && <Text style={styles.subtitle}>{layoutName}</Text>}
       </Button>

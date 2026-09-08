@@ -13,16 +13,21 @@ import {
   View,
   type ViewStyle,
 } from 'react-native'
+import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASE64, COLOR } from '@/CONSTANTS'
+import { BASE64, COLOR, MESSAGE } from '@/CONSTANTS'
 import { ImageFileView } from '@/components/ImageFileView'
 import { Cell, Section } from '@/components/List'
 import { SafeScrollView } from '@/components/SafeScrollView'
 import type { Layout, LayoutField, PrintData, PrintDataValue } from '@/print'
 import { selectLayoutById } from '@/redux/modules/layout/selectors'
 import { selectPrintDataById } from '@/redux/modules/printData/selectors'
-import { printLayout, savePrintData } from '@/redux/modules/printData/slice'
+import {
+  deletePrintData,
+  printLayout,
+  savePrintData,
+} from '@/redux/modules/printData/slice'
 import type { MainParams } from '@/routes/main.params'
 import { copyImageFile } from '@/utils/imageStore'
 import { styleType } from '@/utils/styles'
@@ -41,6 +46,7 @@ type ComponentProps = Props & {
   onPressPreview: () => void
   onPressPrint: () => void
   onPressLayout: () => void
+  onPressDelete: () => void
 }
 
 const textValueOf = (value: PrintDataValue | undefined) =>
@@ -58,6 +64,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressPreview,
   onPressPrint,
   onPressLayout,
+  onPressDelete,
 }) => {
   const styles = useStyles()
 
@@ -133,6 +140,7 @@ const Component: React.FC<ComponentProps> = ({
           onPress={onPressLayout}
           accessory="disclosure"
         />
+        <Cell title="この印刷データを削除する" onPress={onPressDelete} />
       </Section>
     </SafeScrollView>
   )
@@ -217,6 +225,28 @@ const Container: React.FC<Props> = (props) => {
     navigation.navigate('LayoutEditor', { layoutId })
   }, [layoutId, navigation])
 
+  const onPressDelete = useCallback(async () => {
+    if (!printData) {
+      return
+    }
+    try {
+      const confirmed = await AlertAsync(
+        '確認',
+        `「${printData.title}」を削除しますか？`,
+        [
+          { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
+          { text: MESSAGE.YES, onPress: () => true },
+        ],
+      )
+      if (confirmed) {
+        dispatch(deletePrintData(printData))
+        navigation.goBack()
+      }
+    } catch (e: any) {
+      console.warn('onPressDelete', e)
+    }
+  }, [dispatch, navigation, printData])
+
   return (
     <Component
       {...props}
@@ -229,6 +259,7 @@ const Container: React.FC<Props> = (props) => {
         onPressPreview,
         onPressPrint,
         onPressLayout,
+        onPressDelete,
       }}
     />
   )

@@ -2,8 +2,10 @@ import { useNavigation } from '@react-navigation/native'
 import type React from 'react'
 import { useCallback, useLayoutEffect, useMemo } from 'react'
 import { StyleSheet, type ViewStyle } from 'react-native'
+import AlertAsync from 'react-native-alert-async'
 import { makeStyles } from 'react-native-swag-styles'
 import { useDispatch, useSelector } from 'react-redux'
+import { MESSAGE } from '@/CONSTANTS'
 import { Cell, Section } from '@/components/List'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { SafeScrollView } from '@/components/SafeScrollView'
@@ -13,7 +15,11 @@ import {
   selectLayouts,
 } from '@/redux/modules/layout/selectors'
 import { selectAllPrintData } from '@/redux/modules/printData/selectors'
-import { printLayout } from '@/redux/modules/printData/slice'
+import {
+  deletePrintData,
+  duplicatePrintData,
+  printLayout,
+} from '@/redux/modules/printData/slice'
 import { printText } from '@/redux/modules/printer/slice'
 import { styleType } from '@/utils/styles'
 import { AppInfoButton } from './AppInfoButton'
@@ -28,6 +34,7 @@ type ComponentProps = Props & {
   onPressText: (text: string) => void
   onPressPrintData: (value: PrintData) => void
   onPressEditPrintData: (value: PrintData) => void
+  onLongPressPrintData: (value: PrintData) => void
   onNavigateToPrinter: () => void
   onNavigateToLayoutList: () => void
 }
@@ -39,6 +46,7 @@ const Component: React.FC<ComponentProps> = ({
   onPressText,
   onPressPrintData,
   onPressEditPrintData,
+  onLongPressPrintData,
   onNavigateToPrinter,
   onNavigateToLayoutList,
 }) => {
@@ -75,6 +83,7 @@ const Component: React.FC<ComponentProps> = ({
                 layoutName={layoutNames[value.layoutId]}
                 onPressPrint={onPressPrintData}
                 onPressEdit={onPressEditPrintData}
+                onLongPress={onLongPressPrintData}
               />
             ))
           )}
@@ -141,6 +150,39 @@ const Container: React.FC<Props> = (props) => {
     [navigation],
   )
 
+  const onLongPressPrintData = useCallback(
+    async (value: PrintData) => {
+      try {
+        const action = await AlertAsync(value.title, '操作を選んでください', [
+          { text: '複製する', onPress: () => 'duplicate' },
+          { text: '削除する', onPress: () => 'delete', style: 'destructive' },
+        ])
+
+        if (action === 'duplicate') {
+          dispatch(duplicatePrintData(value))
+          return
+        }
+
+        if (action === 'delete') {
+          const confirmed = await AlertAsync(
+            '確認',
+            `「${value.title}」を削除しますか？`,
+            [
+              { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
+              { text: MESSAGE.YES, onPress: () => true },
+            ],
+          )
+          if (confirmed) {
+            dispatch(deletePrintData(value))
+          }
+        }
+      } catch (e: any) {
+        console.warn('onLongPressPrintData', e)
+      }
+    },
+    [dispatch],
+  )
+
   const onNavigateToPrinter = useCallback(() => {
     navigation.navigate('Printer')
   }, [navigation])
@@ -159,6 +201,7 @@ const Container: React.FC<Props> = (props) => {
         onPressText,
         onPressPrintData,
         onPressEditPrintData,
+        onLongPressPrintData,
         onNavigateToPrinter,
         onNavigateToLayoutList,
       }}
