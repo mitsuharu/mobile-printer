@@ -58,11 +58,10 @@ jobs:
           corepack enable
           yarn install --immutable
 
-      # typecheck は既存の型エラー解消後に有効化する
-      # - name: Run lint
-      #   run: |
-      #     yarn typecheck
-      #     yarn lint
+      - name: Run typecheck and lint
+        run: |
+          yarn typecheck
+          yarn lint
 
       # 時間関連のテスト向けにタイムゾーンを固定する
       - name: Set timezone to Asia/Tokyo
@@ -85,13 +84,9 @@ jobs:
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x android/gradlew
 
-      # # Android 側の lint は整備していない
-      # - name: Run Android Lint
-      #   run: cd android && ./gradlew lint
-
-      # # Android 側の test は整備していない
-      # - name: Run Android Unit Tests
-      #   run: cd android && ./gradlew test
+      # Android 側の lint と test は整備していない。
+      # android/app/src にテストのソースがなく、lint も未整理の指摘が残るため、
+      # 有効にするなら指摘の棚卸しから始める
 
       # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
       - name: Build Release APK
