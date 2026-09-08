@@ -1,4 +1,3 @@
-import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { call, put, select } from 'redux-saga/effects'
 import type { Layout, PrintCommand, PrintData } from '@/print'
 import { buildPrintCommands, executePrintCommands } from '@/print'
@@ -49,22 +48,9 @@ export function* printLayoutSaga({ payload }: ReturnType<typeof printLayout>) {
       return
     }
 
-    yield call(print, commands)
+    yield call(executePrintCommands, commands)
   } catch (e: any) {
     console.warn('printLayoutSaga', e)
     yield put(enqueueSnackbar({ message: `印刷に失敗しました` }))
-  }
-}
-
-async function print(commands: PrintCommand[]) {
-  try {
-    // 割り込みを防ぐため、1件の印刷をまとめて送る
-    await SunmiPrinterLibrary.enterPrinterBuffer(true)
-    await executePrintCommands(commands)
-  } catch (e: any) {
-    console.warn('print', e)
-    throw e
-  } finally {
-    await SunmiPrinterLibrary.exitPrinterBuffer(true)
   }
 }

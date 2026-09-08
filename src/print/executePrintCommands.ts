@@ -35,8 +35,30 @@ export type Printer = {
     widths: number[],
     alignments: SunmiPrinterLibrary.Alignment[],
   ) => void
-  printHR: (barType: SunmiPrinterLibrary.BarType) => void
+  /**
+   * 区切り線の文字列を作る
+   *
+   * @note
+   * 用紙幅をプリンターへ問い合わせる。バッファへ入ったあとは応答が返らず
+   * 固まるため、入る前に呼ぶこと。
+   */
+  buildHR: (barType: SunmiPrinterLibrary.BarType) => Promise<string>
+
+  /**
+   * 区切り線を印字する
+   *
+   * @note
+   * 用紙幅いっぱいの記号なので、直前の要素が文字を大きくしていても
+   * 既定の大きさで印字する。
+   */
+  printHR: (text: string) => void
   lineWrap: (count: number) => void
+
+  /**
+   * 1件の印刷をまとめて送るための、プリンターのバッファ
+   */
+  enterBuffer: () => Promise<void>
+  exitBuffer: () => Promise<void>
 }
 
 /**
@@ -55,18 +77,67 @@ export const defaultPrinter: Printer = {
     SunmiPrinterLibrary.printQRCode(text, moduleSize, errorLevel),
   printColumnsString: (texts, widths, alignments) =>
     SunmiPrinterLibrary.printColumnsString(texts, widths, alignments),
-  printHR: (barType) => SunmiPrinterLibrary.printHR(barType),
+  buildHR: (barType) => SunmiPrinterLibrary.hr(barType),
+  printHR: (text) =>
+    SunmiPrinterLibrary.printTextWithFont(
+      text,
+      'default',
+      SunmiPrinterLibrary.defaultFontSize,
+    ),
   lineWrap: (count) => SunmiPrinterLibrary.lineWrap(count),
+  enterBuffer: () => SunmiPrinterLibrary.enterPrinterBuffer(true),
+  exitBuffer: () => SunmiPrinterLibrary.exitPrinterBuffer(true),
+}
+
+/**
+ * 区切り線の文字列を、種類ごとに作っておく
+ *
+ * @note
+ * 用紙幅の問い合わせはプリンターのバッファ中に応答が返らない。送り始める
+ * 前にまとめて作る。
+ */
+const buildHRTexts = async (
+  commands: PrintCommand[],
+  printer: Printer,
+): Promise<Map<SunmiPrinterLibrary.BarType, string>> => {
+  const texts = new Map<SunmiPrinterLibrary.BarType, string>()
+  for (const command of commands) {
+    if (command.type === 'printHR' && !texts.has(command.barType)) {
+      texts.set(command.barType, await printer.buildHR(command.barType))
+    }
+  }
+  return texts
 }
 
 /**
  * 組み立てた操作をプリンターへ送る
  *
  * 画像はパスで受け取り、送る直前にファイルから読む。
+ * 割り込みを防ぐため、1件の印刷はバッファへまとめて送る。
  */
 export const executePrintCommands = async (
   commands: PrintCommand[],
   printer: Printer = defaultPrinter,
+): Promise<void> => {
+  // 送るものがなければ、バッファの開け閉めもしない
+  if (commands.length === 0) {
+    return
+  }
+
+  const hrTexts = await buildHRTexts(commands, printer)
+
+  await printer.enterBuffer()
+  try {
+    await send(commands, printer, hrTexts)
+  } finally {
+    await printer.exitBuffer()
+  }
+}
+
+const send = async (
+  commands: PrintCommand[],
+  printer: Printer,
+  hrTexts: Map<SunmiPrinterLibrary.BarType, string>,
 ): Promise<void> => {
   for (const command of commands) {
     switch (command.type) {
@@ -101,9 +172,13 @@ export const executePrintCommands = async (
           command.alignments,
         )
         break
-      case 'printHR':
-        printer.printHR(command.barType)
+      case 'printHR': {
+        const text = hrTexts.get(command.barType)
+        if (text) {
+          printer.printHR(text)
+        }
         break
+      }
       case 'lineWrap':
         printer.lineWrap(command.count)
         break
