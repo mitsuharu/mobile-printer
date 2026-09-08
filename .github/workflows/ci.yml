@@ -76,3 +76,16 @@ jobs:
 
       - name: Build Debug APK
         run: cd android && ./gradlew assembleDebug
+
+      # デバッグビルドはJSをバンドルせず Metro から読むため、Babel の非互換など
+      # バンドル時にしか出ない破損を検出できない。リリース相当のバンドルを作って確かめる。
+      # Metro のキャッシュが残っていると失敗を見逃すため、毎回作り直す。
+      - name: Bundle JavaScript for release
+        run: |
+          yarn react-native bundle \
+            --platform android \
+            --dev false \
+            --reset-cache \
+            --entry-file index.js \
+            --bundle-output "${RUNNER_TEMP}/index.android.bundle" \
+            --assets-dest "${RUNNER_TEMP}/assets"
