@@ -140,6 +140,13 @@ jobs:
       # ログは保存されないが、UIのライブログは落ちる直前まで見えるため、
       # 次に落ちたときはその末尾が唯一の手掛かりになる。
       # 15秒間隔では急な確保を取りこぼすため、5秒まで詰めている。
+      #
+      # --no-daemon を付ける。Gradleは既定でビルド後もデーモンのJVMを残すが、
+      # それがステップの標準出力を掴んだままだとランナーがジョブを終われない。
+      # run 34318939399 では BUILD SUCCESSFUL のあとリリースと配布まで済んだのに
+      # ジョブが終わらず、タイムアウトを待つことになった。CIの Build Android は
+      # gradle/actions/setup-gradle が後処理でデーモンを止めるため完走している。
+      # CIはジョブごとにランナーを捨てるので、デーモンを残す利点はない。
       - name: Build Release APK
         run: |
           # 計測が失敗してもビルドを止めない。サブシェルで set +e にして、
@@ -160,7 +167,7 @@ jobs:
           sampler=$!
           trap 'kill "$sampler" 2>/dev/null || true' EXIT
 
-          cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
+          cd android && ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
       # タグを打たない手動実行でも、成果物を取り出せるようにする
       - name: Upload APK as a workflow artifact
