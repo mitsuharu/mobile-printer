@@ -31,6 +31,10 @@ jobs:
   build:
     name: Publish
     runs-on: ubuntu-latest
+    # 固まったときにGitHubのジョブ上限（6時間）まで走らせない。
+    # 落ちるとログが残らず原因を追えないため、早めに打ち切る。
+    # CIのassembleDebugが約21分、releaseはそれより重いので倍を見込む。
+    timeout-minutes: 60
 
     env:
       # タグを打った場合はそのタグ、手動実行では入力されたタグ（空になり得る）
@@ -89,8 +93,13 @@ jobs:
       # 有効にするなら指摘の棚卸しから始める
 
       # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
+
+      # 4 ABI すべてをビルドするとネイティブのコンパイルがランナーのメモリを使い切り、
+      # ランナーごと落ちる（The hosted runner lost communication with the server）。
+      # 配布先のSUNMI端末はARMのため、エミュレータ用のx86とx86_64は作らない。
+      # android/gradle.properties は開発用にABIを4つ残したままにしてある。
       - name: Build Release APK
-        run: cd android && ./gradlew assembleRelease
+        run: cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
       # タグを打たない手動実行でも、成果物を取り出せるようにする
       - name: Upload APK as a workflow artifact
