@@ -35,13 +35,6 @@ jobs:
           corepack enable
           yarn install --immutable
 
-      # 依存パッケージを足したり外したりしたあと、アプリに同梱する
-      # ライセンス一覧の作り直しを忘れていないか確かめる
-      - name: Check OSS licenses
-        run: |
-          yarn licenses:generate
-          git diff --exit-code src/assets/licenses.json
-
       - name: Typecheck
         run: yarn typecheck
 

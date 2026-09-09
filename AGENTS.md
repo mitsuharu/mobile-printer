@@ -79,18 +79,17 @@ TZ=Asia/Tokyo yarn test --runInBand
 ## アプリ情報とOSSライセンス表示
 
 - ホームのナビゲーションバー右上の (i) から「このアプリについて」（`src/screens/AppInfo/`）を開きます。アプリ名とバージョンは `react-native-device-info` から取得するため、表示を変えるのではなく `android/app/build.gradle` の `versionName`・`versionCode` を直します。
-- ライセンス一覧は `src/screens/Licenses/`、本文は `src/screens/LicenseDetail/` が表示します。一覧の元データは `src/assets/licenses.json` で、`scripts/generateLicenses.mjs` が生成してコミットします。**手で編集しません。**
+- ライセンス一覧は `src/screens/Licenses/`、本文は `src/screens/LicenseDetail/` が表示します。一覧の元データは `src/assets/licenses.json` で、`scripts/generateLicenses.mjs` が生成します。**手で編集しません。**
 - 生成対象は `package.json` の `dependencies` から辿った実行時の依存のみで、`devDependencies` は含めません。アプリに同梱しないものを並べると、利用者に誤った情報を見せることになります。
-- 依存パッケージを足す・外す・更新したときの手順です。
+- **`src/assets/licenses.json` はコミットしません。** `postinstall` が `yarn install` のたびに生成するため、依存パッケージを足す・外す・更新したあとに作り直す手順はありません。
 
 ```sh
 yarn install
-yarn licenses:generate
-git add src/assets/licenses.json
 ```
 
-- `yarn licenses:generate` は、ライセンス本文を同梱していないパッケージと、`node_modules` に見つからないパッケージを標準出力へ並べます。本文がないものは詳細画面でホームページを案内するため、そのままで構いません。
-- 作り直し忘れは2か所で検出します。CIの `Check OSS licenses` が生成し直して差分が出ると失敗し、`src/licenses/__test__/licenses.test.ts` が `dependencies` の取りこぼしとライセンス名の欠落を検出します。
+- コミットしていたころは、依存を更新するたびに生成物との差分が出て、Dependabotのプルリクエストが `Check OSS licenses` で必ず落ちていました。各プルリクエストが同じファイルを書き換えるため、複数の更新が並ぶとコンフリクトもします。生成が0.1秒ほどで終わることから、コミットせず毎回作り直す方に寄せています。
+- 手で作り直したいときは `yarn licenses:generate` を実行します。ライセンス本文を同梱していないパッケージと、`node_modules` に見つからないパッケージを標準出力へ並べます。本文がないものは詳細画面でホームページを案内するため、そのままで構いません。
+- 生成物が常に最新になるため、作り直し忘れは起きません。`src/licenses/__test__/licenses.test.ts` が `dependencies` の取りこぼしとライセンス名の欠落を検出します。**ライセンス名が変わったこと（MITからGPLになったなど）は検出できません。** 差分としてレビューできなくなったため、依存を増やすときは自分で確認します。
 - `src/assets/licenses.json` は生成物のため、Biomeの対象から外しています（`biome.json` の `files.includes`）。
 - アプリ内の「使い方」は `src/screens/Guide/sections.ts` の文言だけで作っています。同じ内容を画像つきで [`docs/usage.md`](./docs/usage.md) にも置いているため、画面の操作を変えたら両方を直します。片方だけ古くなると利用者が迷います。
 

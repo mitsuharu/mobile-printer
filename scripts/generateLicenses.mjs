@@ -5,13 +5,20 @@
  *
  * package.json の dependencies を起点に、node_modules を辿って
  * 実行時に同梱されるパッケージだけを集める（devDependencies は対象外）。
- * 生成物は src/assets/licenses.json で、これをコミットしてアプリから読む。
+ * 生成物は src/assets/licenses.json で、アプリから読む。コミットはせず、
+ * postinstall が yarn install のたびに作り直す。
  *
  * @example
  * yarn licenses:generate
  */
 
-import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -160,6 +167,8 @@ packages.sort(
   (a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version),
 )
 
+// 生成物はコミットしないため、クローン直後は出力先のディレクトリごと存在しない
+mkdirSync(dirname(OUTPUT), { recursive: true })
 writeFileSync(OUTPUT, `${JSON.stringify(packages, null, 2)}\n`, 'utf8')
 
 console.log(`generated ${OUTPUT}`)

@@ -8,7 +8,7 @@ export type { OssLicense }
  *
  * @note
  * この一覧は `yarn licenses:generate` が生成する src/assets/licenses.json を読む。
- * 依存パッケージを足したり外したりしたら生成し直すこと。
+ * このファイルはコミットせず、postinstall が yarn install のたびに作り直す。
  */
 export const ossLicenses: OssLicense[] = licenses
 
