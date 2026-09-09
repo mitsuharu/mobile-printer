@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'GitHub Release を作るタグ名（空ならDeployGateへの配布のみ）'
+        description: 'GitHub Release を作るタグ名（空ならReleaseを作らない）'
         required: false
         type: string
       prerelease:
@@ -13,6 +13,11 @@ on:
         required: false
         type: boolean
         default: false
+      upload_to_deploygate:
+        description: 'DeployGateへ配布する（外すとワークフローの動作確認だけになる）'
+        required: false
+        type: boolean
+        default: true
 
   # タグを打つとリリースする。末尾に -beta.1 などが付いたタグはプレリリースになる
   push:
@@ -187,7 +192,10 @@ jobs:
           fail_on_unmatched_files: true
           files: android/app/build/outputs/apk/release/app-release.apk
 
+      # 動作確認のための実行では配布を外せるようにする。タグを打った実行では
+      # inputs が無いため、左の条件だけで真になり、これまでどおり配布する。
       - name: Upload to DeployGate
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.upload_to_deploygate }}
         env:
           DEPLOYGATE_API_KEY: ${{ secrets.DEPLOYGATE_API_KEY }}
           DEPLOYGATE_USER: ${{ secrets.DEPLOYGATE_USER }}
