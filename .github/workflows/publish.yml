@@ -78,11 +78,12 @@ jobs:
           yarn typecheck
           yarn lint
 
-      # 時間関連のテスト向けにタイムゾーンを固定する
-      - name: Set timezone to Asia/Tokyo
-        run: sudo timedatectl set-timezone Asia/Tokyo
-
+      # 時間関連のテスト向けにタイムゾーンを固定する。
+      # sudo timedatectl でシステムの時刻設定を書き換えていたが、ci.yml と同じく
+      # 環境変数で渡す。テストへの効果は同じで、ランナーのシステムを触らない。
       - name: Run test
+        env:
+          TZ: Asia/Tokyo
         run: |
           yarn test
 
@@ -101,48 +102,24 @@ jobs:
 
       # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
 
-      # リリースビルドのネイティブビルド中にランナーが落ちる
+      # publish は8回すべてでランナーとの通信が切れている
       # （The hosted runner lost communication with the server）。
       # 落ちるとジョブのログが保存されず、後から原因を追えない。
       #
-      # 原因は未特定のまま。ただし実績は次のとおりで、下の2ステップを入れた
-      # 構成でのみリリースビルドが完走している。
+      # 資源の枯渇は計測で否定した。run 34325396782 の死ぬ直前の値は
+      # メモリ空き11.4GB、スワップ使用0MB、ディスク空き83GB、load 4.36 で、
+      # どれも逼迫していない。ディスクを空ける・スワップを足す対処は
+      # 効いていなかったため外した。
       #
-      #   対処なし  run 34298308848（4 ABI）  失敗  ランナー消失、約48分
-      #   対処なし  run 34309189757          失敗  ランナー消失、app の CMake、約13分
-      #   対処あり  run 34313042301          成功  ビルド14分59秒
-      #   対処なし  run 34314606429          失敗  worklets の CMake、約9分
-      #                                            ランナーが応答しなくなり、GitHubが
-      #                                            判定する前に手で止めたため、注釈は
-      #                                            canceled by となっている
-      #   対処あり  run 34315640308          成功  ビルド15分14秒、配布まで完了
+      # 一方 ci.yml の Build Android は同じ ubuntu-latest で完走し続けている。
+      # 差分を洗ったところ、publish にだけ sudo でシステムを変更する操作が
+      # あった（timedatectl によるタイムゾーン変更）。これは publish.yml の
+      # 追加時からあり、失敗した8回すべてに存在する。ci.yml に sudo は無い。
+      # ランナーのエージェントは短命なトークンで通信を維持しているため、
+      # 時刻まわりを触ると接続が壊れ得る。死ぬまでの時間が4.5分から48分まで
+      # ばらつくのも、周期的な処理が来たときに初めて破綻するなら説明がつく。
       #
-      # 落ちる場所も時間も毎回違うため、偶然良いランナーを引いただけの
-      # 可能性も残る。原因が分かるまでは、通る構成を維持する。
-
-      # ディスクは削除前から85GB空いており、枯渇は考えにくい。
-      # それでも上の実績に含まれる構成のため、切り分けが済むまでは残す。
-      - name: Free disk space
-        run: |
-          echo "--- 削除前 ---"
-          df -h /
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost /usr/share/swift
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          echo "--- 削除後 ---"
-          df -h /
-
-      # ninja が同時に走らせる clang の分をスワップで受ける。成功した実行では
-      # スワップが使われていなかったが、確保されているだけでカーネルのOOM判定は
-      # 変わるため、効いている可能性が一番高いのはここだと見ている。
-      # ランナーには /mnt/swapfile が既にあるため別名で追加する。
-      # /mnt はルートとは別ボリュームなので、上の空き容量を圧迫しない。
-      - name: Add swap
-        run: |
-          sudo fallocate -l 8G /mnt/extra-swapfile
-          sudo chmod 600 /mnt/extra-swapfile
-          sudo mkswap /mnt/extra-swapfile
-          sudo swapon /mnt/extra-swapfile
-          free -h
+      # 機序は未証明。ci.yml に揃えて sudo を無くし、様子を見る。
 
       # 配布先のSUNMI端末はARMのため、エミュレータ用のx86とx86_64は作らない。
       # android/gradle.properties は開発用にABIを4つ残したままにしてある。
