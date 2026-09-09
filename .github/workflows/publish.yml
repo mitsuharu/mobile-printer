@@ -94,12 +94,73 @@ jobs:
 
       # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
 
-      # 4 ABI すべてをビルドするとネイティブのコンパイルがランナーのメモリを使い切り、
-      # ランナーごと落ちる（The hosted runner lost communication with the server）。
+      # リリースビルドのネイティブビルド中にランナーが落ちる
+      # （The hosted runner lost communication with the server）。
+      # 落ちるとジョブのログが保存されず、後から原因を追えない。
+      #
+      # 原因は未特定のまま。ただし実績は次のとおりで、下の2ステップを入れた
+      # 構成でのみリリースビルドが完走している。
+      #
+      #   対処なし  run 34298308848（4 ABI）  失敗
+      #   対処なし  run 34309189757          失敗  app の CMake、約13分
+      #   対処あり  run 34313042301          成功  14分59秒
+      #   対処なし  run 34314606429          失敗  worklets の CMake、約9分
+      #
+      # 落ちる場所も時間も毎回違うため、偶然良いランナーを引いただけの
+      # 可能性も残る。原因が分かるまでは、通る構成を維持する。
+
+      # ディスクは削除前から85GB空いており、枯渇は考えにくい。
+      # それでも上の実績に含まれる構成のため、切り分けが済むまでは残す。
+      - name: Free disk space
+        run: |
+          echo "--- 削除前 ---"
+          df -h /
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost /usr/share/swift
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          echo "--- 削除後 ---"
+          df -h /
+
+      # ninja が同時に走らせる clang の分をスワップで受ける。成功した実行では
+      # スワップが使われていなかったが、確保されているだけでカーネルのOOM判定は
+      # 変わるため、効いている可能性が一番高いのはここだと見ている。
+      # ランナーには /mnt/swapfile が既にあるため別名で追加する。
+      # /mnt はルートとは別ボリュームなので、上の空き容量を圧迫しない。
+      - name: Add swap
+        run: |
+          sudo fallocate -l 8G /mnt/extra-swapfile
+          sudo chmod 600 /mnt/extra-swapfile
+          sudo mkswap /mnt/extra-swapfile
+          sudo swapon /mnt/extra-swapfile
+          free -h
+
       # 配布先のSUNMI端末はARMのため、エミュレータ用のx86とx86_64は作らない。
       # android/gradle.properties は開発用にABIを4つ残したままにしてある。
+      #
+      # 5秒ごとに資源の残量とメモリ上位のプロセスを標準出力へ出す。ジョブの
+      # ログは保存されないが、UIのライブログは落ちる直前まで見えるため、
+      # 次に落ちたときはその末尾が唯一の手掛かりになる。
+      # 15秒間隔では急な確保を取りこぼすため、5秒まで詰めている。
       - name: Build Release APK
-        run: cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
+        run: |
+          # 計測が失敗してもビルドを止めない。サブシェルで set +e にして、
+          # 個々のコマンドが転んでもループ自体は回り続けるようにする。
+          (
+            set +e
+            while true; do
+              echo "[resources] $(date -u +%H:%M:%S)" \
+                "mem_avail=$(free -m | awk '/^Mem:/{print $7}')MB" \
+                "swap_used=$(free -m | awk '/^Swap:/{print $3}')MB" \
+                "disk_avail=$(df -m --output=avail / | tail -1 | tr -d ' ')MB" \
+                "load=$(cut -d' ' -f1-3 /proc/loadavg)" \
+                "top=$(ps -eo rss,comm --sort=-rss --no-headers \
+                       | head -3 | awk '{printf "%s:%dMB ", $2, $1/1024}')"
+              sleep 5
+            done
+          ) &
+          sampler=$!
+          trap 'kill "$sampler" 2>/dev/null || true' EXIT
+
+          cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
       # タグを打たない手動実行でも、成果物を取り出せるようにする
       - name: Upload APK as a workflow artifact
