@@ -94,12 +94,52 @@ jobs:
 
       # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
 
-      # 4 ABI すべてをビルドするとネイティブのコンパイルがランナーのメモリを使い切り、
-      # ランナーごと落ちる（The hosted runner lost communication with the server）。
+      # リリースビルド中にランナーが落ちる（The hosted runner lost communication
+      # with the server）。落ちるとジョブのログが保存されないため原因を追えない。
+      # メモリ枯渇とディスク枯渇のどちらもあり得るので、両方に手を打ったうえで、
+      # 次に落ちたときにライブログで判別できるようにする。
+
+      # ルートの空きは14GB程度しかなく、そこへNDK・Gradleキャッシュ・
+      # 各ABIのオブジェクトファイルが乗る。ビルドに使わないものを消す。
+      - name: Free disk space
+        run: |
+          echo "--- 削除前 ---"
+          df -h /
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost /usr/share/swift
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          echo "--- 削除後 ---"
+          df -h /
+
+      # ninja が同時に走らせる clang が使い切る分を、スワップで受ける。
+      # ランナーには /mnt/swapfile が既にあるため別名で追加する。
+      # /mnt はルートとは別ボリュームなので、上の空き容量を圧迫しない。
+      - name: Add swap
+        run: |
+          sudo fallocate -l 8G /mnt/extra-swapfile
+          sudo chmod 600 /mnt/extra-swapfile
+          sudo mkswap /mnt/extra-swapfile
+          sudo swapon /mnt/extra-swapfile
+          free -h
+
       # 配布先のSUNMI端末はARMのため、エミュレータ用のx86とx86_64は作らない。
       # android/gradle.properties は開発用にABIを4つ残したままにしてある。
+      #
+      # 15秒ごとにメモリとディスクの残量を標準出力へ出す。ジョブのログは
+      # 保存されないが、UIのライブログは落ちる直前まで見えるため、
+      # そこでメモリとディスクのどちらが尽きたかを判別する。
       - name: Build Release APK
-        run: cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
+        run: |
+          while true; do
+            echo "[resources] $(date -u +%H:%M:%S)" \
+              "mem_avail=$(free -m | awk '/^Mem:/{print $7}')MB" \
+              "swap_used=$(free -m | awk '/^Swap:/{print $3}')MB" \
+              "disk_avail=$(df -m --output=avail / | tail -1 | tr -d ' ')MB"
+            sleep 15
+          done &
+          sampler=$!
+          trap 'kill "$sampler" 2>/dev/null || true' EXIT
+
+          cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
       # タグを打たない手動実行でも、成果物を取り出せるようにする
       - name: Upload APK as a workflow artifact
