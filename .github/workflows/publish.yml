@@ -75,15 +75,11 @@ jobs:
         run: |
           yarn test
 
-      - name: Cache Gradle files
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
+      # Gradleのキャッシュは持たない。run 34315640308 では復元が6秒で終わり、
+      # ビルドは 735 actionable tasks: 735 executed とすべて実行された。
+      # つまり再利用はゼロだった。それでいて後処理の保存には10分以上かかり、
+      # ビルドが終わってからジョブが終わらない原因になっていた。
+      # publish は手動実行で頻度が低く、キャッシュの恩恵がないため外す。
 
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x android/gradlew
