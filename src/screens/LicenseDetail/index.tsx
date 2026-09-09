@@ -65,7 +65,15 @@ const Component: React.FC<ComponentProps> = ({ license, onPressHomepage }) => {
       </Section>
       <Section title="ライセンス本文">
         <View style={styles.textContainer}>
-          <Text style={styles.text} selectable={true}>
+          {/*
+            本文は選択できるようにしない。Androidでは選択できる文字がタッチ
+            操作でもフォーカスを取り、ScrollViewがそこまで送ってしまうため、
+            画面を開いた直後に上のパッケージ情報が見えなくなる端末がある
+            （SUNMI V2 PRO / Android 7.1.2 で再現。V2s では起きない）。
+            描画のあとで有効にしても、有効にした時点でフォーカスが移るため
+            変わらない。読むための画面なので、選択より位置を優先する。
+          */}
+          <Text style={styles.text}>
             {licenseText ??
               'このパッケージはライセンス本文を同梱していません。ホームページを参照してください。'}
           </Text>
