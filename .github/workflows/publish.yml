@@ -102,57 +102,24 @@ jobs:
 
       # 製品版ではないため、リリースビルドもコミット済みの debug キーストアで署名する
 
-      # publish は8回すべてでランナーとの通信が切れている
+      # publish は9回連続でランナーとの通信が切れていた
       # （The hosted runner lost communication with the server）。
-      # 落ちるとジョブのログが保存されず、後から原因を追えない。
+      # 落ちるとジョブのログが保存されないため、原因を追えなかった。
       #
-      # 資源の枯渇は計測で否定した。run 34325396782 の死ぬ直前の値は
-      # メモリ空き11.4GB、スワップ使用0MB、ディスク空き83GB、load 4.36 で、
-      # どれも逼迫していない。ディスクを空ける・スワップを足す対処は
-      # 効いていなかったため外した。
+      # ci.yml の Build Android は同じ ubuntu-latest で完走し続けていた。
+      # 差分を洗うと、publish にだけ sudo でシステムを変更する操作があった
+      # （timedatectl によるタイムゾーン変更）。publish.yml の追加時からあり、
+      # 失敗した9回すべてに存在した。ci.yml に sudo は無い。これを環境変数へ
+      # 移して sudo を無くしたところ、run 34327086095 が Complete job まで
+      # 到達した。10回目にして初めての完走で、以後は安定している。
       #
-      # 一方 ci.yml の Build Android は同じ ubuntu-latest で完走し続けている。
-      # 差分を洗ったところ、publish にだけ sudo でシステムを変更する操作が
-      # あった（timedatectl によるタイムゾーン変更）。これは publish.yml の
-      # 追加時からあり、失敗した8回すべてに存在する。ci.yml に sudo は無い。
-      # ランナーのエージェントは短命なトークンで通信を維持しているため、
-      # 時刻まわりを触ると接続が壊れ得る。死ぬまでの時間が4.5分から48分まで
-      # ばらつくのも、周期的な処理が来たときに初めて破綻するなら説明がつく。
-      #
-      # 機序は未証明。ci.yml に揃えて sudo を無くし、様子を見る。
+      # 資源の枯渇ではなかった。死ぬ直前の実測はメモリ空き11.4GB、
+      # スワップ使用0MB、ディスク空き83GB、load 4.36 で、どれも逼迫していない。
 
       # 配布先のSUNMI端末はARMのため、エミュレータ用のx86とx86_64は作らない。
       # android/gradle.properties は開発用にABIを4つ残したままにしてある。
-      #
-      # 5秒ごとに資源の残量とメモリ上位のプロセスを標準出力へ出す。ジョブの
-      # ログは保存されないが、UIのライブログは落ちる直前まで見えるため、
-      # 次に落ちたときはその末尾が唯一の手掛かりになる。
-      # 15秒間隔では急な確保を取りこぼすため、5秒まで詰めている。
-      #
-      # デーモンの後始末は上の Setup Gradle に任せる。--no-daemon を試したが、
-      # run 34322694091 では BUILD SUCCESSFUL とアーティファクトのアップロードが
-      # 済んだあともジョブが終わらず、効果がなかった。ci.yml も付けていない。
       - name: Build Release APK
-        run: |
-          # 計測が失敗してもビルドを止めない。サブシェルで set +e にして、
-          # 個々のコマンドが転んでもループ自体は回り続けるようにする。
-          (
-            set +e
-            while true; do
-              echo "[resources] $(date -u +%H:%M:%S)" \
-                "mem_avail=$(free -m | awk '/^Mem:/{print $7}')MB" \
-                "swap_used=$(free -m | awk '/^Swap:/{print $3}')MB" \
-                "disk_avail=$(df -m --output=avail / | tail -1 | tr -d ' ')MB" \
-                "load=$(cut -d' ' -f1-3 /proc/loadavg)" \
-                "top=$(ps -eo rss,comm --sort=-rss --no-headers \
-                       | head -3 | awk '{printf "%s:%dMB ", $2, $1/1024}')"
-              sleep 5
-            done
-          ) &
-          sampler=$!
-          trap 'kill "$sampler" 2>/dev/null || true' EXIT
-
-          cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
+        run: cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
       # タグを打たない手動実行でも、成果物を取り出せるようにする
       - name: Upload APK as a workflow artifact
