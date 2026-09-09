@@ -5,7 +5,8 @@
  *
  * package.json の dependencies を起点に、node_modules を辿って
  * 実行時に同梱されるパッケージだけを集める（devDependencies は対象外）。
- * 生成物は src/assets/licenses.json で、これをコミットしてアプリから読む。
+ * 生成物は src/assets/licenses.json で、アプリから読む。コミットはせず、
+ * postinstall が yarn install のたびに作り直す。
  *
  * @example
  * yarn licenses:generate

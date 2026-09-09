@@ -17,7 +17,7 @@
     "licenses:generate": "node scripts/generateLicenses.mjs",
     "lint-force": "biome check --write",
     "pod": "cd ios; pod install; cd -;",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package && node scripts/generateLicenses.mjs"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
