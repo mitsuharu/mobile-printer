@@ -62,6 +62,12 @@ jobs:
         with:
           node-version-file: '.node-version'
 
+      # ci.yml の Build Android と同じ構成にする。あちらは Complete job まで
+      # 到達するが、publish は一度も到達していない。違いはGradleの起動方法だった。
+      # このアクションは後処理でデーモンを止め、Gradleの実行環境を整える。
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+
       - name: Install dependencies
         run: |
           corepack enable
@@ -146,12 +152,9 @@ jobs:
       # 次に落ちたときはその末尾が唯一の手掛かりになる。
       # 15秒間隔では急な確保を取りこぼすため、5秒まで詰めている。
       #
-      # --no-daemon を付ける。Gradleは既定でビルド後もデーモンのJVMを残すが、
-      # それがステップの標準出力を掴んだままだとランナーがジョブを終われない。
-      # run 34318939399 では BUILD SUCCESSFUL のあとリリースと配布まで済んだのに
-      # ジョブが終わらず、タイムアウトを待つことになった。CIの Build Android は
-      # gradle/actions/setup-gradle が後処理でデーモンを止めるため完走している。
-      # CIはジョブごとにランナーを捨てるので、デーモンを残す利点はない。
+      # デーモンの後始末は上の Setup Gradle に任せる。--no-daemon を試したが、
+      # run 34322694091 では BUILD SUCCESSFUL とアーティファクトのアップロードが
+      # 済んだあともジョブが終わらず、効果がなかった。ci.yml も付けていない。
       - name: Build Release APK
         run: |
           # 計測が失敗してもビルドを止めない。サブシェルで set +e にして、
@@ -172,7 +175,7 @@ jobs:
           sampler=$!
           trap 'kill "$sampler" 2>/dev/null || true' EXIT
 
-          cd android && ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
+          cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a
 
       # タグを打たない手動実行でも、成果物を取り出せるようにする
       - name: Upload APK as a workflow artifact
