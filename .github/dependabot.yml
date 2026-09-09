@@ -7,27 +7,58 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
-    target-branch: 'main'
     open-pull-requests-limit: 10
     schedule:
       interval: 'weekly'
+    # グループはマッチした最初のものが採用される。順序に意味がある。
     groups:
+      # React Nativeのテンプレート一式。互換セットとしてまとめる。
+      # このグループのPRはそのままマージしない。新しいバージョンが出たことに
+      # 気づくための通知として扱う。実際の更新は依存ライブラリの対応状況を確認し、
+      # Upgrade Helperとrn-diff-purgeを基準に android/ のテンプレート差分まで含めて
+      # 手作業で行う（AGENTS.md「React Native・依存関係の更新」を参照）。
+      update-react-native:
+        patterns:
+          - 'react-native'
+          - '@react-native/*'
+          - '@react-native-community/cli'
+          - '@react-native-community/cli-*'
+      # Reactとテスト用レンダラ、型定義はバージョンを揃える。
+      update-react:
+        patterns:
+          - 'react'
+          - 'react-test-renderer'
+          - '@types/react'
+          - '@types/react-test-renderer'
+      # babel-jest はbabelではなくjestのバージョンに追従するため、babelより前に置く。
+      update-jest:
+        patterns:
+          - 'jest'
+          - 'jest-*'
+          - '@jest/*'
+          - '@types/jest'
+          - 'babel-jest'
+          - 'ts-jest'
       update-redux:
         patterns:
           - '@reduxjs/toolkit'
           - 'redux'
           - 'redux-*'
+          - '@redux-saga/*'
           - 'react-redux'
           - 'reselect'
-      update-textlint:
-        patterns:
-          - 'textlint'
-          - 'textlint-*'
       update-babel:
         patterns:
           - 'babel'
           - '@babel/*'
           - 'babel-*'
+      update-react-navigation:
+        patterns:
+          - '@react-navigation/*'
+      # 上のグループに入らなかった残りの型定義。
+      update-types:
+        patterns:
+          - '@types/*'
     # React Native 0.87 は Babel 8 に対応していない。
     # @react-native/babel-preset が @babel/core ^7 を前提としており、8系にすると
     # テストが動かず、リリースのJSバンドルも作れなくなる。
@@ -38,6 +69,5 @@ updates:
           - 'version-update:semver-major'
   - package-ecosystem: 'github-actions'
     directory: '/'
-    target-branch: 'main'
     schedule:
       interval: 'monthly'
