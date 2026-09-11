@@ -3399,9 +3399,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@op-engineering/op-sqlite@npm:18.2.0":
-  version: 18.2.0
-  resolution: "@op-engineering/op-sqlite@npm:18.2.0"
+"@op-engineering/op-sqlite@npm:18.2.1":
+  version: 18.2.1
+  resolution: "@op-engineering/op-sqlite@npm:18.2.1"
   peerDependencies:
     "@sqlite.org/sqlite-wasm": "*"
     react: "*"
@@ -3409,7 +3409,7 @@ __metadata:
   peerDependenciesMeta:
     "@sqlite.org/sqlite-wasm":
       optional: true
-  checksum: 10c0/792fb2db2834a41295d6587fdab9eb2fd9762a5ce8a854b17f615357dfd9eb18a39f2cc9bbfc53d0ee3724bd9e1db25a943a9df543261e59c742855cba5c55cc
+  checksum: 10c0/d7b6bf0d1d4f0b9c67fa9485a0fae01e60161b9961f6e96b9d5febad4f57ee39cc9e6996134fa3a3257c2448e820a6bacc1a9470a6d0c26cd6ac53aabd8b7fc0
   languageName: node
   linkType: hard
 
@@ -8788,7 +8788,7 @@ __metadata:
     "@biomejs/biome": "npm:^2.5.12"
     "@jest/globals": "npm:^30.5.1"
     "@mitsuharu/react-native-sunmi-printer-library": "npm:^3.0.0"
-    "@op-engineering/op-sqlite": "npm:18.2.0"
+    "@op-engineering/op-sqlite": "npm:18.2.1"
     "@react-native-async-storage/async-storage": "npm:^3.1.1"
     "@react-native-community/cli": "npm:20.2.0"
     "@react-native-community/cli-platform-android": "npm:20.2.0"
