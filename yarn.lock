@@ -8839,7 +8839,7 @@ __metadata:
     react-native-safe-area-context: "npm:^5.9.1"
     react-native-screens: "npm:^4.27.0"
     react-native-swag-styles: "npm:^0.2.2"
-    react-native-toast-message: "npm:^2.5.0"
+    react-native-toast-message: "npm:^2.5.2"
     react-native-uuid: "npm:^2.0.4"
     react-native-vector-icons: "npm:^10.3.0"
     react-native-worklets: "npm:0.12.1"
@@ -9748,13 +9748,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-toast-message@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "react-native-toast-message@npm:2.5.0"
+"react-native-toast-message@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "react-native-toast-message@npm:2.5.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/6ec02b2a015679f9809bd7814a52e1b7adc945e86b2374370850dbeb6d0135c34e44c9ebf9f5ec4ff30f4015becfbd9067f03e1d8099209ab0f723622586f4a0
+  checksum: 10c0/e0f054efe16fb8f41abc937a6e6c66351fec55a11bf93c123c77534ca398c718653b6e46f9d62421c778e7611d68f91ef8fb8fb52afd72023e544b2d2294004e
   languageName: node
   linkType: hard
 
