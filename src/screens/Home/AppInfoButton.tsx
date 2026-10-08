@@ -25,7 +25,7 @@ export const AppInfoButton: React.FC<Props> = ({ onPress }) => {
     <Pressable
       style={styles.container}
       onPress={onPress}
-      accessibilityLabel="このアプリについて"
+      accessibilityLabel="About this app"
       accessibilityRole="button"
       hitSlop={8}
     >

@@ -37,8 +37,8 @@ import { PrintDataCell } from './PrintDataCell'
 type PrintDataAction = 'duplicate' | 'delete'
 
 const printDataActions: ListPickerItem<PrintDataAction>[] = [
-  { value: 'duplicate', title: '複製する' },
-  { value: 'delete', title: '削除する' },
+  { value: 'duplicate', title: 'Duplicate' },
+  { value: 'delete', title: 'Delete' },
 ]
 
 type Props = {}
@@ -76,24 +76,24 @@ const Component: React.FC<ComponentProps> = ({
   return (
     <>
       <SafeScrollView style={styles.scrollView}>
-        <Section title="汎用印刷">
+        <Section title="Quick print">
           <InputDialogCell
-            title="テキストを印刷する"
-            dialogTitle="テキスト印刷"
-            dialogDescription="印刷するテキストを入力してください"
+            title="Print text"
+            dialogTitle="Text printing"
+            dialogDescription="Enter the text to print"
             onSelectText={onPressText}
           />
           <Cell
-            title="その他"
+            title="More printing options"
             onPress={onNavigateToPrinter}
             accessory="disclosure"
           />
         </Section>
-        <Section title="レイアウト印刷">
+        <Section title="Layout printing">
           {printData.length === 0 ? (
             <Cell
-              title="印刷データがありません"
-              description="「レイアウトを管理する」から作成してください"
+              title="No print data"
+              description="Create print data from Manage layouts"
               inactive={true}
             />
           ) : (
@@ -109,10 +109,10 @@ const Component: React.FC<ComponentProps> = ({
             ))
           )}
         </Section>
-        <Section title="レイアウト印刷のオプション">
+        <Section title="Layout options">
           <Cell
-            title="レイアウトを管理する"
-            description="レイアウトの作成・編集と、印刷データの入力"
+            title="Manage layouts"
+            description="Create and edit layouts, and enter print data"
             icon={ICON.LAYOUT}
             onPress={onNavigateToLayoutList}
             accessory="disclosure"
@@ -123,7 +123,7 @@ const Component: React.FC<ComponentProps> = ({
       <ListPickerModal
         visible={!!actionTarget}
         title={actionTarget?.title ?? ''}
-        description="操作を選んでください"
+        description="Choose an action"
         items={printDataActions}
         onSelect={onSelectAction}
         onCancel={onCancelAction}
@@ -155,7 +155,7 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'モバイル印刷 for SUNMI',
+      title: 'Mobile Print for SUNMI',
       headerRight: () => <AppInfoButton onPress={onNavigateToAppInfo} />,
     })
   }, [navigation, onNavigateToAppInfo])
@@ -207,8 +207,8 @@ const Container: React.FC<Props> = (props) => {
 
         if (action === 'delete') {
           const confirmed = await AlertAsync(
-            '確認',
-            `「${value.title}」を削除しますか？`,
+            'Confirm',
+            `Delete ${value.title}?`,
             [
               { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
               { text: MESSAGE.YES, onPress: () => true },
@@ -220,7 +220,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onSelectAction', e)
-        dispatch(enqueueSnackbar({ message: `操作できませんでした` }))
+        dispatch(enqueueSnackbar({ message: 'Could not complete the action' }))
       }
     },
     [actionTarget, dispatch],

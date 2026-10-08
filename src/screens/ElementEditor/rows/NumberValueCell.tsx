@@ -45,7 +45,7 @@ export const NumberValueCell: React.FC<Props> = ({
       title={title}
       value={String(value)}
       displayValue={`${value}${unit ?? ''}`}
-      dialogDescription={`${min}〜${max} の数値を入力してください`}
+      dialogDescription={`Enter a number between ${min} and ${max}`}
       keyboardType="number-pad"
       onChange={onChangeText}
     />

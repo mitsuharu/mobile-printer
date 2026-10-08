@@ -46,7 +46,7 @@ export const ElementTypePickerModal: React.FC<Props> = ({
     >
       <View style={styles.container}>
         <View style={styles.modal}>
-          <Text style={styles.title}>要素の追加</Text>
+          <Text style={styles.title}>{'Add element'}</Text>
           <ScrollView style={styles.list}>
             {addableElementTypes.map((type) => (
               <Cell

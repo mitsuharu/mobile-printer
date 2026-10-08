@@ -62,7 +62,7 @@ const Component: React.FC<ComponentProps> = ({
   if (!layout) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>レイアウトが見つかりません</Text>
+        <Text style={styles.emptyText}>{'Layout not found'}</Text>
       </View>
     )
   }
@@ -71,21 +71,22 @@ const Component: React.FC<ComponentProps> = ({
     <>
       <SafeScrollView style={styles.scrollView}>
         <Text style={styles.description}>
-          入力項目は、印刷データごとに内容を変えたい箇所です。要素の「内容の決め方」で
-          「印刷データごとに入力する」を選ぶと、ここで作った入力項目を指定できます。
+          {
+            "Input fields contain values that can vary between print records. Select Use an input field under an element's Content source to use a field created here."
+          }
         </Text>
         <Section>
           <Cell
-            title="入力項目を追加する"
-            description="表示名・キー・入力の種類は、追加したあとに変更できます"
+            title="Add an input field"
+            description="You can change the display name, key and input type after adding a field"
             onPress={onPressAdd}
           />
         </Section>
         {layout.fields.length === 0 ? (
-          <Section title="入力項目">
+          <Section title="Input fields">
             <Cell
-              title="入力項目がありません"
-              description="上の「入力項目を追加する」から作成してください"
+              title="No input fields"
+              description="Tap Add an input field above to create one"
               inactive={true}
             />
           </Section>
@@ -96,7 +97,7 @@ const Component: React.FC<ComponentProps> = ({
               title={
                 isFieldReferenced(layout, field.id)
                   ? field.label || field.key
-                  : `${field.label || field.key}（未使用）`
+                  : `${field.label || field.key} (unused)`
               }
             >
               {/*
@@ -105,30 +106,30 @@ const Component: React.FC<ComponentProps> = ({
               */}
               {!isFieldReferenced(layout, field.id) && (
                 <Cell
-                  title="どの要素からも指定されていません"
-                  description="要素の「内容の決め方」で「印刷データごとに入力する」を選び、この項目を指定すると印刷に反映されます"
+                  title="No element references this field"
+                  description="Select Use an input field under an element's Content source and choose this field to include its value in the printout"
                   inactive={true}
                 />
               )}
               <TextValueCell
-                title="表示名"
+                title="Display name"
                 value={field.label}
                 onChange={(label) => onChangeField({ ...field, label })}
               />
               <TextValueCell
-                title="キー"
+                title="Key"
                 value={field.key}
-                dialogDescription="印刷データと結びつける識別子です"
+                dialogDescription="The identifier that links this field to print data"
                 onChange={(key) => onChangeField({ ...field, key })}
               />
               <PickerCell
-                title="入力の種類"
+                title="Input type"
                 value={field.valueType}
                 items={fieldValueTypeItems}
                 onChange={(valueType) => onChangeField({ ...field, valueType })}
               />
               <Cell
-                title="この入力項目を削除する"
+                title="Delete this input field"
                 onPress={() => onDeleteField(field)}
               />
             </Section>
@@ -137,8 +138,8 @@ const Component: React.FC<ComponentProps> = ({
       </SafeScrollView>
       <InputDialog
         isVisible={isDialogVisible}
-        title="入力項目の追加"
-        description="表示名を入力してください"
+        title="Add input field"
+        description="Enter a display name"
         onPress={onSubmitLabel}
         onCancel={onCancelDialog}
       />
@@ -160,7 +161,7 @@ const Container: React.FC<Props> = (props) => {
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: '入力項目' })
+    navigation.setOptions({ title: 'Input fields' })
   }, [navigation])
 
   const onChangeField = useCallback(
@@ -181,10 +182,10 @@ const Container: React.FC<Props> = (props) => {
       try {
         const referenced = isFieldReferenced(layout, field.id)
         const confirmed = await AlertAsync(
-          '確認',
+          'Confirm',
           referenced
-            ? `「${field.label || field.key}」を削除しますか？\nこの入力項目を使っている要素は、内容が空の固定値に戻ります。`
-            : `「${field.label || field.key}」を削除しますか？`,
+            ? `Delete ${field.label || field.key}?\nElements that use this field will switch to empty fixed content.`
+            : `Delete ${field.label || field.key}?`,
           [
             { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
             { text: MESSAGE.YES, onPress: () => true },
@@ -195,7 +196,9 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onDeleteField', e)
-        dispatch(enqueueSnackbar({ message: `入力項目を削除できませんでした` }))
+        dispatch(
+          enqueueSnackbar({ message: 'Could not delete the input field' }),
+        )
       }
     },
     [dispatch, layout],
@@ -216,7 +219,7 @@ const Container: React.FC<Props> = (props) => {
           upsertField(
             layout,
             createLayoutField({
-              label: trimmed || '入力項目',
+              label: trimmed || 'Input fields',
               key: trimmed || `field${layout.fields.length + 1}`,
             }),
           ),

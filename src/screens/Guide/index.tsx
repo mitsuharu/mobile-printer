@@ -42,7 +42,7 @@ const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: '使い方' })
+    navigation.setOptions({ title: 'User guide' })
   }, [navigation])
 
   return <Component {...props} {...{ sections: guideSections }} />

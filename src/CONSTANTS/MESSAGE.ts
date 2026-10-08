@@ -1,6 +1,6 @@
 export const MESSAGE = {
-  YES: 'はい',
-  NO: 'いいえ',
+  YES: 'Yes',
+  NO: 'No',
   OK: 'OK',
-  CANCEL: 'キャンセル',
+  CANCEL: 'Cancel',
 }

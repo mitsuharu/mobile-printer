@@ -12,75 +12,75 @@ export type GuideSection = {
 
 export const guideSections: GuideSection[] = [
   {
-    title: '印刷のしかたは2通りあります',
+    title: 'Two ways to print',
     body: [
-      '「汎用印刷」は、入力したテキストや選んだ画像をその場で印刷します。体裁は決まっていて、手早く1枚出したいときに向きます。',
+      'Quick print sends text you enter or an image you select straight to the printer. It uses a fixed format and is useful for printing a single receipt quickly.',
       '',
-      '「レイアウト印刷」は、あらかじめ作った体裁へ内容を流し込んで印刷します。名刺のように、同じ体裁で内容だけを変えたいときに使います。',
+      'Layout printing fills a saved layout with your content. Use it for business cards or other items that share a layout but have different content.',
     ].join('\n'),
   },
   {
-    title: 'レイアウト印刷の3つの言葉',
+    title: 'Three terms used in layout printing',
     body: [
-      'レイアウトは、印刷の体裁です。テキスト・画像・QRコード・列・区切り線・空白・印刷時刻を並べて組み立てます。',
+      'A layout defines the appearance of a printout. Arrange text, images, QR codes, columns, dividers, blank lines and print timestamps.',
       '',
-      '入力項目は、レイアウトの中で印刷データごとに内容を変えたい箇所です。名前やアイコン画像などが当たります。',
+      'An input field is a part of a layout whose content can vary between print records, such as a name or an avatar image.',
       '',
-      '印刷データは、入力項目へ実際に入れた内容のひとまとまりです。1つのレイアウトに何件でも作れます。',
+      'A print record contains the values entered into the input fields. You can create any number of print records for one layout.',
       '',
-      'レイアウトと印刷データは一覧の形が似ています。取り違えないよう、行の左にアイコンを添えています。枠のアイコンがレイアウト、紙のアイコンが印刷データです。',
+      'Layouts and print records look similar in lists. The icon on the left distinguishes them: a frame represents a layout, and a sheet of paper represents a print record.',
     ].join('\n'),
   },
   {
-    title: '印刷する',
+    title: 'Print',
     body: [
-      'ホームの「レイアウト印刷」に印刷データが並びます。タップするとそのまま印刷します。',
+      'Print records appear under Layout printing on the home screen. Tap a record to print it.',
       '',
-      '右の鉛筆から、入力した内容を直せます。',
+      'Tap the pencil on the right to edit the values you entered.',
     ].join('\n'),
   },
   {
-    title: 'レイアウトを作る',
+    title: 'Create a layout',
     body: [
-      'ホームの「レイアウトを管理する」へ進みます。',
+      'Open Manage layouts from the home screen.',
       '',
-      '「レイアウトを追加する」で新しく作ります。一覧のセルを長押しすると、複製と削除ができます。',
+      'Tap Add a layout to create one. Press and hold a row in the list to duplicate or delete it.',
     ].join('\n'),
   },
   {
-    title: '要素を並べる',
+    title: 'Arrange elements',
     body: [
-      'レイアウトを開くと、印刷する順に要素が並びます。右のハンドルをドラッグすると順番を変えられます。',
+      'Open a layout to see its elements in print order. Drag the handle on the right to reorder them.',
       '',
-      '「要素を追加する」で足し、要素をタップすると文字の大きさや寄せなどを変えられます。',
+      'Tap Add an element to add one. Tap an element to change its font size, alignment and other settings.',
     ].join('\n'),
   },
   {
-    title: '内容の決め方',
+    title: 'Content source',
     body: [
-      '要素には「決まった内容をそのまま印刷する」か「印刷データごとに入力する」かを選べます。',
+      'For each element, choose fixed content or an input field as its content source.',
       '',
-      '後者を選ぶと、どの入力項目を使うかを指定します。入力項目が足りなければ、その一覧の末尾から追加できます。レイアウトの画面の「入力項目」からも追加できます。',
+      'When using an input field, select which field supplies the content. If you need another field, add one at the end of the picker or from Input fields on the layout screen.',
       '',
-      '前者へ戻しても入力項目はレイアウトに残ります。どの要素からも指定されていない入力項目は「未使用」と出ます。',
+      'Switching back to fixed content leaves the input field in the layout. Fields that no element references are marked as unused.',
     ].join('\n'),
   },
   {
-    title: '印刷データを入れる',
+    title: 'Enter print data',
     body: [
-      'レイアウトの画面の「印刷データ」へ進み、入力項目へ内容を入れます。一覧のセルを長押しすると、印刷・複製・削除ができます。',
+      'Open Print data from the layout screen and enter values into the input fields. Press and hold a record in the list to print, duplicate or delete it.',
       '',
-      '値を入れなかった項目は、要素の「内容が空なら印刷しない」が入になっていれば行ごと出ません。',
+      'If Skip this element when empty is enabled, an element with no value will not appear on the printout.',
       '',
-      '並ぶのは、要素から指定されている入力項目だけです。どの要素からも指定されていない項目は「このレイアウトで使っていない項目」にまとめ、入力できないようにしています。入れた値は残るため、要素から指定し直せば元の内容のまま印刷されます。',
+      'Only fields referenced by an element can be edited. Other fields are grouped under Fields not used by this layout. Their saved values are preserved and become available again if an element references the field.',
     ].join('\n'),
   },
   {
-    title: '印刷イメージで確かめる',
+    title: 'Check the print preview',
     body: [
-      'レイアウトの画面の「印刷イメージを見る」で、紙に出す前におおよその見た目を確認できます。',
+      'Tap Print preview on the layout screen to check the approximate appearance before printing.',
       '',
-      'これは画面上のイメージです。実際の印刷結果とは、文字の形や行の詰まり方が異なることがあります。',
+      'This is an on-screen preview. Fonts and line spacing may differ on the actual printout.',
     ].join('\n'),
   },
 ]

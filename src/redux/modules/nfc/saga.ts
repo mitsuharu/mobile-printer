@@ -42,8 +42,8 @@ function* requestIsEnabledSaga() {
     if (!isEnabled) {
       const result: boolean = yield call(
         AlertAsync,
-        '端末の設定から NFC を有効にしてください',
-        `設定画面に移動しますか？\n\n[注意] NFCをサポートしていないモデルもあります。ご利用の機種を確認してください。`,
+        'Enable NFC in the device settings',
+        'Open settings?\n\nSome models do not support NFC. Check whether your device supports it.',
         [
           { text: MESSAGE.NO, onPress: () => false },
           { text: MESSAGE.YES, onPress: () => true },
@@ -96,8 +96,8 @@ function* printNfcTextSaga(message: string) {
   try {
     const result: boolean = yield call(
       AlertAsync,
-      'NFCタグの確認',
-      `「${message}」の内容で複製しますか？`,
+      'Confirm NFC tag',
+      `Copy this content: ${message}?`,
       [
         { text: MESSAGE.NO, onPress: () => false },
         { text: MESSAGE.YES, onPress: () => true },

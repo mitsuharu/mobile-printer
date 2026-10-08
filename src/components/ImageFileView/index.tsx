@@ -76,7 +76,7 @@ const Container: React.FC<Props> = (props) => {
       }
     } catch (e: any) {
       console.warn('ImageFileView', e)
-      dispatch(enqueueSnackbar({ message: `画像を選べませんでした` }))
+      dispatch(enqueueSnackbar({ message: 'Could not select an image' }))
     }
   }, [dispatch, onChange])
 

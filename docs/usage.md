@@ -1,141 +1,66 @@
-# 使い方
+# Mobile Print for SUNMI — User guide
 
-SUNMI端末のプリンターで印刷するアプリです。この文書は 1.0.0 時点の画面をもとにしています。
+This English edition translates the interface of mitsuharu/mobile-printer 1.0.2. Existing layout names, field labels and saved content are your data and are not translated automatically.
 
-アプリ内でも同じ内容を読めます。ホーム右上の (i) から「このアプリについて」→「このアプリの使い方」です。
+## Quick print controls
 
-## 目次
+- **Print text**: enter text, then tap **Yes**. If the first tap only dismisses the keyboard, tap Yes again.
+- **More printing options → Print image in black and white**: select an image from device storage.
+- **More printing options → Print image in grayscale**: select an image for grayscale conversion.
+- **Print QR code**: enter the text or address to encode.
 
-- [印刷のしかたは2通りあります](#印刷のしかたは2通りあります)
-- [レイアウト印刷の3つの言葉](#レイアウト印刷の3つの言葉)
-- [印刷する](#印刷する)
-- [レイアウトを作る](#レイアウトを作る)
-- [要素を並べる](#要素を並べる)
-- [内容の決め方](#内容の決め方)
-- [入力項目](#入力項目)
-- [印刷データを入れる](#印刷データを入れる)
-- [印刷イメージで確かめる](#印刷イメージで確かめる)
-- [このアプリについて](#このアプリについて)
+## Two ways to print
 
-## 印刷のしかたは2通りあります
+Quick print sends text you enter or an image you select straight to the printer. It uses a fixed format and is useful for printing a single receipt quickly.
 
-<img src="images/home.png" width="320" alt="ホーム画面" />
+Layout printing fills a saved layout with your content. Use it for business cards or other items that share a layout but have different content.
 
-**汎用印刷** は、入力したテキストや選んだ画像をその場で印刷します。体裁は決まっていて、手早く1枚出したいときに向きます。「テキストを印刷する」のほか、「その他」から画像・QRコード・NFCタグの複製ができます。
+## Three terms used in layout printing
 
-<img src="images/text-dialog.png" width="320" alt="テキスト印刷の入力" />
+A layout defines the appearance of a printout. Arrange text, images, QR codes, columns, dividers, blank lines and print timestamps.
 
-**レイアウト印刷** は、あらかじめ作った体裁へ内容を流し込んで印刷します。名刺のように、同じ体裁で内容だけを変えたいときに使います。
+An input field is a part of a layout whose content can vary between print records, such as a name or an avatar image.
 
-## レイアウト印刷の3つの言葉
+A print record contains the values entered into the input fields. You can create any number of print records for one layout.
 
-| 言葉 | 意味 |
-| --- | --- |
-| レイアウト | 印刷の体裁。テキスト・画像・QRコード・列・区切り線・空白・印刷時刻を並べて組み立てます |
-| 入力項目 | レイアウトのうち、印刷データごとに内容を変えたい箇所。名前やアイコン画像など |
-| 印刷データ | 入力項目へ実際に入れた内容のひとまとまり。1つのレイアウトに何件でも作れます |
+Layouts and print records look similar in lists. The icon on the left distinguishes them: a frame represents a layout, and a sheet of paper represents a print record.
 
-レイアウトと印刷データは一覧の形が似ています。取り違えないよう、行の左にアイコンを添えています。枠のアイコンがレイアウト、紙のアイコンが印刷データです。
+## Print
 
-初回起動時に、名刺レイアウトが2種類と、それぞれの印刷データが入っています。
+Print records appear under Layout printing on the home screen. Tap a record to print it.
 
-| レイアウト | 体裁 | 印刷データ |
-| --- | --- | --- |
-| 名刺 | 所属（会社名・職種など・アドレス）を載せます。アイコン画像はグレースケールで印刷します | サンプル |
-| 名刺（シンプル） | 所属を載せません。アイコン画像は白黒で印刷します | 開発者紹介 |
+Tap the pencil on the right to edit the values you entered.
 
-どちらもSNSの上下を罫線で区切ります。複製して手を入れれば、自分の名刺を作れます。
+## Create a layout
 
-## 印刷する
+Open Manage layouts from the home screen.
 
-ホームの「レイアウト印刷」に印刷データが並びます。タップするとそのまま印刷します。右の鉛筆から、入力した内容を直せます。
+Tap Add a layout to create one. Press and hold a row in the list to duplicate or delete it.
 
-印刷するたびにレイアウトをたどらなくて済むよう、印刷と編集の両方をホームから届く位置に置いています。
+## Arrange elements
 
-## レイアウトを作る
+Open a layout to see its elements in print order. Drag the handle on the right to reorder them.
 
-ホームの「レイアウトを管理する」へ進みます。
+Tap Add an element to add one. Tap an element to change its font size, alignment and other settings.
 
-<img src="images/layout-list.png" width="320" alt="レイアウト一覧" />
+## Content source
 
-「レイアウトを追加する」で新しく作ります。一覧のセルを長押しすると、複製と削除ができます。既存のレイアウトを複製して手を入れるのが手軽です。
+For each element, choose fixed content or an input field as its content source.
 
-## 要素を並べる
+When using an input field, select which field supplies the content. If you need another field, add one at the end of the picker or from Input fields on the layout screen.
 
-レイアウトを開くと、印刷する順に要素が並びます。
+Switching back to fixed content leaves the input field in the layout. Fields that no element references are marked as unused.
 
-<img src="images/layout-editor.png" width="320" alt="レイアウトの要素一覧" />
+## Enter print data
 
-右のハンドルをドラッグすると順番を変えられます。「要素を追加する」で足せる要素は次のとおりです。
+Open Print data from the layout screen and enter values into the input fields. Press and hold a record in the list to print, duplicate or delete it.
 
-| 要素 | 印刷されるもの |
-| --- | --- |
-| テキスト | 文字。大きさ・寄せ・太字・下線を選べます |
-| 画像 | 端末内のライブラリから選んだ画像。白黒かグレースケールを選べます |
-| QRコード | 文字列を変換したQRコード |
-| 列 | ラベルと値のように、1行を左右に分けて並べたもの |
-| 区切り線 | 用紙幅いっぱいの線。線の種類を選べます |
-| 空白 | 指定した行数の空行 |
-| 印刷時刻 | 印刷した日時。書式を指定できます |
+If Skip this element when empty is enabled, an element with no value will not appear on the printout.
 
-要素をタップすると体裁を変えられます。
+Only fields referenced by an element can be edited. Other fields are grouped under Fields not used by this layout. Their saved values are preserved and become available again if an element references the field.
 
-<img src="images/element-editor.png" width="320" alt="要素の編集" />
+## Check the print preview
 
-「内容が空なら印刷しない」を入にしておくと、値を入れなかった項目は行ごと出ません。項目の有無で紙の長さを変えたいときに使います。
+Tap Print preview on the layout screen to check the approximate appearance before printing.
 
-## 内容の決め方
-
-要素には「決まった内容をそのまま印刷する」か「印刷データごとに入力する」かを選べます。
-
-前者は、どの印刷データでも同じ文字を出したいとき（見出しやラベルなど）に使います。後者を選ぶと、どの入力項目を使うかを指定します。
-
-「印刷データごとに入力する」から「決まった内容をそのまま印刷する」へ戻しても、入力項目そのものはレイアウトに残ります。どの要素からも指定されていない入力項目は「未使用」と表示され、印刷データの入力欄には現れません。
-
-## 入力項目
-
-レイアウトの画面の「入力項目」から、表示名・キー・入力の種類を編集できます。
-
-<img src="images/layout-fields.png" width="320" alt="入力項目" />
-
-要素の入力項目を選ぶ一覧の末尾からも追加できます。要素を作る流れの途中で項目が足りないと気付いたとき、画面を戻らずに済みます。
-
-入力の種類は、テキスト・複数行テキスト・URL・画像から選びます。印刷データの入力欄がこれに合わせて変わります。
-
-## 印刷データを入れる
-
-レイアウトの画面の「印刷データ」へ進みます。
-
-<img src="images/print-data-list.png" width="320" alt="印刷データ一覧" />
-
-一覧のセルを長押しすると、印刷・複製・削除ができます。
-
-印刷データを開くと、入力項目が並びます。
-
-<img src="images/print-data-form.png" width="320" alt="印刷データの入力" />
-
-印刷データ名は、ホームの一覧に出る名前です。ここで入れた内容は、同じレイアウトを使うほかの印刷データには影響しません。
-
-並ぶのは、要素から指定されている入力項目だけです。どの要素からも指定されていない項目は「このレイアウトで使っていない項目」としてまとめ、入力できないようにしています。入力しても印刷が変わらないためです。入れた値はそのまま残るので、要素から指定し直せば元の内容のまま印刷されます。
-
-## 印刷イメージで確かめる
-
-レイアウトの画面の「印刷イメージを見る」で、紙に出す前におおよその見た目を確認できます。
-
-<img src="images/preview.png" width="320" alt="印刷イメージ" />
-
-これは画面上のイメージです。実際の印刷結果とは、文字の形や行の詰まり方が異なることがあります。用紙幅にあたる 384px で描いています。
-
-## このアプリについて
-
-ホーム右上の (i) から開きます。
-
-<img src="images/app-info.png" width="320" alt="このアプリについて" />
-
-使い方、アプリのバージョン、同梱しているOSSのライセンス、ソースコードと不具合報告へのリンクが並びます。
-
-エラーの表示が出たときや、うまく動かないところを見つけたときは、「不具合を報告する」から [GitHubのIssue](https://github.com/mitsuharu/mobile-printer/issues) でお知らせください。
-
-「このアプリの使い方」は、この文書と同じ内容をアプリの中で読めるようにしたものです。
-
-<img src="images/guide.png" width="320" alt="使い方" />
+This is an on-screen preview. Fonts and line spacing may differ on the actual printout.

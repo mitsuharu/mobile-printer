@@ -31,9 +31,7 @@ export function* printLayoutSaga({ payload }: ReturnType<typeof printLayout>) {
     const layouts: Layout[] = yield select(selectLayouts)
     const layout = layouts.find(({ id }) => id === payload.layoutId)
     if (!layout) {
-      yield put(
-        enqueueSnackbar({ message: `レイアウトが見つかりませんでした` }),
-      )
+      yield put(enqueueSnackbar({ message: 'Layout not found' }))
       return
     }
 
@@ -42,9 +40,7 @@ export function* printLayoutSaga({ payload }: ReturnType<typeof printLayout>) {
       const values: PrintData[] = yield select(selectAllPrintData)
       printData = values.find(({ id }) => id === payload.printDataId)
       if (!printData) {
-        yield put(
-          enqueueSnackbar({ message: `印刷データが見つかりませんでした` }),
-        )
+        yield put(enqueueSnackbar({ message: 'Print data not found' }))
         return
       }
     }
@@ -55,7 +51,7 @@ export function* printLayoutSaga({ payload }: ReturnType<typeof printLayout>) {
       printData,
     )
     if (commands.length === 0) {
-      yield put(enqueueSnackbar({ message: `印刷する内容がありません` }))
+      yield put(enqueueSnackbar({ message: 'There is nothing to print' }))
       return
     }
 
@@ -66,12 +62,12 @@ export function* printLayoutSaga({ payload }: ReturnType<typeof printLayout>) {
     if (isTimeout) {
       yield put(
         enqueueSnackbar({
-          message: `印刷が終わりませんでした。プリンターの状態を確認してください`,
+          message: 'Printing did not finish. Check the printer status.',
         }),
       )
     }
   } catch (e: any) {
     console.warn('printLayoutSaga', e)
-    yield put(enqueueSnackbar({ message: `印刷に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Printing failed' }))
   }
 }

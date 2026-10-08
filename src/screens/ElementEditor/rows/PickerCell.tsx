@@ -47,7 +47,7 @@ export const PickerCell = <T,>({
       <Cell
         title={title}
         description={
-          items.find((item) => item.value === value)?.title ?? '（未設定）'
+          items.find((item) => item.value === value)?.title ?? '(not set)'
         }
         onPress={() => setIsVisible(true)}
       />

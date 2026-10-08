@@ -72,9 +72,9 @@ const imagePathOf = (value: PrintDataValue | undefined) =>
  */
 const describeValue = (value: PrintDataValue | undefined) => {
   if (value?.kind === 'image') {
-    return '画像あり'
+    return 'Image selected'
   }
-  return value?.value || '未入力'
+  return value?.value || 'Empty'
 }
 
 const Component: React.FC<ComponentProps> = ({
@@ -95,39 +95,39 @@ const Component: React.FC<ComponentProps> = ({
   if (!layout || !printData) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>印刷データが見つかりません</Text>
+        <Text style={styles.emptyText}>{'Print data not found'}</Text>
       </View>
     )
   }
 
   return (
     <SafeScrollView style={styles.scrollView}>
-      <Section title="印刷データ">
+      <Section title="Print data">
         {/*
           入力項目にも「名前」が並ぶため、ここは「印刷データ名」と呼び分ける
         */}
         <TextValueCell
-          title="印刷データ名"
+          title="Print record name"
           value={printData.title}
-          dialogDescription="一覧に表示する名前です"
+          dialogDescription="The name shown in the list"
           onChange={onChangeTitle}
         />
       </Section>
 
       {usedFields.length === 0 ? (
-        <Section title="入力">
+        <Section title="Input">
           <Cell
-            title="入力する項目がありません"
+            title="No fields to fill in"
             description={
               layout.fields.length === 0
-                ? 'レイアウトの「入力項目」を追加すると、ここに入力欄が現れます'
-                : '入力項目はありますが、どの要素からも指定されていません'
+                ? 'Add input fields to the layout to make them appear here'
+                : 'Input fields exist, but no element references them'
             }
             inactive={true}
           />
         </Section>
       ) : (
-        <Section title="入力">
+        <Section title="Input">
           {usedFields.map((field) =>
             field.valueType === 'image' ? (
               <View key={field.id} style={styles.imageRow}>
@@ -156,15 +156,15 @@ const Component: React.FC<ComponentProps> = ({
       )}
 
       {unusedFields.length > 0 && (
-        <Section title="このレイアウトで使っていない項目">
+        <Section title="Fields not used by this layout">
           {/*
             要素の「内容の決め方」を「レイアウトに直接書く」へ変えても、入力項目は
             レイアウトに残る。そのまま入力欄として並べると、入力したのに印刷が
             変わらない。値は消さずに残したまま、入力させずに理由を添える。
           */}
           <Cell
-            title="入力しても印刷には出ません"
-            description="レイアウトの要素で「内容の決め方」を「印刷データごとに入力する」にして、この項目を指定すると反映されます"
+            title="These values will not appear on the printout"
+            description="Select Use an input field under an element's Content source and choose this field to include its value"
             inactive={true}
           />
           {unusedFields.map((field) => (
@@ -178,21 +178,21 @@ const Component: React.FC<ComponentProps> = ({
         </Section>
       )}
 
-      <Section title="操作">
-        <Cell title="この内容で印刷する" onPress={onPressPrint} />
+      <Section title="Actions">
+        <Cell title="Print this record" onPress={onPressPrint} />
         <Cell
-          title="印刷イメージを見る"
+          title="Print preview"
           onPress={onPressPreview}
           accessory="disclosure"
         />
         <Cell
-          title="レイアウトを編集する"
+          title="Edit layout"
           description={layout.name}
           icon={ICON.LAYOUT}
           onPress={onPressLayout}
           accessory="disclosure"
         />
-        <Cell title="この印刷データを削除する" onPress={onPressDelete} />
+        <Cell title="Delete this print record" onPress={onPressDelete} />
       </Section>
     </SafeScrollView>
   )
@@ -229,7 +229,7 @@ const Container: React.FC<Props> = (props) => {
   )
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: printData?.title ?? '印刷データ' })
+    navigation.setOptions({ title: printData?.title ?? 'Print data' })
   }, [navigation, printData?.title])
 
   const onChangeTitle = useCallback(
@@ -274,7 +274,7 @@ const Container: React.FC<Props> = (props) => {
         })
       } catch (e: any) {
         console.warn('onChangeImage', e)
-        dispatch(enqueueSnackbar({ message: `画像を取り込めませんでした` }))
+        dispatch(enqueueSnackbar({ message: 'Could not import the image' }))
       }
     },
     [dispatch, onChangeValue],
@@ -298,8 +298,8 @@ const Container: React.FC<Props> = (props) => {
     }
     try {
       const confirmed = await AlertAsync(
-        '確認',
-        `「${printData.title}」を削除しますか？`,
+        'Confirm',
+        `Delete ${printData.title}?`,
         [
           { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
           { text: MESSAGE.YES, onPress: () => true },
@@ -311,7 +311,7 @@ const Container: React.FC<Props> = (props) => {
       }
     } catch (e: any) {
       console.warn('onPressDelete', e)
-      dispatch(enqueueSnackbar({ message: `削除できませんでした` }))
+      dispatch(enqueueSnackbar({ message: 'Could not delete' }))
     }
   }, [dispatch, navigation, printData])
 

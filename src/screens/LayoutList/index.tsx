@@ -52,11 +52,11 @@ const Component: React.FC<ComponentProps> = ({
   return (
     <>
       <SafeScrollView style={styles.scrollView}>
-        <Section title="レイアウト">
+        <Section title="Layout">
           {layouts.length === 0 ? (
             <Cell
-              title="レイアウトがありません"
-              description="下の「レイアウトを追加する」から作成してください"
+              title="No layouts"
+              description="Tap Add a layout below to create one"
               inactive={true}
             />
           ) : (
@@ -64,7 +64,7 @@ const Component: React.FC<ComponentProps> = ({
               <Cell
                 key={layout.id}
                 title={layout.name}
-                description={`要素${layout.elements.length}個・${formatDateTime(layout.updatedAt)}`}
+                description={`${layout.elements.length} elements - ${formatDateTime(layout.updatedAt)}`}
                 icon={ICON.LAYOUT}
                 accessory="disclosure"
                 onPress={() => onPressLayout(layout)}
@@ -73,10 +73,10 @@ const Component: React.FC<ComponentProps> = ({
             ))
           )}
         </Section>
-        <Section title="操作">
+        <Section title="Actions">
           <Cell
-            title="レイアウトを追加する"
-            description="セルを長押しすると複製と削除ができます"
+            title="Add a layout"
+            description="Press and hold a row to duplicate or delete it"
             onPress={onPressAdd}
           />
         </Section>
@@ -84,8 +84,8 @@ const Component: React.FC<ComponentProps> = ({
       <LoadingSpinner isLoading={isLoading} />
       <InputDialog
         isVisible={isDialogVisible}
-        title="レイアウトの追加"
-        description="レイアウトの名前を入力してください"
+        title="Add layout"
+        description="Enter a layout name"
         onPress={onSubmitName}
         onCancel={onCancelDialog}
       />
@@ -103,7 +103,7 @@ const Container: React.FC<Props> = (props) => {
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false)
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: 'レイアウト' })
+    navigation.setOptions({ title: 'Layout' })
   }, [navigation])
 
   const onPressLayout = useCallback(
@@ -116,9 +116,9 @@ const Container: React.FC<Props> = (props) => {
   const onLongPressLayout = useCallback(
     async (layout: Layout) => {
       try {
-        const action = await AlertAsync(layout.name, '操作を選んでください', [
-          { text: '複製する', onPress: () => 'duplicate' },
-          { text: '削除する', onPress: () => 'delete', style: 'destructive' },
+        const action = await AlertAsync(layout.name, 'Choose an action', [
+          { text: 'Duplicate', onPress: () => 'duplicate' },
+          { text: 'Delete', onPress: () => 'delete', style: 'destructive' },
           { text: MESSAGE.CANCEL, onPress: () => undefined, style: 'cancel' },
         ])
 
@@ -129,8 +129,8 @@ const Container: React.FC<Props> = (props) => {
 
         if (action === 'delete') {
           const confirmed = await AlertAsync(
-            '確認',
-            `「${layout.name}」を削除しますか？\nこのレイアウトの印刷データも消えます。`,
+            'Confirm',
+            `Delete ${layout.name}?\nPrint data for this layout will also be deleted.`,
             [
               { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
               { text: MESSAGE.YES, onPress: () => true },
@@ -142,7 +142,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onLongPressLayout', e)
-        dispatch(enqueueSnackbar({ message: `操作できませんでした` }))
+        dispatch(enqueueSnackbar({ message: 'Could not complete the action' }))
       }
     },
     [dispatch],
@@ -155,7 +155,7 @@ const Container: React.FC<Props> = (props) => {
   const onSubmitName = useCallback(
     (name: string) => {
       setIsDialogVisible(false)
-      dispatch(saveLayout(createLayout(name.trim() || '新しいレイアウト')))
+      dispatch(saveLayout(createLayout(name.trim() || 'New layout')))
     },
     [dispatch],
   )

@@ -61,7 +61,7 @@ export const TextValueCell: React.FC<Props> = ({
       <Cell
         title={title}
         description={
-          value === '' ? (placeholder ?? '（未設定）') : (displayValue ?? value)
+          value === '' ? (placeholder ?? '(not set)') : (displayValue ?? value)
         }
         onPress={onPress}
       />

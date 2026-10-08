@@ -65,7 +65,7 @@ describe('printDataSaga fetchPrintData', () => {
           },
         },
       ])
-      .put(enqueueSnackbar({ message: '印刷データの読み込みに失敗しました' }))
+      .put(enqueueSnackbar({ message: 'Could not load print data' }))
       .put(assignIsLoading(false))
       .dispatch(fetchPrintData())
       .silentRun())
@@ -122,7 +122,7 @@ describe('printDataSaga duplicatePrintData', () => {
       .silentRun()
       .then(() => {
         const saved = save.mock.calls[0][0] as PrintData
-        expect(saved.title).toBe('織田信長のコピー')
+        expect(saved.title).toBe('織田信長 (copy)')
         expect(saved.id).not.toBe(printData.id)
         expect(saved.values).toEqual(printData.values)
         expect(saved.layoutId).toBe(printData.layoutId)

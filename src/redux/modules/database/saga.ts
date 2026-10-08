@@ -26,7 +26,7 @@ export function* databaseSaga() {
     yield put(assignIsReady(false))
     yield put(
       enqueueSnackbar({
-        message: `データの読み込みに失敗しました`,
+        message: 'Could not load data',
       }),
     )
   }

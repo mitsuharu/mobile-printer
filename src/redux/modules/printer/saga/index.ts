@@ -42,7 +42,7 @@ function* printInitSaga() {
     if (isSimulator) {
       yield put(
         enqueueSnackbar({
-          message: `シミュレーターなので印刷できません`,
+          message: 'Printing is unavailable in an emulator',
         }),
       )
       return
@@ -52,7 +52,7 @@ function* printInitSaga() {
     if (!brand.toLocaleLowerCase().includes('sunmi')) {
       yield put(
         enqueueSnackbar({
-          message: `SUNMI端末を使用してください`,
+          message: 'Use a SUNMI device',
         }),
       )
       return
@@ -66,7 +66,7 @@ function* printInitSaga() {
     yield put(assignIsPrintable(false))
     yield put(
       enqueueSnackbar({
-        message: `プリンターの接続に失敗しました`,
+        message: 'Could not connect to the printer',
       }),
     )
   }

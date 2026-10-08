@@ -45,7 +45,7 @@ export const ElementCell: React.FC<Props> = ({ element, layout, onPress }) => {
       <Pressable
         style={styles.handle}
         onPressIn={drag}
-        accessibilityLabel="並べ替え"
+        accessibilityLabel="Reorder"
         accessibilityRole="button"
       >
         <Icon name="drag-handle" size={24} style={styles.handleIcon} />

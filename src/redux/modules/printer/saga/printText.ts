@@ -20,7 +20,7 @@ export function* printTextSaga({ payload }: ReturnType<typeof printText>) {
     console.warn('printSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `印刷に失敗しました`,
+        message: 'Printing failed',
       }),
     )
   }

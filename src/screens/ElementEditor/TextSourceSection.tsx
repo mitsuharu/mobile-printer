@@ -37,7 +37,7 @@ export const TextSourceSection: React.FC<Props> = ({
       setIsDialogVisible(false)
       const trimmed = label.trim()
       const field = createLayoutField({
-        label: trimmed || '入力項目',
+        label: trimmed || 'Input fields',
         key: trimmed || `field${layout.fields.length + 1}`,
       })
       onChange({ kind: 'field', fieldId: field.id }, field)
@@ -68,34 +68,34 @@ export const TextSourceSection: React.FC<Props> = ({
   return (
     <Section title={title}>
       <PickerCell
-        title="内容の決め方"
+        title="Content source"
         value={source.kind}
         items={[
           {
             value: 'static' as SourceKind,
-            title: 'レイアウトに直接書く',
-            description: 'どの印刷データでも同じ内容になります',
+            title: 'Use fixed text',
+            description: 'Use the same text for every print record',
           },
           {
             value: 'field' as SourceKind,
-            title: '印刷データごとに入力する',
-            description: '印刷データごとに内容を変えられます',
+            title: 'Use an input field',
+            description: 'Enter different content for each print record',
           },
         ]}
         onChange={onChangeKind}
       />
       {source.kind === 'static' ? (
         <TextValueCell
-          title="内容"
+          title="Content"
           value={source.value}
-          dialogDescription="改行して複数行にできます"
+          dialogDescription="Use line breaks for multiline text"
           multiline={true}
           onChange={(value) => onChange({ kind: 'static', value })}
         />
       ) : (
         <PickerCell
-          title="入力項目"
-          description="印刷データごとに入力する箇所です"
+          title="Input fields"
+          description="Fields whose content can vary between print records"
           value={source.fieldId}
           items={layout.fields.map((field) => ({
             value: field.id,
@@ -103,8 +103,8 @@ export const TextSourceSection: React.FC<Props> = ({
             description: field.key,
           }))}
           action={{
-            title: '入力項目を追加する',
-            description: 'このレイアウトに新しい入力欄を作ります',
+            title: 'Add an input field',
+            description: 'Create a new input field in this layout',
             onPress: () => setIsDialogVisible(true),
           }}
           onChange={(fieldId) => onChange({ kind: 'field', fieldId })}
@@ -112,8 +112,8 @@ export const TextSourceSection: React.FC<Props> = ({
       )}
       <InputDialog
         isVisible={isDialogVisible}
-        title="入力項目の追加"
-        description="表示名を入力してください"
+        title="Add input field"
+        description="Enter a display name"
         onPress={onSubmitNewField}
         onCancel={() => setIsDialogVisible(false)}
       />

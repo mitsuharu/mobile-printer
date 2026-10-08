@@ -11,7 +11,7 @@ import type { NavigationAction } from '@react-navigation/native'
 export const describeUnhandledAction = (action: NavigationAction): string => {
   const name = (action.payload as { name?: unknown } | undefined)?.name
   if (typeof name === 'string' && name !== '') {
-    return `画面を開けませんでした（${name}）`
+    return `Could not open screen (${name})`
   }
-  return `画面を移動できませんでした（${action.type}）`
+  return `Could not navigate (${action.type})`
 }

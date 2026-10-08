@@ -70,9 +70,9 @@ const Container: React.FC<Props> = (props) => {
     dispatch(stopReadingNfc())
   }, [dispatch])
 
-  const title = 'NFCタグの読込み'
+  const title = 'Read NFC tag'
 
-  const description = 'NFCタグを端末に近づけてください'
+  const description = 'Hold an NFC tag near the device'
 
   return (
     <Component

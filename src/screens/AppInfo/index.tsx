@@ -42,36 +42,36 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <SafeScrollView style={styles.scrollView}>
-      <Section title="使い方">
+      <Section title="User guide">
         <Cell
-          title="このアプリの使い方"
-          description="汎用印刷とレイアウト印刷の違い、レイアウトの作り方"
+          title="How to use this app"
+          description="Quick printing, layout printing and creating layouts"
           accessory="disclosure"
           onPress={onPressGuide}
         />
       </Section>
-      <Section title="アプリ">
-        <Cell title="名前" description={appName} />
-        <Cell title="バージョン" description={version} />
+      <Section title="App">
+        <Cell title="Name" description={appName} />
+        <Cell title="Version" description={version} />
       </Section>
-      <Section title="オープンソースライセンス">
+      <Section title="Open-source licenses">
         <Cell
-          title="使用しているソフトウェア"
-          description={`${licenseCount}個のパッケージ`}
+          title="Software used by this app"
+          description={`${licenseCount} packages`}
           accessory="disclosure"
           onPress={onPressLicenses}
         />
       </Section>
-      <Section title="リンク">
+      <Section title="Links">
         <Cell
-          title="ソースコード"
+          title="Source code"
           description="mitsuharu/mobile-printer"
           accessory="link"
           onPress={onPressRepository}
         />
         <Cell
-          title="不具合を報告する"
-          description="エラーの表示や、うまく動かないところがあれば、GitHubのIssueでお知らせください"
+          title="Report an issue"
+          description="Report errors or unexpected behavior through GitHub Issues"
           accessory="link"
           onPress={onPressIssues}
         />
@@ -89,7 +89,7 @@ const Container: React.FC<Props> = (props) => {
   const licenseCount = useMemo(() => ossLicenses.length, [])
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: 'このアプリについて' })
+    navigation.setOptions({ title: 'About this app' })
   }, [navigation])
 
   const onPressGuide = useCallback(() => {

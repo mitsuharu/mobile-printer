@@ -10,13 +10,13 @@ describe('describeUnhandledAction', () => {
       describeUnhandledAction(
         action({ type: 'NAVIGATE', payload: { name: 'LayoutList' } }),
       ),
-    ).toBe('画面を開けませんでした（LayoutList）')
+    ).toBe('Could not open screen (LayoutList)')
   })
 
   it('画面名がなければ操作の種類を添える', () => {
     // 戻る操作には遷移先の名前がない
     expect(describeUnhandledAction(action({ type: 'GO_BACK' }))).toBe(
-      '画面を移動できませんでした（GO_BACK）',
+      'Could not navigate (GO_BACK)',
     )
   })
 
@@ -25,6 +25,6 @@ describe('describeUnhandledAction', () => {
       describeUnhandledAction(
         action({ type: 'NAVIGATE', payload: { name: '' } }),
       ),
-    ).toBe('画面を移動できませんでした（NAVIGATE）')
+    ).toBe('Could not navigate (NAVIGATE)')
   })
 })

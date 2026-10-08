@@ -36,10 +36,10 @@ const Component: React.FC<ComponentProps> = ({ license, onPressHomepage }) => {
   if (!license) {
     return (
       <SafeScrollView style={styles.scrollView}>
-        <Section title="ライセンス">
+        <Section title="License">
           <Cell
-            title="ライセンス情報が見つかりません"
-            description="`yarn licenses:generate` で一覧を作り直してください"
+            title="License information not found"
+            description="Regenerate the list with `yarn licenses:generate`"
           />
         </Section>
       </SafeScrollView>
@@ -50,20 +50,20 @@ const Component: React.FC<ComponentProps> = ({ license, onPressHomepage }) => {
 
   return (
     <SafeScrollView style={styles.scrollView}>
-      <Section title="パッケージ">
-        <Cell title="バージョン" description={license.version} />
-        <Cell title="ライセンス" description={license.license} />
-        {!!author && <Cell title="作者" description={author} />}
+      <Section title="Package">
+        <Cell title="Version" description={license.version} />
+        <Cell title="License" description={license.license} />
+        {!!author && <Cell title="Author" description={author} />}
         {!!homepage && (
           <Cell
-            title="ホームページ"
+            title="Homepage"
             description={homepage}
             accessory="link"
             onPress={() => onPressHomepage(homepage)}
           />
         )}
       </Section>
-      <Section title="ライセンス本文">
+      <Section title="License text">
         <View style={styles.textContainer}>
           {/*
             本文は選択できるようにしない。Androidでは選択できる文字がタッチ
@@ -75,7 +75,7 @@ const Component: React.FC<ComponentProps> = ({ license, onPressHomepage }) => {
           */}
           <Text style={styles.text}>
             {licenseText ??
-              'このパッケージはライセンス本文を同梱していません。ホームページを参照してください。'}
+              'This package does not include its license text. Refer to its homepage.'}
           </Text>
         </View>
       </Section>
@@ -94,7 +94,7 @@ const Container: React.FC<Props> = (props) => {
   )
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: license?.name ?? 'ライセンス' })
+    navigation.setOptions({ title: license?.name ?? 'License' })
   }, [navigation, license])
 
   const onPressHomepage = useCallback(

@@ -40,19 +40,19 @@ const fieldDefinitions: {
   label: string
   valueType: LayoutField['valueType']
 }[] = [
-  { key: 'name', label: '名前', valueType: 'text' },
-  { key: 'alias', label: '別名、読み仮名など', valueType: 'text' },
-  { key: 'icon', label: 'アイコン画像', valueType: 'image' },
-  { key: 'description', label: 'フリーテキスト', valueType: 'multilineText' },
-  { key: 'company', label: '会社名', valueType: 'text' },
-  { key: 'position', label: '職種など', valueType: 'text' },
-  { key: 'address', label: 'アドレス', valueType: 'text' },
+  { key: 'name', label: 'Name', valueType: 'text' },
+  { key: 'alias', label: 'Alias / pronunciation', valueType: 'text' },
+  { key: 'icon', label: 'Profile image', valueType: 'image' },
+  { key: 'description', label: 'Description', valueType: 'multilineText' },
+  { key: 'company', label: 'Company', valueType: 'text' },
+  { key: 'position', label: 'Job title', valueType: 'text' },
+  { key: 'address', label: 'Address', valueType: 'text' },
   { key: 'twitter', label: 'X(Twitter)', valueType: 'text' },
   { key: 'facebook', label: 'Facebook', valueType: 'text' },
   { key: 'github', label: 'GitHub', valueType: 'text' },
   { key: 'website', label: 'Website', valueType: 'text' },
-  { key: 'qrUrl', label: 'QRコードのURL', valueType: 'url' },
-  { key: 'qrDescription', label: 'QRコードの説明', valueType: 'text' },
+  { key: 'qrUrl', label: 'QR code URL', valueType: 'url' },
+  { key: 'qrDescription', label: 'QR code description', valueType: 'text' },
 ]
 
 const centeredText = (fieldId: string, fontSize: number): LayoutElement => ({
@@ -279,39 +279,46 @@ export const createPresets = (): {
   images: PresetImage[]
 } => {
   const card = createProfileLayout({
-    name: '名刺',
+    name: 'Business card',
     withOrganization: true,
     // 写真や絵をそのまま載せることを想定して、濃淡を残す
     imageType: 'grayscale',
   })
   const simpleCard = createProfileLayout({
-    name: '名刺（シンプル）',
+    name: 'Business card (simple)',
     withOrganization: false,
     imageType: 'binary',
   })
   const images: PresetImage[] = []
 
   const printData: PrintData[] = [
-    createPrintDataFor(simpleCard.layout, simpleCard.fieldIds, '開発者紹介', {
-      name: text('江本光晴'),
-      alias: text('Mitsuharu Emoto'),
-      icon: createImage(AVATAR_BASE64, images),
-      description: text('iOSアプリの開発が好き'),
-      twitter: text('@mitsuharu_e'),
-      facebook: text('mitsuharu.emoto'),
-      github: text('mitsuharu'),
-      website: text('https://mitsuharu.github.io/'),
-      qrUrl: text('https://twitter.com/mitsuharu_e'),
-      qrDescription: text('follow me'),
-    }),
-    createPrintDataFor(card.layout, card.fieldIds, 'サンプル', {
-      name: text('織田信長'),
+    createPrintDataFor(
+      simpleCard.layout,
+      simpleCard.fieldIds,
+      'Developer profile',
+      {
+        name: text('Mitsuharu Emoto'),
+        alias: text('Mitsuharu Emoto'),
+        icon: createImage(AVATAR_BASE64, images),
+        description: text('I enjoy developing iOS apps.'),
+        twitter: text('@mitsuharu_e'),
+        facebook: text('mitsuharu.emoto'),
+        github: text('mitsuharu'),
+        website: text('https://mitsuharu.github.io/'),
+        qrUrl: text('https://twitter.com/mitsuharu_e'),
+        qrDescription: text('follow me'),
+      },
+    ),
+    createPrintDataFor(card.layout, card.fieldIds, 'Sample', {
+      name: text('Nobunaga Oda'),
       alias: text('Nobunaga Oda'),
       icon: createImage(SAMPLE_AVATAR_BASE64, images),
-      description: text('人間五十年、下天の内をくらぶれば、夢幻の如くなり'),
-      company: text('株式会社 織田軍'),
-      position: text('代表取締役大名'),
-      address: text('尾張国'),
+      description: text(
+        'Fifty years of human life, compared with the lower heavens, are like a dream or an illusion.',
+      ),
+      company: text('Oda Army Co., Ltd.'),
+      position: text('President and daimyo'),
+      address: text('Owari Province'),
       twitter: text('tw'),
       facebook: text('fb'),
       github: text('gh'),

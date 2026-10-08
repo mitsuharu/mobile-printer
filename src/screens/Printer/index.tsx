@@ -40,33 +40,36 @@ const Component: React.FC<ComponentProps> = ({
 
   return (
     <ScrollView style={styles.scrollView}>
-      <Section title="テキスト">
+      <Section title="Text">
         <InputDialogCell
-          title="テキストを印刷する"
-          dialogTitle="テキスト印刷"
-          dialogDescription="印刷するテキストを入力してください"
+          title="Print text"
+          dialogTitle="Text printing"
+          dialogDescription="Enter the text to print"
           onSelectText={onPressText}
         />
       </Section>
-      <Section title="画像">
-        <Cell title="画像を白黒で印刷する" onPress={onPressImageBinary} />
+      <Section title="Image">
         <Cell
-          title="画像をグレースケールで印刷する"
+          title="Print image in black and white"
+          onPress={onPressImageBinary}
+        />
+        <Cell
+          title="Print image in grayscale"
           onPress={onPressImageGrayscale}
         />
       </Section>
-      <Section title="QRコード">
+      <Section title="QR code">
         <InputDialogCell
-          title="QRコードを印刷する"
-          dialogTitle="QRコード印刷"
-          dialogDescription="印刷するQRコードに変換するテキストを入力してください"
+          title="Print QR code"
+          dialogTitle="QR code printing"
+          dialogDescription="Enter the text to encode as a QR code"
           onSelectText={onPressQRCode}
         />
-        <Cell title="QRコードを複製する" onPress={onPressDuplicateQRCode} />
+        <Cell title="Copy a QR code" onPress={onPressDuplicateQRCode} />
       </Section>
       {isNfcSupported && (
-        <Section title="NFCタグ">
-          <Cell title="NFCタグの内容を複製する" onPress={onPressNfc} />
+        <Section title="NFC tags">
+          <Cell title="Copy NFC tag content" onPress={onPressNfc} />
         </Section>
       )}
     </ScrollView>
@@ -81,7 +84,7 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: '汎用印刷',
+      title: 'Quick print',
     })
   }, [navigation])
 

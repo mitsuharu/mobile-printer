@@ -48,9 +48,7 @@ function* fetchPrintDataSaga() {
     yield call(reloadPrintDataSaga)
   } catch (e: any) {
     console.warn('fetchPrintDataSaga', e)
-    yield put(
-      enqueueSnackbar({ message: `印刷データの読み込みに失敗しました` }),
-    )
+    yield put(enqueueSnackbar({ message: 'Could not load print data' }))
   } finally {
     yield put(assignIsLoading(false))
   }
@@ -63,7 +61,7 @@ function* savePrintDataSaga({ payload }: ReturnType<typeof savePrintData>) {
     yield call(reloadPrintDataSaga)
   } catch (e: any) {
     console.warn('savePrintDataSaga', e)
-    yield put(enqueueSnackbar({ message: `印刷データの保存に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Could not save print data' }))
   }
 }
 
@@ -75,12 +73,12 @@ function* duplicatePrintDataSaga({
     yield call(savePrintDataToDatabase, db, {
       ...payload,
       id: createUUID(),
-      title: `${payload.title}のコピー`,
+      title: `${payload.title} (copy)`,
     })
     yield call(reloadPrintDataSaga)
   } catch (e: any) {
     console.warn('duplicatePrintDataSaga', e)
-    yield put(enqueueSnackbar({ message: `印刷データの複製に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Could not duplicate print data' }))
   }
 }
 
@@ -91,6 +89,6 @@ function* deletePrintDataSaga({ payload }: ReturnType<typeof deletePrintData>) {
     yield call(reloadPrintDataSaga)
   } catch (e: any) {
     console.warn('deletePrintDataSaga', e)
-    yield put(enqueueSnackbar({ message: `印刷データの削除に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Could not delete print data' }))
   }
 }

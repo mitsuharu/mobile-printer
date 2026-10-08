@@ -90,7 +90,7 @@ describe('layoutSaga fetchLayouts', () => {
           },
         },
       ])
-      .put(enqueueSnackbar({ message: 'レイアウトの読み込みに失敗しました' }))
+      .put(enqueueSnackbar({ message: 'Could not load layouts' }))
       .put(assignIsLoading(false))
       .dispatch(fetchLayouts())
       .silentRun())
@@ -137,7 +137,7 @@ describe('layoutSaga saveLayout', () => {
           },
         },
       ])
-      .put(enqueueSnackbar({ message: 'レイアウトの保存に失敗しました' }))
+      .put(enqueueSnackbar({ message: 'Could not save the layout' }))
       .dispatch(saveLayout(layout))
       .silentRun())
 })
@@ -165,7 +165,7 @@ describe('layoutSaga duplicateLayout', () => {
       .silentRun()
       .then(() => {
         const saved = save.mock.calls[0][0] as Layout
-        expect(saved.name).toBe('名刺のコピー')
+        expect(saved.name).toBe('名刺 (copy)')
         expect(saved.id).not.toBe(layout.id)
       })
   })

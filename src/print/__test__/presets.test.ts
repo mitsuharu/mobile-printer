@@ -87,15 +87,15 @@ const textsOf = (title: string) =>
 describe('createPresets', () => {
   it('名刺レイアウトを2つ用意する', () => {
     expect(layouts.map(({ name }) => name)).toEqual([
-      '名刺',
-      '名刺（シンプル）',
+      'Business card',
+      'Business card (simple)',
     ])
   })
 
   it('印刷データを2つ用意する', () => {
     expect(printData.map(({ title }) => title)).toEqual([
-      '開発者紹介',
-      'サンプル',
+      'Developer profile',
+      'Sample',
     ])
   })
 
@@ -114,8 +114,8 @@ describe('createPresets', () => {
   })
 
   it('印刷データは別々のレイアウトに紐づく', () => {
-    expect(layoutOf('サンプル').name).toBe('名刺')
-    expect(layoutOf('開発者紹介').name).toBe('名刺（シンプル）')
+    expect(layoutOf('Sample').name).toBe('Business card')
+    expect(layoutOf('Developer profile').name).toBe('Business card (simple)')
   })
 
   it('入力項目のキーは重複しない', () => {
@@ -146,7 +146,9 @@ describe('createPresets', () => {
 
   it('シンプルな名刺は所属の入力項目を持たない', () => {
     // 入力欄に使わない項目が並ぶと、何を入れればよいのか分からなくなる
-    const keys = layoutNamed('名刺（シンプル）').fields.map(({ key }) => key)
+    const keys = layoutNamed('Business card (simple)').fields.map(
+      ({ key }) => key,
+    )
     expect(keys).not.toContain('company')
     expect(keys).not.toContain('position')
     expect(keys).not.toContain('address')
@@ -154,12 +156,12 @@ describe('createPresets', () => {
 
   it('シンプルな名刺はSNSの上下だけ罫線を引く', () => {
     // 所属がないので、所属の上に引いていた1本だけがなくなる
-    const elements = layoutNamed('名刺（シンプル）').elements
+    const elements = layoutNamed('Business card (simple)').elements
     expect(elements.filter(({ type }) => type === 'divider')).toHaveLength(2)
   })
 
   it('通常の名刺は所属も罫線も持つ', () => {
-    const layout = layoutNamed('名刺')
+    const layout = layoutNamed('Business card')
     const keys = layout.fields.map(({ key }) => key)
     expect(keys).toContain('company')
     expect(
@@ -170,13 +172,13 @@ describe('createPresets', () => {
 
 describe('createPresets の印刷内容', () => {
   it('従来のプロフィール印刷と同じ並びでサンプルを出力する', () => {
-    expect(textsOf('サンプル')).toEqual([
-      '織田信長',
+    expect(textsOf('Sample')).toEqual([
       'Nobunaga Oda',
-      '人間五十年、下天の内をくらぶれば、夢幻の如くなり',
-      '株式会社 織田軍',
-      '代表取締役大名',
-      '尾張国',
+      'Nobunaga Oda',
+      'Fifty years of human life, compared with the lower heavens, are like a dream or an illusion.',
+      'Oda Army Co., Ltd.',
+      'President and daimyo',
+      'Owari Province',
       'go to Wikipedia',
       '1970/01/01 09:00',
     ])
@@ -184,13 +186,13 @@ describe('createPresets の印刷内容', () => {
 
   it('値のない項目は印刷しない', () => {
     // 開発者紹介は会社名・職種・アドレスを持たない
-    const texts = textsOf('開発者紹介')
-    expect(texts).not.toContain('株式会社 織田軍')
-    expect(texts).toContain('iOSアプリの開発が好き')
+    const texts = textsOf('Developer profile')
+    expect(texts).not.toContain('Oda Army Co., Ltd.')
+    expect(texts).toContain('I enjoy developing iOS apps.')
   })
 
   it('値のあるSNSの行だけを出力する', () => {
-    const columns = commandsFor('開発者紹介').flatMap((command) =>
+    const columns = commandsFor('Developer profile').flatMap((command) =>
       command.type === 'printColumns' ? [command.texts] : [],
     )
 
@@ -203,7 +205,7 @@ describe('createPresets の印刷内容', () => {
   })
 
   it('従来と同じ位置で行を空ける', () => {
-    const commands = commandsFor('サンプル')
+    const commands = commandsFor('Sample')
     const blanks = commands.flatMap((command, index) =>
       command.type === 'lineWrap' ? [{ index, count: command.count }] : [],
     )
@@ -214,7 +216,7 @@ describe('createPresets の印刷内容', () => {
   })
 
   it('所属の上とSNSの上下に罫線を入れる', () => {
-    const commands = commandsFor('サンプル')
+    const commands = commandsFor('Sample')
     const marks = commands.flatMap((command) => {
       if (command.type === 'printHR') {
         return ['---']
@@ -229,13 +231,13 @@ describe('createPresets の印刷内容', () => {
     })
 
     expect(marks).toEqual([
-      '織田信長',
       'Nobunaga Oda',
-      '人間五十年、下天の内をくらぶれば、夢幻の如くなり',
+      'Nobunaga Oda',
+      'Fifty years of human life, compared with the lower heavens, are like a dream or an illusion.',
       '---',
-      '株式会社 織田軍',
-      '代表取締役大名',
-      '尾張国',
+      'Oda Army Co., Ltd.',
+      'President and daimyo',
+      'Owari Province',
       '---',
       'X: tw',
       'Facebook: fb',
@@ -248,7 +250,7 @@ describe('createPresets の印刷内容', () => {
   })
 
   it('開発者紹介は所属なしで、SNSの上下に罫線を出力する', () => {
-    const marks = commandsFor('開発者紹介').flatMap((command) => {
+    const marks = commandsFor('Developer profile').flatMap((command) => {
       if (command.type === 'printHR') {
         return ['---']
       }
@@ -262,9 +264,9 @@ describe('createPresets の印刷内容', () => {
     })
 
     expect(marks).toEqual([
-      '江本光晴',
       'Mitsuharu Emoto',
-      'iOSアプリの開発が好き',
+      'Mitsuharu Emoto',
+      'I enjoy developing iOS apps.',
       '---',
       'X: @mitsuharu_e',
       'Facebook: mitsuharu.emoto',
@@ -278,14 +280,14 @@ describe('createPresets の印刷内容', () => {
 
   it('罫線は3本だけにする', () => {
     expect(
-      commandsFor('サンプル').filter((command) => command.type === 'printHR'),
+      commandsFor('Sample').filter((command) => command.type === 'printHR'),
     ).toHaveLength(3)
   })
 
   it('アイコン画像とQRコードを出力する', () => {
     const commands = buildPrintCommands(
-      layoutOf('サンプル'),
-      withImagePaths('サンプル'),
+      layoutOf('Sample'),
+      withImagePaths('Sample'),
       { printedAt: 0 },
     )
 
@@ -301,8 +303,8 @@ describe('createPresets の印刷内容', () => {
   it('名刺の画像はグレースケールで出力する', () => {
     // 写真や絵をそのまま載せることを想定して、濃淡を残す
     const image = buildPrintCommands(
-      layoutOf('サンプル'),
-      withImagePaths('サンプル'),
+      layoutOf('Sample'),
+      withImagePaths('Sample'),
       { printedAt: 0 },
     ).find((command) => command.type === 'printImage')
     expect(image).toMatchObject({ width: 200, imageType: 'grayscale' })
@@ -310,8 +312,8 @@ describe('createPresets の印刷内容', () => {
 
   it('シンプルな名刺の画像は白黒で出力する', () => {
     const image = buildPrintCommands(
-      layoutOf('開発者紹介'),
-      withImagePaths('開発者紹介'),
+      layoutOf('Developer profile'),
+      withImagePaths('Developer profile'),
       { printedAt: 0 },
     ).find((command) => command.type === 'printImage')
     expect(image).toMatchObject({ width: 200, imageType: 'binary' })
@@ -320,7 +322,7 @@ describe('createPresets の印刷内容', () => {
   it('画像はファイルへ書き出す前だと印刷されない', () => {
     // createPresets の時点ではパスが空で、保存時に埋まる
     expect(
-      commandsFor('サンプル').some((command) => command.type === 'printImage'),
+      commandsFor('Sample').some((command) => command.type === 'printImage'),
     ).toBe(false)
   })
 })

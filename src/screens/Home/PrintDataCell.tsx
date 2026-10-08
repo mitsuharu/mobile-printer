@@ -65,7 +65,7 @@ export const PrintDataCell: React.FC<Props> = ({
       <Pressable
         style={styles.edit}
         onPress={() => onPressEdit(printData)}
-        accessibilityLabel={`${printData.title}を編集する`}
+        accessibilityLabel={`Edit ${printData.title}`}
         accessibilityRole="button"
         hitSlop={8}
       >

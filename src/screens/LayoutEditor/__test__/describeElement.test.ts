@@ -21,15 +21,15 @@ const layout: Layout = {
 const describe1 = (element: LayoutElement) => describeElement(element, layout)
 
 describe('describeElementType', () => {
-  it('追加できる種類をすべて日本語で表示する', () => {
+  it('shows all available element types in English', () => {
     expect(addableElementTypes.map(describeElementType)).toEqual([
-      'テキスト',
-      '画像',
-      'QRコード',
-      '列',
-      '区切り線',
-      '空白',
-      '印刷時刻',
+      'Text',
+      'Image',
+      'QR code',
+      'Columns',
+      'Divider',
+      'Blank space',
+      'Print timestamp',
     ])
   })
 })
@@ -53,7 +53,7 @@ describe('describeElement text', () => {
   })
 
   it('固定値が空なら未入力と伝える', () => {
-    expect(describe1(text({ kind: 'static', value: '  ' }))).toBe('（未入力）')
+    expect(describe1(text({ kind: 'static', value: '  ' }))).toBe('(empty)')
   })
 
   it('入力項目を参照するときは項目名を表示する', () => {
@@ -70,7 +70,7 @@ describe('describeElement text', () => {
 
   it('参照先がなければそれと分かるようにする', () => {
     expect(describe1(text({ kind: 'field', fieldId: 'missing' }))).toBe(
-      '［参照先なし］',
+      '[missing field]',
     )
   })
 })
@@ -87,7 +87,7 @@ describe('describeElement 各種', () => {
         alignment: 'center',
         hideWhenEmpty: true,
       }),
-    ).toBe('（画像未選択）')
+    ).toBe('(no image selected)')
   })
 
   it('画像を選んでいれば幅を伝える', () => {
@@ -109,7 +109,7 @@ describe('describeElement 各種', () => {
         alignment: 'center',
         hideWhenEmpty: true,
       }),
-    ).toBe('幅384px')
+    ).toBe('Width: 384px')
   })
 
   it('列は各列の内容を並べる', () => {
@@ -134,14 +134,14 @@ describe('describeElement 各種', () => {
     ).toBe('X: / ［名前］')
   })
 
-  it('区切り線は線種を日本語で表示する', () => {
+  it('shows the divider style in English', () => {
     expect(describe1({ id: 'd', type: 'divider', barType: 'wave' })).toBe(
-      '波線',
+      'Wavy line',
     )
   })
 
   it('空白は行数を表示する', () => {
-    expect(describe1({ id: 's', type: 'spacer', lines: 2 })).toBe('2行')
+    expect(describe1({ id: 's', type: 'spacer', lines: 2 })).toBe('2 lines')
   })
 
   it('印刷時刻は書式を表示する', () => {

@@ -44,8 +44,7 @@ const state = {
 
 const action = printLayout({ layoutId: 'layout-1', printDataId: 'print-1' })
 
-const timeoutMessage =
-  '印刷が終わりませんでした。プリンターの状態を確認してください'
+const timeoutMessage = 'Printing did not finish. Check the printer status.'
 
 describe('printLayoutSaga', () => {
   it('印刷が終わったら何も知らせない', () =>

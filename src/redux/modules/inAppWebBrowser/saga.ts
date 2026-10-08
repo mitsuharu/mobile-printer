@@ -14,7 +14,7 @@ function* openWebSaga({ payload }: ReturnType<typeof openWeb>) {
     console.warn('openWebSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `web browser を開くのを失敗しまた`,
+        message: 'Could not open the web browser',
       }),
     )
   }

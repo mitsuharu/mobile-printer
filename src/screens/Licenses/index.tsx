@@ -28,7 +28,7 @@ const Component: React.FC<ComponentProps> = ({ licenses, onPressLicense }) => {
     ({ item }) => (
       <Cell
         title={item.name}
-        description={`${item.version}・${item.license}`}
+        description={`${item.version} - ${item.license}`}
         accessory="disclosure"
         onPress={() => onPressLicense(item)}
       />
@@ -45,7 +45,7 @@ const Component: React.FC<ComponentProps> = ({ licenses, onPressLicense }) => {
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={
           <SectionHeader
-            title={`このアプリは次の${licenses.length}個のソフトウェアを使用しています`}
+            title={`This app uses ${licenses.length} software packages`}
           />
         }
       />
@@ -57,7 +57,7 @@ const Container: React.FC<Props> = (props) => {
   const navigation = useNavigation()
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: 'オープンソースライセンス' })
+    navigation.setOptions({ title: 'Open-source licenses' })
   }, [navigation])
 
   const onPressLicense = useCallback(

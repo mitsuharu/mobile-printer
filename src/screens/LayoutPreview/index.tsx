@@ -58,7 +58,7 @@ const Component: React.FC<ComponentProps> = ({
   if (!layout) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>レイアウトが見つかりません</Text>
+        <Text style={styles.emptyText}>{'Layout not found'}</Text>
       </View>
     )
   }
@@ -70,16 +70,21 @@ const Component: React.FC<ComponentProps> = ({
       onLayout={onLayout}
     >
       <Text style={styles.notice}>
-        これは画面上のイメージです。実際の印刷結果とは、文字の形や行の詰まり方が
-        異なることがあります。
+        {
+          'This is an on-screen preview. Fonts and line spacing may differ on the actual printout.'
+        }
       </Text>
       <Text style={styles.description}>
-        用紙の幅 {paperPixelWidth}px で描いています。
-        {isPlaceholder ? '入力項目は表示名を仮の値として入れています。' : null}
+        {'Paper width: '}
+        {paperPixelWidth}
+        {'px.'}
+        {isPlaceholder
+          ? 'Input fields use their display names as placeholder values.'
+          : null}
       </Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {commands.length === 0 ? (
-          <Text style={styles.emptyText}>印刷される内容がありません</Text>
+          <Text style={styles.emptyText}>{'There is nothing to print'}</Text>
         ) : (
           <View
             style={{
@@ -121,7 +126,7 @@ const Container: React.FC<Props> = (props) => {
   const [availableWidth, setAvailableWidth] = useState<number>(0)
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: 'プレビュー' })
+    navigation.setOptions({ title: 'Preview' })
   }, [navigation])
 
   const commands = useMemo(() => {

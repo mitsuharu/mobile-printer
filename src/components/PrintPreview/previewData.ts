@@ -9,7 +9,7 @@ import type { Layout, PrintData } from '@/print'
 export const createPreviewPrintData = (layout: Layout): PrintData => ({
   id: 'preview',
   layoutId: layout.id,
-  title: 'プレビュー',
+  title: 'Preview',
   values: Object.fromEntries(
     layout.fields
       .filter(({ valueType }) => valueType !== 'image')

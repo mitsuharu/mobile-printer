@@ -41,9 +41,7 @@ function* fetchLayoutsSaga() {
     yield call(reloadLayoutsSaga)
   } catch (e: any) {
     console.warn('fetchLayoutsSaga', e)
-    yield put(
-      enqueueSnackbar({ message: `レイアウトの読み込みに失敗しました` }),
-    )
+    yield put(enqueueSnackbar({ message: 'Could not load layouts' }))
   } finally {
     yield put(assignIsLoading(false))
   }
@@ -68,7 +66,7 @@ function* saveLayoutSaga({ payload }: ReturnType<typeof saveLayout>) {
     }
   } catch (e: any) {
     console.warn('saveLayoutSaga', e)
-    yield put(enqueueSnackbar({ message: `レイアウトの保存に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Could not save the layout' }))
   }
 }
 
@@ -78,13 +76,13 @@ function* duplicateLayoutSaga({ payload }: ReturnType<typeof duplicateLayout>) {
     const copied: Layout = yield call(
       duplicateLayoutValue,
       payload,
-      `${payload.name}のコピー`,
+      `${payload.name} (copy)`,
     )
     yield call(saveLayoutToDatabase, db, copied)
     yield call(reloadLayoutsSaga)
   } catch (e: any) {
     console.warn('duplicateLayoutSaga', e)
-    yield put(enqueueSnackbar({ message: `レイアウトの複製に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Could not duplicate the layout' }))
   }
 }
 
@@ -99,6 +97,6 @@ function* deleteLayoutSaga({ payload }: ReturnType<typeof deleteLayout>) {
     yield call(reloadPrintDataSaga)
   } catch (e: any) {
     console.warn('deleteLayoutSaga', e)
-    yield put(enqueueSnackbar({ message: `レイアウトの削除に失敗しました` }))
+    yield put(enqueueSnackbar({ message: 'Could not delete the layout' }))
   }
 }

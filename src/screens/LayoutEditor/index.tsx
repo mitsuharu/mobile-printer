@@ -77,7 +77,7 @@ const Component: React.FC<ComponentProps> = ({
   if (!layout) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>レイアウトが見つかりません</Text>
+        <Text style={styles.emptyText}>{'Layout not found'}</Text>
       </View>
     )
   }
@@ -98,36 +98,36 @@ const Component: React.FC<ComponentProps> = ({
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListHeaderComponent={
           <Text style={styles.header}>
-            要素（右のハンドルをドラッグすると並べ替えできます）
+            {'Elements (drag the handles on the right to reorder)'}
           </Text>
         }
-        ListEmptyComponent={<Text style={styles.header}>要素がありません</Text>}
+        ListEmptyComponent={<Text style={styles.header}>{'No elements'}</Text>}
         contentContainerStyle={styles.contentContainer}
       />
       <Section>
-        <Cell title="要素を追加する" onPress={onPressAdd} />
+        <Cell title="Add an element" onPress={onPressAdd} />
         <Cell
-          title="入力項目"
+          title="Input fields"
           description={
             unusedFieldCount > 0
-              ? `${layout.fields.length}個（うち未使用${unusedFieldCount}個）`
-              : `${layout.fields.length}個`
+              ? `${layout.fields.length} fields (${unusedFieldCount} unused)`
+              : `${layout.fields.length} fields`
           }
           onPress={onPressFields}
           accessory="disclosure"
         />
         <Cell
-          title="このレイアウトで印刷する"
-          description="入力項目は空のまま印刷します"
+          title="Print this layout"
+          description="Input fields will be left empty"
           onPress={onPressPrint}
         />
         <Cell
-          title="印刷イメージを見る"
+          title="Print preview"
           onPress={onPressPreview}
           accessory="disclosure"
         />
         <Cell
-          title="印刷データ"
+          title="Print data"
           icon={ICON.PRINT_DATA}
           onPress={onPressPrintData}
           accessory="disclosure"
@@ -159,7 +159,7 @@ const Container: React.FC<Props> = (props) => {
   )
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: layout?.name ?? 'レイアウト' })
+    navigation.setOptions({ title: layout?.name ?? 'Layout' })
   }, [navigation, layout?.name])
 
   const onReorder = useCallback(

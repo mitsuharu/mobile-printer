@@ -60,7 +60,7 @@ const hideWhenEmptyCell = (
   onChange: (element: LayoutElement) => void,
 ) => (
   <Cell
-    title="内容が空なら印刷しない"
+    title="Skip this element when empty"
     accessory="switch"
     switchValue={element.hideWhenEmpty}
     onSwitchValueChange={(hideWhenEmpty) =>
@@ -80,7 +80,7 @@ const Component: React.FC<ComponentProps> = ({
   if (!layout || !element) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>要素が見つかりません</Text>
+        <Text style={styles.emptyText}>{'Element not found'}</Text>
       </View>
     )
   }
@@ -90,34 +90,34 @@ const Component: React.FC<ComponentProps> = ({
       {element.type === 'text' && (
         <>
           <TextSourceSection
-            title="内容"
+            title="Content"
             layout={layout}
             source={element.source}
             onChange={(source, field) =>
               onChange({ ...element, source }, field)
             }
           />
-          <Section title="体裁">
+          <Section title="Appearance">
             <PickerCell
-              title="文字の大きさ"
+              title="Font size"
               value={element.fontSize}
               items={fontSizeItems}
               onChange={(fontSize) => onChange({ ...element, fontSize })}
             />
             <PickerCell
-              title="寄せ"
+              title="Alignment"
               value={element.alignment}
               items={alignmentItems}
               onChange={(alignment) => onChange({ ...element, alignment })}
             />
             <Cell
-              title="太字"
+              title="Bold"
               accessory="switch"
               switchValue={element.bold}
               onSwitchValueChange={(bold) => onChange({ ...element, bold })}
             />
             <Cell
-              title="下線"
+              title="Underline"
               accessory="switch"
               switchValue={element.underline}
               onSwitchValueChange={(underline) =>
@@ -139,9 +139,9 @@ const Component: React.FC<ComponentProps> = ({
               onChange({ ...element, source }, field)
             }
           />
-          <Section title="体裁">
+          <Section title="Appearance">
             <NumberValueCell
-              title="印刷する幅"
+              title="Print width"
               value={element.width}
               unit="px"
               min={1}
@@ -149,13 +149,13 @@ const Component: React.FC<ComponentProps> = ({
               onChange={(width) => onChange({ ...element, width })}
             />
             <PickerCell
-              title="変換方法"
+              title="Image conversion"
               value={element.imageType}
               items={imageTypeItems}
               onChange={(imageType) => onChange({ ...element, imageType })}
             />
             <PickerCell
-              title="寄せ"
+              title="Alignment"
               value={element.alignment}
               items={alignmentItems}
               onChange={(alignment) => onChange({ ...element, alignment })}
@@ -168,29 +168,29 @@ const Component: React.FC<ComponentProps> = ({
       {element.type === 'qrcode' && (
         <>
           <TextSourceSection
-            title="内容"
+            title="Content"
             layout={layout}
             source={element.source}
             onChange={(source, field) =>
               onChange({ ...element, source }, field)
             }
           />
-          <Section title="体裁">
+          <Section title="Appearance">
             <NumberValueCell
-              title="大きさ"
+              title="Size"
               value={element.moduleSize}
               min={1}
               max={16}
               onChange={(moduleSize) => onChange({ ...element, moduleSize })}
             />
             <PickerCell
-              title="誤り訂正レベル"
+              title="Error correction level"
               value={element.errorLevel}
               items={errorLevelItems}
               onChange={(errorLevel) => onChange({ ...element, errorLevel })}
             />
             <PickerCell
-              title="寄せ"
+              title="Alignment"
               value={element.alignment}
               items={alignmentItems}
               onChange={(alignment) => onChange({ ...element, alignment })}
@@ -204,7 +204,7 @@ const Component: React.FC<ComponentProps> = ({
         element.columns.map((column, index) => (
           <View key={`column-${element.id}-${index}`}>
             <TextSourceSection
-              title={`${index + 1}列目`}
+              title={`Column ${index + 1}`}
               layout={layout}
               source={column.source}
               onChange={(source, field) =>
@@ -221,9 +221,9 @@ const Component: React.FC<ComponentProps> = ({
             />
             <Section>
               <NumberValueCell
-                title={`${index + 1}列目の幅`}
+                title={`Column ${index + 1} width`}
                 value={column.width}
-                unit="文字"
+                unit="Text"
                 min={1}
                 max={48}
                 onChange={(width) =>
@@ -236,7 +236,7 @@ const Component: React.FC<ComponentProps> = ({
                 }
               />
               <PickerCell
-                title={`${index + 1}列目の寄せ`}
+                title={`Column ${index + 1} alignment`}
                 value={column.alignment}
                 items={alignmentItems}
                 onChange={(alignment) =>
@@ -253,9 +253,9 @@ const Component: React.FC<ComponentProps> = ({
         ))}
 
       {element.type === 'columns' && (
-        <Section title="列">
+        <Section title="Columns">
           <Cell
-            title="列を追加する"
+            title="Add a column"
             onPress={() =>
               onChange({
                 ...element,
@@ -272,7 +272,7 @@ const Component: React.FC<ComponentProps> = ({
           />
           {element.columns.length > 1 && (
             <Cell
-              title="最後の列を削除する"
+              title="Remove the last column"
               onPress={() =>
                 onChange({
                   ...element,
@@ -286,9 +286,9 @@ const Component: React.FC<ComponentProps> = ({
       )}
 
       {element.type === 'divider' && (
-        <Section title="体裁">
+        <Section title="Appearance">
           <PickerCell
-            title="線の種類"
+            title="Line style"
             value={element.barType}
             items={barTypeItems}
             onChange={(barType) => onChange({ ...element, barType })}
@@ -297,11 +297,11 @@ const Component: React.FC<ComponentProps> = ({
       )}
 
       {element.type === 'spacer' && (
-        <Section title="体裁">
+        <Section title="Appearance">
           <NumberValueCell
-            title="空ける行数"
+            title="Blank lines"
             value={element.lines}
-            unit="行"
+            unit="lines"
             min={1}
             max={20}
             onChange={(lines) => onChange({ ...element, lines })}
@@ -310,21 +310,21 @@ const Component: React.FC<ComponentProps> = ({
       )}
 
       {element.type === 'timestamp' && (
-        <Section title="体裁">
+        <Section title="Appearance">
           <PickerCell
-            title="書式"
+            title="Date format"
             value={element.format}
             items={timestampFormatItems}
             onChange={(format) => onChange({ ...element, format })}
           />
           <TextValueCell
-            title="書式を直接指定する"
+            title="Enter a custom format"
             value={element.format}
-            dialogDescription="dayjs の書式で指定します"
+            dialogDescription="Use dayjs date format tokens"
             onChange={(format) => onChange({ ...element, format })}
           />
           <PickerCell
-            title="寄せ"
+            title="Alignment"
             value={element.alignment}
             items={alignmentItems}
             onChange={(alignment) => onChange({ ...element, alignment })}
@@ -332,8 +332,8 @@ const Component: React.FC<ComponentProps> = ({
         </Section>
       )}
 
-      <Section title="操作">
-        <Cell title="この要素を削除する" onPress={onDelete} />
+      <Section title="Actions">
+        <Cell title="Delete this element" onPress={onDelete} />
       </Section>
     </SafeScrollView>
   )
@@ -353,7 +353,7 @@ const Container: React.FC<Props> = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: element ? describeElementType(element.type) : '要素',
+      title: element ? describeElementType(element.type) : 'Element',
     })
   }, [navigation, element])
 
@@ -374,8 +374,8 @@ const Container: React.FC<Props> = (props) => {
     }
     try {
       const confirmed = await AlertAsync(
-        '確認',
-        `${describeElementType(element.type)}の要素を削除しますか？`,
+        'Confirm',
+        `Delete the ${describeElementType(element.type)} element?`,
         [
           { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
           { text: MESSAGE.YES, onPress: () => true },
@@ -387,7 +387,7 @@ const Container: React.FC<Props> = (props) => {
       }
     } catch (e: any) {
       console.warn('onDelete', e)
-      dispatch(enqueueSnackbar({ message: `要素を削除できませんでした` }))
+      dispatch(enqueueSnackbar({ message: 'Could not delete the element' }))
     }
   }, [dispatch, element, layout, navigation])
 

@@ -51,9 +51,9 @@ type ParamsProps = RouteProp<MainParams, 'PrintDataList'>
 type PrintDataAction = 'print' | 'duplicate' | 'delete'
 
 const printDataActions: ListPickerItem<PrintDataAction>[] = [
-  { value: 'print', title: '印刷する' },
-  { value: 'duplicate', title: '複製する' },
-  { value: 'delete', title: '削除する' },
+  { value: 'print', title: 'Print' },
+  { value: 'duplicate', title: 'Duplicate' },
+  { value: 'delete', title: 'Delete' },
 ]
 
 type Props = {}
@@ -91,7 +91,7 @@ const Component: React.FC<ComponentProps> = ({
   if (!layout) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>レイアウトが見つかりません</Text>
+        <Text style={styles.emptyText}>{'Layout not found'}</Text>
       </View>
     )
   }
@@ -99,11 +99,11 @@ const Component: React.FC<ComponentProps> = ({
   return (
     <>
       <SafeScrollView style={styles.scrollView}>
-        <Section title="印刷データ">
+        <Section title="Print data">
           {printData.length === 0 ? (
             <Cell
-              title="印刷データがありません"
-              description="下の「印刷データを追加する」から作成してください"
+              title="No print data"
+              description="Tap Add print data below to create a record"
               inactive={true}
             />
           ) : (
@@ -120,13 +120,13 @@ const Component: React.FC<ComponentProps> = ({
             ))
           )}
         </Section>
-        <Section title="操作">
+        <Section title="Actions">
           <Cell
-            title="印刷データを追加する"
+            title="Add print data"
             description={
               layout.fields.length === 0
-                ? 'このレイアウトには入力項目がないため、入力する項目はありません'
-                : 'セルを長押しすると印刷・複製・削除ができます'
+                ? 'This layout has no input fields to fill in'
+                : 'Press and hold a row to print, duplicate or delete it'
             }
             onPress={onPressAdd}
           />
@@ -135,15 +135,15 @@ const Component: React.FC<ComponentProps> = ({
       <LoadingSpinner isLoading={isLoading} />
       <InputDialog
         isVisible={isDialogVisible}
-        title="印刷データの追加"
-        description="印刷データ名を入力してください"
+        title="Add print data"
+        description="Enter a print record name"
         onPress={onSubmitTitle}
         onCancel={onCancelDialog}
       />
       <ListPickerModal
         visible={!!actionTarget}
         title={actionTarget?.title ?? ''}
-        description="操作を選んでください"
+        description="Choose an action"
         items={printDataActions}
         onSelect={onSelectAction}
         onCancel={onCancelAction}
@@ -175,7 +175,7 @@ const Container: React.FC<Props> = (props) => {
   )
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: '印刷データ' })
+    navigation.setOptions({ title: 'Print data' })
   }, [navigation])
 
   const onPressPrintData = useCallback(
@@ -216,8 +216,8 @@ const Container: React.FC<Props> = (props) => {
 
         if (action === 'delete') {
           const confirmed = await AlertAsync(
-            '確認',
-            `「${value.title}」を削除しますか？`,
+            'Confirm',
+            `Delete ${value.title}?`,
             [
               { text: MESSAGE.NO, onPress: () => false, style: 'cancel' },
               { text: MESSAGE.YES, onPress: () => true },
@@ -229,7 +229,7 @@ const Container: React.FC<Props> = (props) => {
         }
       } catch (e: any) {
         console.warn('onSelectAction', e)
-        dispatch(enqueueSnackbar({ message: `操作できませんでした` }))
+        dispatch(enqueueSnackbar({ message: 'Could not complete the action' }))
       }
     },
     [actionTarget, dispatch, layoutId],
@@ -243,7 +243,7 @@ const Container: React.FC<Props> = (props) => {
       setIsDialogVisible(false)
       const value = createPrintData(
         layoutId,
-        title.trim() || '新しい印刷データ',
+        title.trim() || 'New print record',
       )
       dispatch(savePrintData(value))
       navigation.navigate('PrintDataForm', {

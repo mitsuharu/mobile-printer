@@ -22,7 +22,7 @@ export function* printImageSaga({ payload }: ReturnType<typeof printImage>) {
     console.warn('printSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `印刷に失敗しました`,
+        message: 'Printing failed',
       }),
     )
   }
@@ -43,7 +43,7 @@ export function* printImageFromImagePickerSaga({
     console.warn('printSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `印刷データが取得できませんでした`,
+        message: 'Could not retrieve the image to print',
       }),
     )
   }

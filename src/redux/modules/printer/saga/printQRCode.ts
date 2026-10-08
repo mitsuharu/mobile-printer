@@ -23,7 +23,7 @@ export function* printQRCodeSaga({ payload }: ReturnType<typeof printQRCode>) {
     console.warn('printSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `印刷に失敗しました`,
+        message: 'Printing failed',
       }),
     )
   }
@@ -53,7 +53,8 @@ export function* duplicateQRCodeSaga() {
     console.warn('printSaga', e)
     yield put(
       enqueueSnackbar({
-        message: `キャンセル、もしくはお使いの端末はスキャン機能がご利用できません`,
+        message:
+          'Scanning was cancelled, or this device does not support scanning',
       }),
     )
   }
@@ -76,8 +77,8 @@ export function* monitorScanSuccessSaga() {
 function* scanSuccessSaga(message: string) {
   const result: boolean = yield call(
     AlertAsync,
-    'QR複製の確認',
-    `「${message}」の内容で複製しますか？`,
+    'Confirm QR code copy',
+    `Copy this content: ${message}?`,
     [
       { text: MESSAGE.NO, onPress: () => false },
       { text: MESSAGE.YES, onPress: () => true },

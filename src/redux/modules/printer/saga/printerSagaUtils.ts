@@ -16,7 +16,8 @@ export function* validatePrinterSaga() {
     if (!isPrintable) {
       yield put(
         enqueueSnackbar({
-          message: `印刷に失敗しました。プリンターが搭載されていない、もしくはプリンターに接続できていません。`,
+          message:
+            'Printing failed. This device has no printer, or the printer is not connected.',
         }),
       )
     }
