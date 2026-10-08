@@ -4,8 +4,6 @@ To enable USB debugging, follow the instructions in this repository: [sunmi-v2s-
 
 An Android application for printing receipt-style business cards and custom documents using commercial **SUNMI V2 PRO / V2s** terminals.
 
-*[日本語のドキュメントはこちら (Japanese README)](README-ja.md)*
-
 ---
 
 > **Note on the English Edition**  
