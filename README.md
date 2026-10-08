@@ -1,122 +1,128 @@
-# モバイル印刷 for SUNMI V2 PRO / V2s
+# Mobile Print for SUNMI V2 PRO / V2s
 
-業務用端末 SUNMI V2 PRO / V2s を使用したレシート型名刺などを印刷するアプリです。
+An Android application for printing receipt-style business cards and custom documents using commercial **SUNMI V2 PRO / V2s** terminals.
+
+*[日本語のドキュメントはこちら (Japanese README)](README-ja.md)*
+
+---
+
+> **Note on the English Edition**  
+> This version translates the entire user interface (menus, accessibility labels, dialogs, error messages, and in-app guide) into English. The launcher label is **Mobile Print**. The two bundled preset layouts (*Business card* and *Business card (simple)*), their field labels, record titles, and sample data have also been localized.  
+> Existing databases are automatically updated via migration 3 to localize default strings while safely preserving any user-customized labels or values.
+
+---
 
 ## Demo
 
-[![動作デモ動画](README_Images/thumbnail.png)](https://www.youtube.com/watch?v=s9HNWSZ2Gbo)
+[![Demo Video](README_Images/thumbnail.png)](https://www.youtube.com/watch?v=s9HNWSZ2Gbo)
 
-### 印刷結果
+### Print Sample
 
-![印刷結果](README_Images/receipts.png)
+![Print Result](README_Images/receipts.png)
 
-## 機能
+## Features
 
-- 汎用印刷
-  - テキスト
-  - 画像
-  - QRコード
-  - NFC解析
-- レイアウト印刷
-  - 印刷する内容をユーザーが組み立てられます
-  - 初期状態では名刺のレイアウトが用意されています
+- **Quick / General Printing**
+  - Text
+  - Image (black-and-white or grayscale)
+  - QR Code
+  - NFC analysis
+- **Layout Printing**
+  - Flexible layout builder allowing users to assemble custom receipt formats
+  - Built-in business card preset layouts ready to use out of the box
 
-## Develop
+## Layout Printing Concepts
 
-### requirements
+Content to be printed is separated into **Layouts** and **Print Data (Records)**:
 
-- GMSが有効な SUNMI V2 PRO または SUNMI V2s [^requirements-others]
+- **Layout**: Defines the visual appearance and structure of the printout. You assemble elements such as text, images, QR codes, columns, horizontal dividers, blank lines, and print timestamps. Elements can be reordered by dragging, and individual settings such as font size and alignment can be configured.
+- **Input Fields**: Dynamic placeholders within a layout whose content varies per print record (e.g. name, avatar, title). By choosing "Input field" as the content source for an element, you link it to a specific field.
+- **Print Data (Records)**: The actual values entered into the input fields. Multiple print records can be associated with a single layout, allowing you to print different content using the exact same format.
 
-[^requirements-others]: 作者未確認ですが V2 や V1s でも動作するようです
+Layouts can be duplicated, edited, and deleted, with an in-app print preview available during editing.
 
-### frameworks
+For detailed screen-by-screen walkthroughs, see the [English user guide](docs/usage.md) (also accessible inside the app from **Home (i) → About this app → User guide**).
 
-- React Native 0.79.2
+Design background and implementation details are documented in [`docs/plans/custom-layout-printing.md`](docs/plans/custom-layout-printing.md).
 
-### architectures
+## Development
 
-- Redux Saga
-- SQLite（レイアウトと印刷データの保存）
+### Requirements
 
-### build
+- SUNMI V2 PRO or SUNMI V2s with Google Play Services (GMS) enabled [^requirements-others]
+- Node 24, Yarn 4.9.1 (included via `.yarn/releases/`), JDK 17, and Android SDK/NDK as defined in `android/build.gradle`
+
+[^requirements-others]: Not officially verified by the original author, but reported to work on SUNMI V2 and V1s as well.
+
+### Frameworks & Architecture
+
+- **React Native 0.79.2**
+- **Redux Saga**
+- **SQLite** (storage for layouts, fields, and print data records)
+
+### Build & Run
+
+Install dependencies and start the Android development build:
 
 ```shell
-yarn
+node .yarn/releases/yarn-4.9.1.cjs install --immutable
 yarn android
 ```
 
-### lint and format
+### Lint, Format & Tests
 
-BiomeでJavaScript、TypeScript、JSONなどの対応ファイルを検査・整形します。
+Code formatting and static analysis are managed with Biome:
 
 ```shell
 yarn lint
 yarn lint-force
+yarn typecheck
+TZ=Asia/Tokyo yarn test --runInBand
 ```
 
-### release
+### Release
 
-- apk
-  - `android/app/build/outputs/apk/release/app-release.apk`
-  - 開発版向け
+- **APK** (Development / local release):
+  - Output: `android/app/build/outputs/apk/release/app-release.apk`
 
-```shell
-cd ./android
-./gradlew assembleRelease
-```
+  ```shell
+  cd android
+  ./gradlew assembleRelease
+  ```
 
-- aab
-  - `android/app/build/outputs/bundle/release/app-release.aab`
-  - ストアリリース向け（予定なし）
+- **AAB** (Google Play bundle format, not intended for store release):
+  - Output: `android/app/build/outputs/bundle/release/app-release.aab`
 
-```shell
-cd ./android
-./gradlew bundleRelease
-```
+  ```shell
+  cd android
+  ./gradlew bundleRelease
+  ```
 
-### CI
+### Packaging Notes for the English Edition
 
-- PR を作成すると、Android apk (debug) のビルドが実行されます
-- リリースタグをつけて push すると、リリースビルドが作られて、リリース処理および DeployGate に apk がアップロードされます
-  - タグ名に `-` を含めると（`v1.2.0-beta.1` など）プレリリースとして公開します
-- GitHub Actions の Publish は手動実行（workflow_dispatch）もできます
-  - タグ名を入れると GitHub Releases を作ります。空のままなら DeployGate への配布と、実行結果からの apk ダウンロードのみです
-  - プレリリースにするかどうかを選べます（既定はリリース）
-- リリースビルドもコミット済みの `debug.keystore` で署名します。ストア配布を想定していない野良アプリのためです
+For the locally packaged English release, the production JavaScript is bundled with Metro and compiled with the pinned Hermes compiler. Unchanged Android native code, libraries, and resources from the upstream 1.0.2 release are reused; only the JS bundle and launcher label string (`strings.xml`) are updated. The APK is aligned and signed with the committed `debug.keystore`.
 
-## レイアウト印刷
+The original release APK remains available for rollback using `adb install -r` without uninstalling the app.
 
-印刷する内容を **レイアウト** と **印刷データ** に分けて管理します。
+### CI & Distribution
 
-- **レイアウト** は印刷の体裁です。テキスト・画像・QRコード・列・区切り線・空白・印刷時刻の要素を並べて組み立てます。要素はドラッグで並べ替えられ、文字の大きさや寄せなどを個別に設定できます。
-- **入力項目** はレイアウトのうち、印刷データごとに内容を変えたい箇所です。要素の「内容の決め方」で「印刷データごとに入力する」を選ぶと、入力項目を参照できます。
-- **印刷データ** は入力項目へ入れる値です。1つのレイアウトに複数の印刷データを紐付けられるので、同じ体裁で内容だけを変えて印刷できます。
+- Opening a Pull Request triggers an Android debug APK build.
+- Pushing a release tag triggers a release build, creating GitHub Releases and uploading the APK to DeployGate (tags with hyphens such as `v1.2.0-beta.1` are treated as pre-releases).
+- The `Publish` GitHub Actions workflow can also be triggered manually (`workflow_dispatch`).
+- Release builds are signed using `debug.keystore` by design, as the application is distributed as a standalone package rather than through Google Play.
 
-レイアウトは複製・変更・削除でき、編集中に印刷イメージを確認できます。
+## Database & Migrations
 
-画面ごとの操作は [`docs/usage.md`](docs/usage.md) にまとめています。アプリ内でも、ホーム右上の (i) から「このアプリについて」→「このアプリの使い方」で読めます。
-
-- 画像は端末内のライブラリから選択可能です
-  - 事前に白黒加工をするのがおすすめです
-- UI は洗練されていません
-
-設計と実装の経緯は [`docs/plans/custom-layout-printing.md`](docs/plans/custom-layout-printing.md) にまとめています。
-
-## その他
-
-- ビルド済みアプリは Releases にて apk を公開しています
-- データ構造はバージョンにより修正・変更されます。開発版のため、データのマイグレーション処理はしていません。アンインストールしてから、インストールしてください。
-- レイアウトと印刷データは SQLite に保存します。スキーマの変更は `src/database/migrations/` に追加します。
-
-## TODO
-
-- CI
-- ストアでの公開？
+- Layouts and print data are stored in an embedded SQLite database.
+- Schema changes and data migrations are managed in `src/database/migrations/`.
+- Migration `003_english_presets.ts` handles updating default preset strings for existing installations without overwriting user customizations.
 
 ## License
 
-MIT
+[MIT](LICENSE)
 
-## Link
+## Upstream Links & Attribution
 
-- [業務用スマホ SUNMI V2 PRO の開発準備の手引き - Qiita](https://qiita.com/mitsuharu_e/items/3f2add415136005da719)
+- Original Author: [Mitsuharu Emoto](https://github.com/mitsuharu)
+- Original Upstream Repository: [mitsuharu/mobile-printer](https://github.com/mitsuharu/mobile-printer)
+- [SUNMI V2 PRO Development Setup Guide (Japanese) - Qiita](https://qiita.com/mitsuharu_e/items/3f2add415136005da719)
