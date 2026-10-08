@@ -1,6 +1,6 @@
 # Mobile Print for SUNMI V2 PRO / V2s
 
-To enable USB debugging, follow the instructions in this repository: [https://github.com/xRedan/sunmi-v2s-adb-bypass](https://github.com/xRedan/sunmi-v2s-adb-bypass)
+To enable USB debugging, follow the instructions in this repository: [sunmi-v2s-adb-bypass](https://github.com/xRedan/sunmi-v2s-adb-bypass)
 
 An Android application for printing receipt-style business cards and custom documents using commercial **SUNMI V2 PRO / V2s** terminals.
 
